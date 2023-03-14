@@ -275,17 +275,22 @@ int our::Application::run(int run_for_frames)
     double last_frame_time = glfwGetTime();
     int current_frame = 0;
 
-    int id = 9202588;
-    // Game loop
+    // Set the value of the "id" variable to 9202586
+    int id = 9202586;
+
+    // Game loop that runs until the window is closed
     while (!glfwWindowShouldClose(window))
     {
-
+        // Calculate the red, green, and blue components of the background color
         glClearColor(
-            ((id / 1) % 16) / 16.0,
-            ((id / 16) % 16) / 16.0,
-            ((id / 256) % 16) / 16.0,
-            1.0);
+            ((id / 1) % 16) / 16.0,   // Red component
+            ((id / 16) % 16) / 16.0,  // Green component
+            ((id / 256) % 16) / 16.0, // Blue component
+            1.0);                     // Alpha component (fully opaque)
+
+        // Clear the screen with the background color
         glClear(GL_COLOR_BUFFER_BIT);
+
         if (run_for_frames != 0 && current_frame >= run_for_frames)
             break;
         glfwPollEvents(); // Read all the user events and call relevant callbacks.
