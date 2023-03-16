@@ -23,16 +23,13 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
     file.close();
 
     // TODO: Complete this function
-
     //  Create a new shader object and compile the shader code
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &sourceCStr, nullptr);
     glCompileShader(shader);
 
     // Check if the shader compilation succeeded
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    std::string shaderCompileStatus = checkForShaderCompilationErrors(status);
+    std::string shaderCompileStatus = checkForShaderCompilationErrors(shader);
 
     // If there was an error, print the error message and return false
     if (shaderCompileStatus != "")
