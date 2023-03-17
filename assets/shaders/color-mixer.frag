@@ -21,5 +21,9 @@ out vec4 frag_color;
 //TODO: (Req 1) Finish this shader and apply the channel mixing using the "dot" function.
 
 void main(){
-    frag_color = fs_in.color;
+    // frag_color = fs_in.color;
+    // here we use the dot function to mix the color channels
+    float mixColor = dot(frag_color.rgb, fs_in.color);
+    // we then set the fragment color to the mixed color
+    frag_color.rgb = vec3(mixColor);
 }

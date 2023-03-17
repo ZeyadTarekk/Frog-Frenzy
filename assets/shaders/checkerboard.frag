@@ -12,6 +12,7 @@ uniform vec3 colors[2];
 
 void main(){
     frag_color = vec4(colors[1], 1.0);
+    // here we check for the pixel that the fragment is in and set the color accordingly
     if (int(gl_FragCoord.x) % (2*size) < size && int(gl_FragCoord.y) % (2*size) < size || int(gl_FragCoord.x) % (2*size) >= size && int(gl_FragCoord.y) % (2*size) >= size  ) {
         frag_color = vec4(colors[0], 1.0);
     }
