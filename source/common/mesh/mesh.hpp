@@ -70,7 +70,11 @@ namespace our
         // this function should render the mesh
         void draw()
         {
-            // TODO: (Req 2) Write this function
+            // Done: (Req 2) Write this function
+
+            // Render the mesh
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, (void *)0);
         }
 
         // this function should delete the vertex & element buffers and the vertex array object
