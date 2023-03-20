@@ -16,6 +16,7 @@ uniform mat4 transform;
 
 void main(){
     //DONE: (Req 3) Change the next line to apply the transformation matrix
+    //  Applying the transformation matrix to the position will transform the vertex
     vec4 transformedPosition = transform * vec4(position, 1.0);
     vs_out.position = transformedPosition.xyz;
     gl_Position =  transformedPosition;
