@@ -21,7 +21,7 @@ out Varyings {
 uniform vec2 translation = vec2(0.0, 0.0);
 uniform vec2 scale = vec2(1.0, 1.0);
 
-//TODO: (Req 1) Finish this shader
+//* DONE: (Req 1) Finish this shader
 
 void main() {
     // Define the vertices of the triangle in normalized device coordinates
@@ -43,4 +43,7 @@ void main() {
 
     // Set the position of the current vertex
     gl_Position = vec4(position, 1.0);
+
+    // !  fourth component is typically set to 1.0, as it ensures that the vector is not affected by perspective division 
+    // !  during the transformation to clip space.
 }
