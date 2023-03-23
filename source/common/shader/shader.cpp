@@ -38,8 +38,8 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         return false;
     }
 
-    // attach shader to a program
     glAttachShader(program, shader);
+    glDeleteShader(shader);
 
     // Note: The function "checkForShaderCompilationErrors" checks if there is
     //  an error in the given shader. You should use it to check if there is a
