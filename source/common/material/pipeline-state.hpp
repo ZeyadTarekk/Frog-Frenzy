@@ -42,6 +42,46 @@ namespace our {
         // For example, if faceCulling.enabled is true, you should call glEnable(GL_CULL_FACE), otherwise, you should call glDisable(GL_CULL_FACE)
         void setup() const {
             //TODO: (Req 4) Write this function
+            if (faceCulling.enabled)
+            {
+                // enable back face culling for the current pipeline
+                glEnable(GL_CULL_FACE);
+                // set the culled face to be the back face (GL_BACK) 
+                //culled means that the face not rendered
+                glCullFace(faceCulling.culledFace);
+                // set the front face to be the counter-clockwise face (GL_CCW)
+                // front face is the face that is rendered
+                glFrontFace(faceCulling.frontFace);
+            }
+            else
+            {
+                glDisable(GL_CULL_FACE);
+            }
+            if (depthTesting.enabled)
+            {
+                // enable depth testing for the current pipeline
+                // to render the scene in the correct order
+                glEnable(GL_DEPTH_TEST);
+                glDepthFunc(depthTesting.function);
+            }
+            else
+            {
+                glDisable(GL_DEPTH_TEST);
+            }
+            if (blending.enabled)
+            {
+                glEnable(GL_BLEND);
+                glBlendColor(blending.constantColor.r, blending.constantColor.g, blending.constantColor.b, blending.constantColor.a);
+                glBlendEquation(blending.equation);
+                glBlendFunc(blending.sourceFactor, blending.destinationFactor);
+            }
+            else
+            {
+                glDisable(GL_BLEND);
+            }
+
+            glColorMask(colorMask.r, colorMask.g, colorMask.b, colorMask.a);
+            glDepthMask(depthMask);
         }
 
         // Given a json object, this function deserializes a PipelineState structure
