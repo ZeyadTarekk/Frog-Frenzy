@@ -33,8 +33,8 @@ namespace our
         {
             // TODO: (Req 6) Complete this function
             // ! ask about this
-            if (textureUnit)
-                glBindSampler(textureUnit, name);
+            // if (textureUnit)
+            glBindSampler(textureUnit, name);
         }
 
         // This static method ensures that no sampler is bound to the given texture unit
