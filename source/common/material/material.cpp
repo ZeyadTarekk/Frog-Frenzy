@@ -55,8 +55,16 @@ namespace our
         TintedMaterial::setup();
         this->shader->set("alphaThreshold", this->alphaThreshold);
         // glActiveTexture(GL_TEXTURE0); // we send it unit 0
-        this->texture->bind();
-        this->sampler->bind(0);
+        // check if the texture is null call the unbind
+        if (this->texture)
+            this->texture->bind();
+        else
+            this->texture->unbind();
+        // check if the sampler is null call the unbind
+        if (this->sampler)
+            this->sampler->bind(0);
+        else
+            this->sampler->unbind(0);
         shader->set("tex", 0);
     }
 
