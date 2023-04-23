@@ -8,11 +8,17 @@ namespace our {
     void World::deserialize(const nlohmann::json& data, Entity* parent){
         if(!data.is_array()) return;
         for(const auto& entityData : data){
-            //TODO: (Req 8) Create an entity, make its parent "parent" and call its deserialize with "entityData".
+            //DONE: (Req 8) Create an entity, make its parent "parent" and call its deserialize with "entityData".
+            // Then add the entity to this world.
+            Entity* entity = new Entity();
+            entity->parent = parent;
+            entity->deserialize(entityData);
+            entities.insert(entity);
             
             if(entityData.contains("children")){
-                //TODO: (Req 8) Recursively call this world's "deserialize" using the children data
+                //DONE: (Req 8) Recursively call this world's "deserialize" using the children data
                 // and the current entity as the parent
+                deserialize(entityData["children"], entity);
                 
             }
         }
