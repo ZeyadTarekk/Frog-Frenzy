@@ -41,7 +41,7 @@ namespace our {
         // This function should set the OpenGL options to the values specified by this structure
         // For example, if faceCulling.enabled is true, you should call glEnable(GL_CULL_FACE), otherwise, you should call glDisable(GL_CULL_FACE)
         void setup() const {
-            //TODO: (Req 4) Write this function
+            //DONE: (Req 4) Write this function
             if (faceCulling.enabled)
             {
                 // enable back face culling for the current pipeline
