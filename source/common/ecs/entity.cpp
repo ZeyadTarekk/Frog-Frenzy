@@ -12,11 +12,11 @@ namespace our {
     // its parent's parent's matrix and so on till you reach the root.
     glm::mat4 Entity::getLocalToWorldMatrix() const {
         //DONE: (Req 8) Write this function
-        glm::mat4 transformationMatrix = localTransform.toMat4();
+        glm::mat4 transformationMatrix = localTransform.toMat4();                                       // get the transformation matrix from this entity to its parent
         Entity* parentEntity = parent;
-        while (parentEntity != nullptr) {
-            transformationMatrix = parentEntity->localTransform.toMat4() * transformationMatrix;
-            parentEntity = parentEntity->parent;
+        while (parentEntity != nullptr) {                                                               // while the entity has a parent
+            transformationMatrix = parentEntity->localTransform.toMat4() * transformationMatrix;        // combine this entities matrix with its parent's matrix and its parent's parent's matrix and so on till you reach the root
+            parentEntity = parentEntity->parent;                                                        // get the parent of the parent
         }
         return transformationMatrix;
     }

@@ -10,10 +10,10 @@ namespace our {
         for(const auto& entityData : data){
             //DONE: (Req 8) Create an entity, make its parent "parent" and call its deserialize with "entityData".
             // Then add the entity to this world.
-            Entity* entity = new Entity();
-            entity->parent = parent;
-            entity->deserialize(entityData);
-            entities.insert(entity);
+            Entity* entity = new Entity();                  // create a new entity
+            entity->parent = parent;                        // make its parent "parent"
+            entity->deserialize(entityData);                // call its deserialize with "entityData"
+            entities.insert(entity);                        // add the entity to this world
             
             if(entityData.contains("children")){
                 //DONE: (Req 8) Recursively call this world's "deserialize" using the children data

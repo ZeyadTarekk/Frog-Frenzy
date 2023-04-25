@@ -35,9 +35,9 @@ namespace our {
             static_assert(std::is_base_of<Component, T>::value, "T must inherit from Component");
             //DONE: (Req 8) Create an component of type T, set its "owner" to be this entity, then push it into the component's list
             // Don't forget to return a pointer to the new component
-            T* component = new T();
+            T* component = new T();                 // create a new component of type T
             component->owner = this;
-            components.push_back(component);
+            components.push_back(component);        // add the component to the components list
             return component;
         }
 
@@ -48,7 +48,7 @@ namespace our {
             //DONE: (Req 8) Go through the components list and find the first component that can be dynamically cast to "T*".
             // Return the component you found, or return null of nothing was found.
             for (auto it = components.begin(); it != components.end(); it++) {
-                T* component = dynamic_cast<T*>(*it);
+                T* component = dynamic_cast<T*>(*it);               // cast the component to type T dynamically
                 if (component != nullptr) {
                     return component;
                 }
@@ -73,10 +73,10 @@ namespace our {
             //DONE: (Req 8) Go through the components list and find the first component that can be dynamically cast to "T*".
             // If found, delete the found component and remove it from the components list
             for (auto it = components.begin(); it != components.end(); it++) {
-                T* component = dynamic_cast<T*>(*it);
+                T* component = dynamic_cast<T*>(*it);            // cast the component to type T dynamically
                 if (component != nullptr) {
-                    delete component;
-                    components.erase(it);
+                    delete component;                           // delete the component
+                    components.erase(it);                       // remove the component from the components list
                     break;
                 }
             }
@@ -98,9 +98,9 @@ namespace our {
             //DONE: (Req 8) Go through the components list and find the given component "component".
             // If found, delete the found component and remove it from the components list
             for (auto it = components.begin(); it != components.end(); it++) {
-                if (*it == component) {
-                    delete *it;
-                    components.erase(it);
+                if (*it == component) {             // check if the current iterator points to the component we want to delete
+                    delete *it;                     // delete that component
+                    components.erase(it);           // remove that component from the components list
                     break;
                 }
             }
@@ -109,8 +109,8 @@ namespace our {
         // Since the entity owns its components, they should be deleted alongside the entity
         ~Entity(){
             //DONE: (Req 8) Delete all the components in "components".
-            for (auto it = components.begin(); it != components.end(); it++) {
-                delete *it;
+            for (auto it = components.begin(); it != components.end(); it++) {      // iterate through the components list
+                delete *it;                                                         // delete the component
             }
         }
 
