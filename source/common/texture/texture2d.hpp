@@ -16,6 +16,7 @@ namespace our
         Texture2D()
         {
             // DONE: (Req 5) Complete this function
+            // create a texture
             glGenTextures(1, &name);
         };
 
@@ -23,6 +24,7 @@ namespace our
         ~Texture2D()
         {
             // DONE: (Req 5) Complete this function
+            // delete this texture
             glDeleteTextures(1, &name);
         }
 
@@ -36,6 +38,7 @@ namespace our
         void bind() const
         {
             // DONE: (Req 5) Complete this function
+            // bind this texture to GL_TEXTURE_2D
             glBindTexture(GL_TEXTURE_2D, name);
         }
 
@@ -43,6 +46,7 @@ namespace our
         static void unbind()
         {
             // DONE: (Req 5) Complete this function
+            // unbind any texture from GL_TEXTURE_2D
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 

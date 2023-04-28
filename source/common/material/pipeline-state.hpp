@@ -70,16 +70,20 @@ namespace our {
             }
             if (blending.enabled)
             {
+                // enable blending for the current pipeline
                 glEnable(GL_BLEND);
+                // set the blending color
                 glBlendColor(blending.constantColor.r, blending.constantColor.g, blending.constantColor.b, blending.constantColor.a);
+                // set the blending equation
                 glBlendEquation(blending.equation);
+                // set the blending factors
                 glBlendFunc(blending.sourceFactor, blending.destinationFactor);
             }
             else
             {
+                // disable blending for the current pipeline
                 glDisable(GL_BLEND);
             }
-
             glColorMask(colorMask.r, colorMask.g, colorMask.b, colorMask.a);
             glDepthMask(depthMask);
         }
