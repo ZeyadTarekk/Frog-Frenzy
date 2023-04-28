@@ -27,8 +27,12 @@ namespace our
             //  We will draw the sphere from the inside, so what options should we pick for the face culling.
             PipelineState skyPipelineState{};
 
-            // depth configuration
+            //? depth configuration
+
+            // enable depth testing
             skyPipelineState.depthTesting.enabled = true;
+            // fragments will pass the depth test if their depth value is less
+            // than or equal to the depth value of the existing fragment in the framebuffer.
             skyPipelineState.depthTesting.function = GL_LEQUAL;
 
             // face culling configuration
@@ -169,6 +173,11 @@ namespace our
 
         // DONE: (Req 9) Modify the following line such that "cameraForward" contains a vector pointing the camera forward direction
         //  HINT: See how you wrote the CameraComponent::getViewMatrix, it should help you solve this one
+        //? calculate the forward direction of the camera by subtracting the eye position from the center position,
+        //? which is the direction the camera is pointing towards.
+        //? This is achieved by transforming the points (0, 0, -1) and (0, 0, 0) from local space to world space.
+        //? last component of the vector is detect position or direction ,, position=1 , direction=0
+
         auto M = camera->getOwner()->getLocalToWorldMatrix(); //? get local matrix
         glm::vec3 centerTransparency = M * glm::vec4(0.0, 0.0, -1.0, 1.0);
         glm::vec3 eyeTransparency = M * glm::vec4(0.0, 0.0, 0.0, 1.0);
@@ -176,13 +185,15 @@ namespace our
         std::sort(transparentCommands.begin(), transparentCommands.end(), [cameraForward](const RenderCommand &first, const RenderCommand &second)
                   {
             //DONE: (Req 9) Finish this function
-            // HINT: the following return should return true "first" should be drawn before "second". 
+            // HINT: the following return should return true "first" should be drawn before "second".
+            //? Sorting the transparent rendering commands based on their distance from the camera's position along its forward direction.
             return (glm::dot(cameraForward,first.center)>glm::dot(cameraForward,second.center) ); });
 
         // DONE: (Req 9) Get the camera ViewProjection matrix and store it in VP
         glm::mat4 VP = camera->getProjectionMatrix(this->windowSize) * camera->getViewMatrix();
 
         // DONE: (Req 9) Set the OpenGL viewport using viewportStart and viewportSize
+        //? Sets the viewport to cover the entire window.
         glViewport(0, 0, this->windowSize.x, this->windowSize.y);
 
         // DONE: (Req 9) Set the clear color to black and the clear depth to 1
@@ -209,6 +220,13 @@ namespace our
         //  Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
         for (auto command : opaqueCommands)
         {
+            //* Responsible for rendering all the opaque objects in the scene
+
+            //? 1- calculates the model-view-projection matrix= multiplying the camera view-projection matrix VP by the local-to-world matrix of the object.
+            //? 2- sets up the material of the object by calling setup func. that sets the material properties
+            //? 3- binding to crossponding shader ("transform")
+            //? 4- draw mesh  to render object
+
             glm::mat4 modelViewProjection = VP * command.localToWorld;
             command.material->setup();
             command.material->shader->set("transform", modelViewProjection);
@@ -245,6 +263,13 @@ namespace our
         //  Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
         for (auto command : transparentCommands)
         {
+            //* Responsible for rendering all the transparent objects in the scene
+
+            //? 1- calculates the model-view-projection matrix= multiplying the camera view-projection matrix VP by the local-to-world matrix of the object.
+            //? 2- sets up the material of the object by calling setup func. that sets the material properties
+            //? 3- binding to crossponding shader ("transform")
+            //? 4- draw mesh  to render object
+
             glm::mat4 modelViewProjection = VP * command.localToWorld;
             command.material->setup();
             command.material->shader->set("transform", modelViewProjection);
