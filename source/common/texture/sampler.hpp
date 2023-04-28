@@ -32,8 +32,6 @@ namespace our
         void bind(GLuint textureUnit) const
         {
             // DONE: (Req 6) Complete this function
-            // ! ask about this
-            // if (textureUnit)
             glBindSampler(textureUnit, name);
         }
 

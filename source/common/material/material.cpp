@@ -54,7 +54,7 @@ namespace our
         // DONE: (Req 7) Write this function
         TintedMaterial::setup();
         this->shader->set("alphaThreshold", this->alphaThreshold);
-        // glActiveTexture(GL_TEXTURE0); // we send it unit 0
+        glActiveTexture(GL_TEXTURE0); // we send it unit 0
         // check if the texture is null call the unbind
         if (this->texture)
             this->texture->bind();
