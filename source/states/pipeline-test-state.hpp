@@ -31,6 +31,7 @@ class PipelineTestState: public our::State {
         shader->link();
         // Then we load the mesh
         mesh = our::mesh_utils::loadOBJ("assets/models/monkey.obj");
+        // mesh = our::mesh_utils::loadOBJ("assets/models/car.obj");
         // Then we read a list of transform objects from the shader
         // In draw, we will render a mesh for each of the transforms
         transforms.clear();
