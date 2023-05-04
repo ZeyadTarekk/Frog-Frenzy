@@ -26,8 +26,22 @@ namespace our
                 // If the movement component exists
                 if(movement){
                     // Change the position and rotation based on the linear & angular velocity and delta time.
-                    entity->localTransform.position += deltaTime * movement->linearVelocity;
-                    entity->localTransform.rotation += deltaTime * movement->angularVelocity;
+                    if(movement->name == "car"){
+                    //     // std::cout <<entity->localTransform.position[0] << std::endl;
+                        if ( -8.0f <= entity->localTransform.position[0] &&entity->localTransform.position[0] <= 8.0f)
+                        {
+                    //         // std::cout << "outside road width" << std::endl;
+                            entity->localTransform.position += deltaTime * movement->linearVelocity;
+                    //         /* code */
+                        } else  
+                        {
+                            entity->localTransform.position[0] = -8.0f;
+                    //         // std::cout << "inside road width" << std::endl;
+                    //         /* code */
+                        }
+                    // entity->localTransform.position += deltaTime * movement->linearVelocity;
+                    // entity->localTransform.rotation += deltaTime * movement->angularVelocity;
+                }
                 }
             }
         }
