@@ -31,7 +31,7 @@
         "glass": "assets/textures/glass-panels.png",
         "monkey": "assets/textures/monkey.png",
         "fence": "assets/textures/fence.jpg",
-        "road": "assets/textures/road.png"
+        "road": "assets/textures/way.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -200,9 +200,9 @@
         ]
       },
       {
-        "position": [0, -1, 0],
+        "position": [0, -2, 0],
         "rotation": [-90, 0, 0],
-        "scale": [10, 10, 1],
+        "scale": [5, 10, 1],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -224,9 +224,9 @@
         ]
       },
       {
-        "position": [0, 1, -8],
-        "rotation": [0, 180, 0],
-        "scale": [20, 1, 1],
+        "position": [0, -1, 0],
+        "rotation": [-90, 0, 90],
+        "scale": [5, 10, 1],
         "components": [
           {
             "type": "Mesh Renderer",
