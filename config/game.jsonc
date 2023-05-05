@@ -243,6 +243,18 @@
         ]
       },
       {
+        "position": [0, -0.999, -10],
+        "rotation": [-90, 0, 90],
+        "scale": [5, 10, 0],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "road"
+          }
+        ]
+      },
+      {
         "position": [0, -0.999, 0],
         "rotation": [-90, 0, 90],
         "scale": [5, 10, 0],
