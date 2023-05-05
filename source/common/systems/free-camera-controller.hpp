@@ -98,6 +98,75 @@ namespace our
             // A & D moves the player left or right 
             if(app->getKeyboard().isPressed(GLFW_KEY_D)) position += right * (deltaTime * current_sensitivity.x);
             if(app->getKeyboard().isPressed(GLFW_KEY_A)) position -= right * (deltaTime * current_sensitivity.x);
+
+            // We get the frog entity
+            Entity* frog = nullptr;
+            for(auto entity : world->getEntities()){
+                std::string name = entity->name;
+                if(name == "frog"){
+                    frog = entity;
+                    break;
+                }
+            }
+
+            if(
+                app->getKeyboard().isPressed(GLFW_KEY_UP) ||
+                app->getKeyboard().isPressed(GLFW_KEY_DOWN) ||
+                app->getKeyboard().isPressed(GLFW_KEY_LEFT) ||
+                app->getKeyboard().isPressed(GLFW_KEY_RIGHT)
+            ) {
+                // MOVING   =>  Jump Effect
+                if(frog) {
+                    // make the frog jump
+                    frog->localTransform.position.y = float(0.05f * sin(glfwGetTime() * 10) + 0.05f) - 1;
+                    // make the frog rotate
+                    frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>()/2;
+                    // make the frog scale
+                    frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;
+                }
+                // UP
+                if(app->getKeyboard().isPressed(GLFW_KEY_UP)) {
+                    position += front * (deltaTime * current_sensitivity.z);
+                    if(frog) {
+                        // update the frog position
+                        frog->localTransform.position += front * (deltaTime * current_sensitivity.z);
+                        // update the frog direction
+                        frog->localTransform.rotation.y = 0;
+                    }
+                }
+                // DOWN
+                else if(app->getKeyboard().isPressed(GLFW_KEY_DOWN)) {
+                    position -= front * (deltaTime * current_sensitivity.z);
+                    if(frog) {
+                        frog->localTransform.position -= front * (deltaTime * current_sensitivity.z);
+                        frog->localTransform.rotation.y = glm::pi<float>();
+                    }
+                }
+                // RIGHT
+                else if(app->getKeyboard().isPressed(GLFW_KEY_RIGHT)) {
+                    position += right * (deltaTime * current_sensitivity.x);
+                    if(frog) {
+                        frog->localTransform.position += right * (deltaTime * current_sensitivity.x);
+                        frog->localTransform.rotation.y = glm::pi<float>() * -0.5f;
+                    }
+                }
+                // LEFT
+                else if(app->getKeyboard().isPressed(GLFW_KEY_LEFT)) {
+                    position -= right * (deltaTime * current_sensitivity.x);
+                    if(frog) {
+                        frog->localTransform.position -= right * (deltaTime * current_sensitivity.x);
+                        frog->localTransform.rotation.y = glm::pi<float>() * 0.5f;
+                    }
+                }
+            } else {
+                if(frog) {
+                    // IDLE     =>  No Jump Effect
+                    // reset the frog position, rotation and scale
+                    frog->localTransform.position.y = -1;
+                    frog->localTransform.rotation.x = - glm::pi<float>()/2;
+                    frog->localTransform.scale.y = 0.05f;
+                }
+            }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked

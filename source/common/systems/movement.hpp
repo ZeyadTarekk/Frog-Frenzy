@@ -45,11 +45,6 @@ namespace our
                             //         /* code */
                         }
                     }
-                    if (movement->name == "monkey")
-                    {
-                        entity->localTransform.position += deltaTime * movement->linearVelocity;
-                        entity->localTransform.rotation += deltaTime * movement->angularVelocity;
-                    }
                 }
             }
         }
