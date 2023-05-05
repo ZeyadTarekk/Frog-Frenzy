@@ -1,16 +1,17 @@
-## Frog Frenzy
+# Frog Frenzy
+## ⏳ BackLogs
 ### Level 1
-1. Cars in one direction
-2. All cars with same speed
-3. Five lanes
-4. surrounded by fence
+1. [x] ~~Cars in one direction~~
+2. [x] ~~All cars with same speed~~
+3. [x] ~~Four lanes~~
+4. [x] ~~surrounded by fence~~
 5. Timer
-6. End Game **Skull**
+6. [x] ~~End Game **Skull**~~
 7. Box at the end of map and fly (**Wining**)
 8. Coins to gain more time
 ### Level 2
 1. Two directional
-2. Green land
+2. [x] ~~Green land~~
 ### Level 3
 1. More speed
 2. Sea with woods
@@ -24,3 +25,5 @@
 2. Gain coins that add anti-die in the sea
 
 > Startup Game (Menu) at the end
+
+> Sound Effect

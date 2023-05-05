@@ -8,5 +8,6 @@ namespace our {
         if(!data.is_object()) return;
         linearVelocity = data.value("linearVelocity", linearVelocity);
         angularVelocity = glm::radians(data.value("angularVelocity", angularVelocity));
+        name = data.value("name", name);
     }
 }
