@@ -186,6 +186,7 @@
       },
       {
         "rotation": [-45, 0, 0],
+        "position": [0, -1, 6],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -194,8 +195,8 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0.1, 0],
-            "angularVelocity": [0, 45, 0]
+            "linearVelocity": [0, 0.1, 0.2],
+            "angularVelocity": [360, 0, 0]
           }
         ]
       },
