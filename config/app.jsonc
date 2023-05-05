@@ -27,18 +27,15 @@
       "textures": {
         "moon": "assets/textures/moon.jpg",
         "grass": "assets/textures/grass_ground_d.jpg",
-        "water": "assets/textures/water.png",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png",
-        "trunkWood": "assets/textures/trunk_wood_color.png"
+        "monkey": "assets/textures/monkey.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
-        "sphere": "assets/models/sphere.obj",
-        "trunkWood": "assets/models/trunkwood.obj"
+        "sphere": "assets/models/sphere.obj"
       },
       "samplers": {
         "default": {},
@@ -97,21 +94,6 @@
           "texture": "grass",
           "sampler": "default"
         },
-        "water": {
-          "type": "textured",
-          "shader": "textured",
-          "pipelineState": {
-            "faceCulling": {
-              "enabled": false
-            },
-            "depthTesting": {
-              "enabled": true
-            }
-          },
-          "tint": [1, 1, 1, 1],
-          "texture": "water",
-          "sampler": "default"
-        },
         "monkey": {
           "type": "textured",
           "shader": "textured",
@@ -125,21 +107,6 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "monkey",
-          "sampler": "default"
-        },
-        "trunkWoodMaterial": {
-          "type": "textured",
-          "shader": "textured",
-          "pipelineState": {
-            "faceCulling": {
-              "enabled": false
-            },
-            "depthTesting": {
-              "enabled": true
-            }
-          },
-          "tint": [1, 1, 1, 1],
-          "texture": "trunkWood",
           "sampler": "default"
         },
         "moon": {
@@ -201,7 +168,7 @@
         ]
       },
       {
-        "position": [0, -1.01, 0],
+        "position": [0, -1, 0],
         "rotation": [-90, 0, 0],
         "scale": [10, 10, 1],
         "components": [
@@ -209,35 +176,6 @@
             "type": "Mesh Renderer",
             "mesh": "plane",
             "material": "grass"
-          }
-        ]
-      },
-      {
-        "rotation": [0, 90, 0],
-        "position": [0, -1, 5],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "trunkWood",
-            "material": "trunkWoodMaterial"
-          },
-          {
-            "name": "trunkWood",
-            "type": "Movement",
-            "linearVelocity": [2, 0, 0]
-            // "angularVelocity": [0, 45, 0]
-          }
-        ]
-      },
-      {
-        "position": [0, -1, 5],
-        "rotation": [-90, 0, 0],
-        "scale": [10, 1.5, 5],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "water"
           }
         ]
       },
