@@ -29,23 +29,21 @@ namespace our
                 if (movement)
                 {
                     // Change the position and rotation based on the linear & angular velocity and delta time.
-                    if (movement->name == "car")
+                    if (movement->name == "car" || movement->name == "trunkWood")
                     {
-                        //     // std::cout <<entity->localTransform.position[0] << std::endl;
+
                         if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
                         {
-                            //         // std::cout << "outside road width" << std::endl;
+                            // outside road or the water width
                             entity->localTransform.position += deltaTime * movement->linearVelocity;
-                            //         /* code */
                         }
                         else
                         {
+                            // inside the width
                             entity->localTransform.position[0] = -8.0f;
-                            //         // std::cout << "inside road width" << std::endl;
-                            //         /* code */
                         }
                     }
-                    if (movement->name == "monkey")
+                    if (movement->name == "monkey" || movement->name == "moon")
                     {
                         entity->localTransform.position += deltaTime * movement->linearVelocity;
                         entity->localTransform.rotation += deltaTime * movement->angularVelocity;

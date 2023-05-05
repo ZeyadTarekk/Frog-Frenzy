@@ -28,18 +28,21 @@
         "moon": "assets/textures/moon.jpg",
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
+        "water": "assets/textures/water.png",
         "glass": "assets/textures/glass-panels.png",
         "monkey": "assets/textures/monkey.png",
         "fence": "assets/textures/fence.jpg",
         "road": "assets/textures/way.jpg",
-        "car": "assets/textures/car.jpg"
+        "car": "assets/textures/car.jpg",
+        "trunkWood": "assets/textures/trunk_wood_color.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
-        "car": "assets/models/car.obj"
+        "car": "assets/models/car.obj",
+        "trunkWood": "assets/models/trunkwood.obj"
       },
       "samplers": {
         "default": {},
@@ -60,6 +63,36 @@
             }
           },
           "tint": [0.45, 0.4, 0.5, 1]
+        },
+        "water": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "water",
+          "sampler": "default"
+        },
+        "trunkWoodMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "trunkWood",
+          "sampler": "default"
         },
         "glass": {
           "type": "textured",
@@ -210,6 +243,35 @@
             "type": "Mesh Renderer",
             "mesh": "plane",
             "material": "grass"
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [0, -0.999, 7],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "trunkWood",
+            "material": "trunkWoodMaterial"
+          },
+          {
+            "name": "trunkWood",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
+            // "angularVelocity": [0, 45, 0]
+          }
+        ]
+      },
+      {
+        "position": [0, -0.999, 7],
+        "rotation": [-90, 0, 0],
+        "scale": [10, 1.5, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "water"
           }
         ]
       },

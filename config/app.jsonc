@@ -29,9 +29,7 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png",
-        "fence": "assets/textures/fence.jpg",
-        "road": "assets/textures/way.jpg"
+        "monkey": "assets/textures/monkey.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -96,36 +94,6 @@
           "texture": "grass",
           "sampler": "default"
         },
-        "fence": {
-          "type": "textured",
-          "shader": "textured",
-          "pipelineState": {
-            "faceCulling": {
-              "enabled": false
-            },
-            "depthTesting": {
-              "enabled": true
-            }
-          },
-          "tint": [1, 1, 1, 1],
-          "texture": "fence",
-          "sampler": "default"
-        },
-        "road": {
-          "type": "textured",
-          "shader": "textured",
-          "pipelineState": {
-            "faceCulling": {
-              "enabled": false
-            },
-            "depthTesting": {
-              "enabled": true
-            }
-          },
-          "tint": [1, 1, 1, 1],
-          "texture": "road",
-          "sampler": "default"
-        },
         "monkey": {
           "type": "textured",
           "shader": "textured",
@@ -186,7 +154,6 @@
       },
       {
         "rotation": [-45, 0, 0],
-        "position": [0, -1, 6],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -195,56 +162,20 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0.1, 0.2],
-            "angularVelocity": [360, 0, 0]
-          }
-        ]
-      },
-      {
-        "position": [0, -2, 0],
-        "rotation": [-90, 0, 0],
-        "scale": [5, 10, 1],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "grass"
-          }
-        ]
-      },
-      {
-        "position": [-8, 0, 0],
-        "rotation": [0, -90, 0],
-        "scale": [20, 6, 5],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "fence"
+            "linearVelocity": [0, 0.1, 0],
+            "angularVelocity": [0, 45, 0]
           }
         ]
       },
       {
         "position": [0, -1, 0],
-        "rotation": [-90, 0, 90],
-        "scale": [5, 10, 1],
+        "rotation": [-90, 0, 0],
+        "scale": [10, 10, 1],
         "components": [
           {
             "type": "Mesh Renderer",
             "mesh": "plane",
-            "material": "road"
-          }
-        ]
-      },
-      {
-        "position": [8, 0, 0],
-        "rotation": [0, -90, 0],
-        "scale": [20, 6, 5],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "fence"
+            "material": "grass"
           }
         ]
       },
