@@ -30,13 +30,15 @@
         "water": "assets/textures/water.png",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png"
+        "monkey": "assets/textures/monkey.png",
+        "trunkWood": "assets/textures/trunk_wood_color.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
-        "sphere": "assets/models/sphere.obj"
+        "sphere": "assets/models/sphere.obj",
+        "trunkWood": "assets/models/trunkwood.obj"
       },
       "samplers": {
         "default": {},
@@ -125,6 +127,21 @@
           "texture": "monkey",
           "sampler": "default"
         },
+        "trunkWoodMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "trunkWood",
+          "sampler": "default"
+        },
         "moon": {
           "type": "textured",
           "shader": "textured",
@@ -195,11 +212,27 @@
           }
         ]
       },
-
       {
-        "position": [0, -1, -5],
+        "rotation": [0, 90, 0],
+        "position": [0, -1, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "trunkWood",
+            "material": "trunkWoodMaterial"
+          },
+          {
+            "name": "trunkWood",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
+            // "angularVelocity": [0, 45, 0]
+          }
+        ]
+      },
+      {
+        "position": [0, -1, 5],
         "rotation": [-90, 0, 0],
-        "scale": [10, 3, 5],
+        "scale": [10, 1.5, 5],
         "components": [
           {
             "type": "Mesh Renderer",
