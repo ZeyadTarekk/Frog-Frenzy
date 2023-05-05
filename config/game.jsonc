@@ -143,21 +143,21 @@
           "texture": "monkey",
           "sampler": "default"
         },
-        "car":{
+        "car": {
           "type": "textured",
           "shader": "textured",
           "pipelineState": {
-              "faceCulling":{
-                  "enabled": false
-              },
-              "depthTesting":{
-                  "enabled": true
-              }
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
           },
           "tint": [1, 1, 1, 1],
           "texture": "car",
           "sampler": "default"
-      },
+        },
         "moon": {
           "type": "textured",
           "shader": "textured",
@@ -202,7 +202,7 @@
         ]
       },
       {
-        "position": [0, -1, 0],
+        "position": [0, -1, 15],
         "rotation": [-90, 0, 0],
         "scale": [10, 10, 1],
         "components": [
@@ -214,9 +214,26 @@
         ]
       },
       {
-        "position": [-8, 0, 0],
+        "rotation": [-45, 0, 0],
+        "position": [0, 0, 6],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "monkey",
+            "material": "monkey"
+          },
+          {
+            "type": "Movement",
+            "name": "monkey",
+            "linearVelocity": [0, 0.1, 0.1],
+            "angularVelocity": [360, 0, 0]
+          }
+        ]
+      },
+      {
+        "position": [-10, 0, 0],
         "rotation": [0, -90, 0],
-        "scale": [20, 6, 5],
+        "scale": [25, 6, 5],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -238,9 +255,9 @@
         ]
       },
       {
-        "position": [8, 0, 0],
+        "position": [10, 0, 0],
         "rotation": [0, -90, 0],
-        "scale": [20, 6, 5],
+        "scale": [25, 6, 5],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -254,52 +271,52 @@
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
         "components": [
-            {
-                "type": "Mesh Renderer",
-                "mesh": "car",
-                "material": "car"
-            },
-            {
-                "name":"car",
-                "type": "Movement",
-                "linearVelocity": [2, 0, 0]
-            }
+          {
+            "type": "Mesh Renderer",
+            "mesh": "car",
+            "material": "car"
+          },
+          {
+            "name": "car",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
+          }
         ]
-      }, 
+      },
       {
         "position": [0, -1, -2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
         "components": [
-            {
-                "type": "Mesh Renderer",
-                "mesh": "car",
-                "material": "car"
-            },
-            {
-                "name":"car",
-                "id":"2",
-                "type": "Movement",
-                "linearVelocity": [2, 0, 0]
-            }
+          {
+            "type": "Mesh Renderer",
+            "mesh": "car",
+            "material": "car"
+          },
+          {
+            "name": "car",
+            "id": "2",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
+          }
         ]
-      }, 
+      },
       {
         "position": [-2, -1, 2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
         "components": [
-            {
-                "type": "Mesh Renderer",
-                "mesh": "car",
-                "material": "car"
-            },
-            {
-                "name":"car",
-                "id":"2",
-                "type": "Movement",
-                "linearVelocity": [2.5, 0, 0]
-            }
+          {
+            "type": "Mesh Renderer",
+            "mesh": "car",
+            "material": "car"
+          },
+          {
+            "name": "car",
+            "id": "2",
+            "type": "Movement",
+            "linearVelocity": [2.5, 0, 0]
+          }
         ]
       },
       {
@@ -307,19 +324,19 @@
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
         "components": [
-            {
-                "type": "Mesh Renderer",
-                "mesh": "car",
-                "material": "car"
-            },
-            {
-                "name":"car",
-                "id":"2",
-                "type": "Movement",
-                "linearVelocity": [2.5, 0,0]
-            }
+          {
+            "type": "Mesh Renderer",
+            "mesh": "car",
+            "material": "car"
+          },
+          {
+            "name": "car",
+            "id": "2",
+            "type": "Movement",
+            "linearVelocity": [2.5, 0, 0]
+          }
         ]
-    }
+      }
     ]
   }
 }
