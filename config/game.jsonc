@@ -34,7 +34,8 @@
         "fence": "assets/textures/fence.jpg",
         "road": "assets/textures/way.jpg",
         "car": "assets/textures/car.jpg",
-        "trunkWood": "assets/textures/trunk_wood_color.png"
+        "trunkWood": "assets/textures/trunk_wood_color.png",
+        "coin": "assets/textures/coin.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -42,7 +43,8 @@
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "car": "assets/models/car.obj",
-        "trunkWood": "assets/models/trunkwood.obj"
+        "trunkWood": "assets/models/trunkwood.obj",
+        "coin": "assets/models/coin.obj"
       },
       "samplers": {
         "default": {},
@@ -92,6 +94,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "trunkWood",
+          "sampler": "default"
+        },
+        "coinMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "coin",
           "sampler": "default"
         },
         "glass": {
@@ -272,6 +289,40 @@
             "type": "Mesh Renderer",
             "mesh": "frog",
             "material": "frog"
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [0, 1, 0],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "angularVelocity": [0, 100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [3, 1, 3],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
           }
         ]
       },
