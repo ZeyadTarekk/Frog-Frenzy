@@ -30,7 +30,7 @@
         "wood": "assets/textures/wood.jpg",
         "water": "assets/textures/water.png",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png",
+        "frog": "assets/textures/red_frog.jpg",
         "fence": "assets/textures/fence.jpg",
         "road": "assets/textures/way.jpg",
         "car": "assets/textures/car.jpg",
@@ -38,7 +38,7 @@
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
-        "monkey": "assets/models/monkey.obj",
+        "frog": "assets/models/frog.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "car": "assets/models/car.obj",
@@ -161,7 +161,7 @@
           "texture": "road",
           "sampler": "default"
         },
-        "monkey": {
+        "frog": {
           "type": "textured",
           "shader": "textured",
           "pipelineState": {
@@ -173,7 +173,7 @@
             }
           },
           "tint": [1, 1, 1, 1],
-          "texture": "monkey",
+          "texture": "frog",
           "sampler": "default"
         },
         "car": {
@@ -219,20 +219,7 @@
             "type": "Free Camera Controller"
           }
         ],
-        "children": [
-          {
-            "position": [1, -1, -1],
-            "rotation": [45, 45, 0],
-            "scale": [0.1, 0.1, 1.0],
-            "components": [
-              {
-                "type": "Mesh Renderer",
-                "mesh": "cube",
-                "material": "metal"
-              }
-            ]
-          }
-        ]
+        "children": []
       },
       {
         "position": [0, -1, 15],
@@ -247,6 +234,7 @@
         ]
       },
       {
+<<<<<<< HEAD
         "rotation": [0, 90, 0],
         "position": [0, -0.999, 7],
         "components": [
@@ -276,19 +264,15 @@
         ]
       },
       {
-        "rotation": [-45, 0, 0],
-        "position": [0, 0, 6],
+        "rotation": [-90, 0, 0],
+        "position": [0, -1, 8],
+        "scale": [0.05, 0.05, 0.05],
+        "name": "frog",
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "monkey",
-            "material": "monkey"
-          },
-          {
-            "type": "Movement",
-            "name": "monkey",
-            "linearVelocity": [0, 0.1, 0.1],
-            "angularVelocity": [360, 0, 0]
+            "mesh": "frog",
+            "material": "frog"
           }
         ]
       },
