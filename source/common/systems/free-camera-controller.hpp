@@ -3,6 +3,7 @@
 #include "../ecs/world.hpp"
 #include "../components/camera.hpp"
 #include "../components/free-camera-controller.hpp"
+#include "../components/movement.hpp"
 
 #include "../application.hpp"
 
@@ -254,33 +255,25 @@ namespace our
             }
             for (auto trunk : trunks)
             {
-                if (frog->localTransform.position.x < trunk->localTransform.position.x + 2.3f &&
-                    frog->localTransform.position.x > trunk->localTransform.position.x - 2.3f &&
-                    frog->localTransform.position.z < trunk->localTransform.position.z + 1.1f &&
-                    frog->localTransform.position.z > trunk->localTransform.position.z - 1.1f)
+                if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
+                    frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
+                    frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
+                    frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
                     // ! move the frog with the trunk
-                    // find the holding component and add the trunk and the frog as children to the holding component
+
                     std::cout << "frog move with the trunk-" << rand() << std::endl;
-                    // holdingComponent->localTransform.position.x = trunk->localTransform.position.x;
-                    // holdingComponent->localTransform.position.z = trunk->localTransform.position.z;
-                    // frog->parent = trunk;
-
-                    // nlohmann::json data = nlohmann::json::parse(R"({
-                    //     "rotation" :  [-90, 0, 0],
-                    //     "position" : [0, -1, 9],
-                    //     "scale" : [0.05, 0.05, 0.05],
-                    //     "name" : "frog",
-                    //     "components" : [
-                    //         {
-                    //             "type" : "Mesh Renderer",
-                    //             "mesh" : "frog",
-                    //             "material" : "frog"
-                    //         }
-                    //     ]
-                    // })");
-
-                    // world->deserialize(data, trunk);
+                    // get the movement component of the trunk to know it's speed
+                    MovementComponent *movement = trunk->getComponent<MovementComponent>();
+                    // frog->localTransform.position.y += 1;
+                    // check if the frog won't go out of the box
+                    if (!(frog->localTransform.position.x > levelWidth / 2))
+                    {
+                        // update the camera position
+                        position += right * (deltaTime * movement->linearVelocity.x);
+                        // Update the frog's position based on the trunk's movement
+                        frog->localTransform.position += deltaTime * movement->linearVelocity;
+                    }
                 }
             }
         }
