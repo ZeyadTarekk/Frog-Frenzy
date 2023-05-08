@@ -236,6 +236,7 @@
       {
         "rotation": [0, 90, 0],
         "position": [0, -0.999, 7],
+        "name": "trunkWood",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -328,6 +329,7 @@
         "position": [-8, -1, -2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -345,6 +347,7 @@
         "position": [0, -1, -2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -363,6 +366,7 @@
         "position": [-2, -1, 2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -381,6 +385,7 @@
         "position": [7, -1, 2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",

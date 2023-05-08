@@ -107,13 +107,19 @@ namespace our
             // We get the frog entity
             Entity* frog = nullptr;
             Entity* water = nullptr;
+            std::vector<Entity*> cars;
+            std::vector<Entity*> trunks;
             for(auto entity : world->getEntities()){
                 std::string name = entity->name;
                 if(!frog && name == "frog"){
                     frog = entity;
                 } else if(!water && name == "water"){
                     water = entity;
-                } else if(frog && water) break;
+                } else if(name == "car"){
+                    cars.push_back(entity);
+                } else if(name == "trunkWood"){
+                    trunks.push_back(entity);
+                }
             }
             if(!frog) return;
 
@@ -185,6 +191,19 @@ namespace our
                 frog->localTransform.position.y = -1;
                 frog->localTransform.rotation.x = - glm::pi<float>()/2;
                 frog->localTransform.scale.y = 0.05f;
+            }
+
+            // check if car hits frog
+            for(auto car : cars){
+                if(
+                    frog->localTransform.position.x < car->localTransform.position.x + 2.3f &&
+                    frog->localTransform.position.x > car->localTransform.position.x - 2.3f &&
+                    frog->localTransform.position.z < car->localTransform.position.z + 1.1f &&
+                    frog->localTransform.position.z > car->localTransform.position.z - 1.1f
+                ) {
+                    // frog dies
+                    std::cout << "frog dies-" << rand() << std::endl;
+                }
             }
         }
 
