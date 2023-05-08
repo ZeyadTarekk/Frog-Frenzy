@@ -236,6 +236,7 @@
       {
         "rotation": [0, 90, 0],
         "position": [0, -0.999, 7],
+        "scale": [2, 0.75, 1.5],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -253,7 +254,7 @@
       {
         "position": [0, -0.999, 7],
         "rotation": [-90, 0, 0],
-        "scale": [10, 1.5, 5],
+        "scale": [10, 0.75, 5],
         "name": "water",
         "components": [
           {
