@@ -244,7 +244,7 @@
     },
     "world": [
       {
-        "position": [0, 0, 10],
+        "position": [0, 0, 11],
         "components": [
           {
             "type": "Camera"
@@ -270,6 +270,8 @@
       {
         "rotation": [0, 90, 0],
         "position": [0, -0.999, 7],
+        "scale": [2, 0.75, 1.5],
+        "name": "trunkWood",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -305,7 +307,8 @@
       {
         "position": [0, -0.999, 7],
         "rotation": [-90, 0, 0],
-        "scale": [10, 1.5, 5],
+        "scale": [10, 0.75, 5],
+        "name": "water",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -316,7 +319,7 @@
       },
       {
         "rotation": [-90, 0, 0],
-        "position": [0, -1, 8],
+        "position": [0, -1, 9],
         "scale": [0.05, 0.05, 0.05],
         "name": "frog",
         "components": [
@@ -358,6 +361,17 @@
             "name": "coin",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "position": [0, -1, 9],
+        "name": "holdingComponent",
+        "components": [
+          {
+            "name": "holdingComponent",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
           }
         ]
       },
@@ -413,6 +427,7 @@
         "position": [-8, -1, -2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -430,6 +445,7 @@
         "position": [0, -1, -2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -448,6 +464,7 @@
         "position": [-2, -1, 2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -466,6 +483,7 @@
         "position": [7, -1, 2],
         "rotation": [0, 90, 0],
         "scale": [1, 1, 1],
+        "name": "car",
         "components": [
           {
             "type": "Mesh Renderer",
