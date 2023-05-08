@@ -23,6 +23,7 @@ namespace our
         float levelWidth = 19.0f; // The width of the level
         float levelStart = 24.5f; // The start of the level
         float levelEnd = -14.6f; // The end of the level
+        float waterWidth = 4.0f; // The width of the water
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -105,12 +106,14 @@ namespace our
             // handle frog movement
             // We get the frog entity
             Entity* frog = nullptr;
+            Entity* water = nullptr;
             for(auto entity : world->getEntities()){
                 std::string name = entity->name;
-                if(name == "frog"){
+                if(!frog && name == "frog"){
                     frog = entity;
-                    break;
-                }
+                } else if(!water && name == "water"){
+                    water = entity;
+                } else if(frog && water) break;
             }
             if(!frog) return;
 
@@ -132,6 +135,14 @@ namespace our
                 if(app->getKeyboard().isPressed(GLFW_KEY_UP)) {
                     // prevent the frog from passing through the wall
                     if(frog->localTransform.position.z < levelEnd) return;
+
+                    // prevent the frog from passing through the water
+                    if(frog->localTransform.position.z - waterWidth/2 < water->localTransform.position.z) {
+                        // frog dies
+                        // TODO: play death sound, end game
+                        // return;
+                    }
+                    
                     // update the camera position
                     position += front * (deltaTime * current_sensitivity.z);
                     // update the frog position
@@ -142,6 +153,14 @@ namespace our
                 // DOWN
                 else if(app->getKeyboard().isPressed(GLFW_KEY_DOWN)) {
                     if(frog->localTransform.position.z > levelStart) return;
+
+                    // prevent the frog from passing through the water
+                    if(frog->localTransform.position.z + waterWidth/2 > water->localTransform.position.z) {
+                        // frog dies
+                        // TODO: play death sound, end game
+                        // return;
+                    }
+                    
                     position -= front * (deltaTime * current_sensitivity.z);
                     frog->localTransform.position -= front * (deltaTime * current_sensitivity.z);
                     frog->localTransform.rotation.y = glm::pi<float>();

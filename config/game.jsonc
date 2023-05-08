@@ -210,7 +210,7 @@
     },
     "world": [
       {
-        "position": [0, 0, 10],
+        "position": [0, 0, 11],
         "components": [
           {
             "type": "Camera"
@@ -254,6 +254,7 @@
         "position": [0, -0.999, 7],
         "rotation": [-90, 0, 0],
         "scale": [10, 1.5, 5],
+        "name": "water",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -264,7 +265,7 @@
       },
       {
         "rotation": [-90, 0, 0],
-        "position": [0, -1, 8],
+        "position": [0, -1, 9],
         "scale": [0.05, 0.05, 0.05],
         "name": "frog",
         "components": [
