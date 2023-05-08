@@ -34,7 +34,9 @@
         "fence": "assets/textures/fence.jpg",
         "road": "assets/textures/way.jpg",
         "car": "assets/textures/car.jpg",
-        "trunkWood": "assets/textures/trunk_wood_color.png"
+        "trunkWood": "assets/textures/trunk_wood_color.png",
+        "coin": "assets/textures/coin.jpg",
+        "woodenBox": "assets/textures/wooden.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -42,7 +44,9 @@
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "car": "assets/models/car.obj",
-        "trunkWood": "assets/models/trunkwood.obj"
+        "trunkWood": "assets/models/trunkwood.obj",
+        "coin": "assets/models/coin.obj",
+        "woodenBox": "assets/models/wooden.obj"
       },
       "samplers": {
         "default": {},
@@ -92,6 +96,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "trunkWood",
+          "sampler": "default"
+        },
+        "coinMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "coin",
           "sampler": "default"
         },
         "glass": {
@@ -176,6 +195,21 @@
           "texture": "frog",
           "sampler": "default"
         },
+        "woodenBoxMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "woodenBox",
+          "sampler": "default"
+        },
         "car": {
           "type": "textured",
           "shader": "textured",
@@ -253,6 +287,24 @@
         ]
       },
       {
+        "rotation": [0, 90, 0],
+        "position": [0, -1, -12],
+        "scale": [0.5, 0.5, 0.5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "woodenBox",
+            "material": "woodenBoxMaterial"
+          },
+          {
+            "name": "woodenBox",
+            "type": "Movement",
+            "angularVelocity": [0, 30, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
         "position": [0, -0.999, 7],
         "rotation": [-90, 0, 0],
         "scale": [10, 0.75, 5],
@@ -275,6 +327,40 @@
             "type": "Mesh Renderer",
             "mesh": "frog",
             "material": "frog"
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [0, 1, 0],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "angularVelocity": [0, 100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [3, 1, 3],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
           }
         ]
       },
