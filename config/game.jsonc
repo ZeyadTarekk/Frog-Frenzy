@@ -236,6 +236,7 @@
       {
         "rotation": [0, 90, 0],
         "position": [0, -0.999, 7],
+        "scale": [2, 0.75, 1.5],
         "name": "trunkWood",
         "components": [
           {
@@ -254,7 +255,7 @@
       {
         "position": [0, -0.999, 7],
         "rotation": [-90, 0, 0],
-        "scale": [10, 1.5, 5],
+        "scale": [10, 0.75, 5],
         "name": "water",
         "components": [
           {
@@ -274,6 +275,17 @@
             "type": "Mesh Renderer",
             "mesh": "frog",
             "material": "frog"
+          }
+        ]
+      },
+      {
+        "position": [0, -1, 9],
+        "name": "holdingComponent",
+        "components": [
+          {
+            "name": "holdingComponent",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
           }
         ]
       },
