@@ -183,6 +183,7 @@ namespace our
                     if (frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z)
                     {
                         // frog dies
+                        std::cout << "frog in water-" << rand() << std::endl;
                         // TODO: play death sound, end game
                         // return;
                     }
@@ -204,6 +205,7 @@ namespace our
                     if (frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
                     {
                         // frog dies
+                        std::cout << "frog in water-" << rand() << std::endl;
                         // TODO: play death sound, end game
                         // return;
                     }
@@ -255,14 +257,12 @@ namespace our
             }
             for (auto trunk : trunks)
             {
+                // Move the frog with the trunk
                 if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
                     frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
                     frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
-                    // ! move the frog with the trunk
-
-                    std::cout << "frog move with the trunk-" << rand() << std::endl;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
