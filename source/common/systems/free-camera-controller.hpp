@@ -20,6 +20,9 @@ namespace our
     class FreeCameraControllerSystem {
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
+        float levelWidth = 19.0f; // The width of the level
+        float levelStart = 24.5f; // The start of the level
+        float levelEnd = -14.6f; // The end of the level
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -127,6 +130,8 @@ namespace our
                 
                 // UP
                 if(app->getKeyboard().isPressed(GLFW_KEY_UP)) {
+                    // prevent the frog from passing through the wall
+                    if(frog->localTransform.position.z < levelEnd) return;
                     // update the camera position
                     position += front * (deltaTime * current_sensitivity.z);
                     // update the frog position
@@ -136,18 +141,21 @@ namespace our
                 }
                 // DOWN
                 else if(app->getKeyboard().isPressed(GLFW_KEY_DOWN)) {
+                    if(frog->localTransform.position.z > levelStart) return;
                     position -= front * (deltaTime * current_sensitivity.z);
                     frog->localTransform.position -= front * (deltaTime * current_sensitivity.z);
                     frog->localTransform.rotation.y = glm::pi<float>();
                 }
                 // RIGHT
                 else if(app->getKeyboard().isPressed(GLFW_KEY_RIGHT)) {
+                    if(frog->localTransform.position.x > levelWidth/2) return;
                     position += right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.position += right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.rotation.y = glm::pi<float>() * -0.5f;
                 }
                 // LEFT
                 else if(app->getKeyboard().isPressed(GLFW_KEY_LEFT)) {
+                    if(frog->localTransform.position.x < -levelWidth/2) return;
                     position -= right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.position -= right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.rotation.y = glm::pi<float>() * 0.5f;
