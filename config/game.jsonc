@@ -290,6 +290,7 @@
         "rotation": [0, 90, 0],
         "position": [0, -1, -12],
         "scale": [0.5, 0.5, 0.5],
+        "name": "woodenBox",
         "components": [
           {
             "type": "Mesh Renderer",
@@ -299,7 +300,7 @@
           {
             "name": "woodenBox",
             "type": "Movement",
-            "angularVelocity": [0, 30, 0],
+            "angularVelocity": [0, 10, 0],
             "linearVelocity": [0, 0, 0]
           }
         ]

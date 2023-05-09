@@ -41,7 +41,7 @@ namespace our
                             entity->localTransform.position[0] = -8.0f;
                         }
                     }
-                    if (movement->name == "monkey" || movement->name == "moon" || movement->name == "coin")
+                    if (movement->name == "monkey" || movement->name == "moon" || movement->name == "coin" || movement->name == "woodenBox")
                     {
                         entity->localTransform.position += deltaTime * movement->linearVelocity;
                         entity->localTransform.rotation += deltaTime * movement->angularVelocity;

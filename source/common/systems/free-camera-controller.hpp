@@ -128,6 +128,7 @@ namespace our
             Entity *frog = nullptr;
             Entity *water = nullptr;
             Entity *holdingComponent = nullptr;
+            Entity *woodenBox = nullptr;
 
             std::vector<Entity *> cars;
             std::vector<Entity *> trunks;
@@ -157,6 +158,8 @@ namespace our
                 }
                 else if (name == "coin")
                     coins.push_back(entity);
+                else if (!woodenBox && name == "woodenBox")
+                    woodenBox = entity;
             }
             if (!frog)
                 return;
@@ -283,9 +286,15 @@ namespace our
             for (auto coin : coins)
             {
                 if (((int(frog->localTransform.position.z) == 3 || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x))))
-                {
+
                     std::cout << "Collison Coin Occur!!" << std::endl;
-                }
+            }
+            if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
+            {
+
+                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 1 * deltaTime, 0.0f);
+                woodenBox->localTransform.position = newPosition;
+                std::cout << "Box!!!" << std::endl;
             }
 
             // for (auto entity : world->getEntities())
