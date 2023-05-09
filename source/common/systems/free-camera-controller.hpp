@@ -131,6 +131,7 @@ namespace our
 
             std::vector<Entity *> cars;
             std::vector<Entity *> trunks;
+            std::vector<Entity *> coins;
             for (auto entity : world->getEntities())
             {
                 std::string name = entity->name;
@@ -154,6 +155,8 @@ namespace our
                 {
                     trunks.push_back(entity);
                 }
+                else if (name == "coin")
+                    coins.push_back(entity);
             }
             if (!frog)
                 return;
@@ -276,6 +279,30 @@ namespace our
                     }
                 }
             }
+
+            for (auto coin : coins)
+            {
+                if (((int(frog->localTransform.position.z) == 3 || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x))))
+                {
+                    std::cout << "Collison Coin Occur!!" << std::endl;
+                }
+            }
+
+            // for (auto entity : world->getEntities())
+            // {
+            //     Health *health = entity->getComponent<Health>();
+            //     std::cout << health->getID() << std::endl;
+            //     std::cout << int(entity->localTransform.position.z) << std::endl;
+
+            //     if (health)
+            //     {
+            //         if (int(frog->localTransform.position.z) == 3 || int(frog->localTransform.position.z) == 0)
+            //         {
+            //             std::cout << "Collison Occur!!" << std::endl;
+            //             health->active = !health->active;
+            //         }
+            //     }
+            // }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
