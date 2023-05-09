@@ -29,19 +29,19 @@ namespace our
                 if (movement)
                 {
                     // Change the position and rotation based on the linear & angular velocity and delta time.
-                    if (movement->name == "car")
-                    {
+                    // if (movement->name == "car")
+                    // {
 
-                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
-                        {
-                            entity->localTransform.position += deltaTime * movement->linearVelocity;
-                        }
-                        else
-                        {
-                            entity->localTransform.position[0] = -8.0f;
-                        }
-                    }
-                    if (movement->name == "monkey" || movement->name == "moon" || movement->name == "coin")
+                    //     if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
+                    //     {
+                    //         entity->localTransform.position += deltaTime * movement->linearVelocity;
+                    //     }
+                    //     else
+                    //     {
+                    //         entity->localTransform.position[0] = -8.0f;
+                    //     }
+                    // }
+                    // if (movement->name == "monkey" || movement->name == "moon" || movement->name == "coin")
                     {
                         entity->localTransform.position += deltaTime * movement->linearVelocity;
                         entity->localTransform.rotation += deltaTime * movement->angularVelocity;
