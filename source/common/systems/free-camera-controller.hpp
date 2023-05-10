@@ -39,6 +39,7 @@ namespace our
         {
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
+            world->deleteMarkedEntities();
             CameraComponent *camera = nullptr;
             FreeCameraControllerComponent *controller = nullptr;
             for (auto entity : world->getEntities())
@@ -128,9 +129,11 @@ namespace our
             Entity *frog = nullptr;
             Entity *water = nullptr;
             Entity *holdingComponent = nullptr;
+            Entity *woodenBox = nullptr;
 
             std::vector<Entity *> cars;
             std::vector<Entity *> trunks;
+            std::vector<Entity *> coins;
             for (auto entity : world->getEntities())
             {
                 std::string name = entity->name;
@@ -154,6 +157,10 @@ namespace our
                 {
                     trunks.push_back(entity);
                 }
+                else if (name == "coin")
+                    coins.push_back(entity);
+                else if (!woodenBox && name == "woodenBox")
+                    woodenBox = entity;
             }
             if (!frog)
                 return;
@@ -275,6 +282,24 @@ namespace our
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
                 }
+            }
+
+            for (auto coin : coins)
+            {
+                if (((int(frog->localTransform.position.z) == 3) || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x)))
+                {
+                    std::cout << "Collison Coin Occur!!" << std::endl;
+                    world->markForRemoval(coin);
+                }
+            }
+            if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
+            {
+
+                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
+                woodenBox->localTransform.position = newPosition;
+                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f);
+                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f);
+                std::cout << "Box Flying!!!" << std::endl;
             }
         }
 
