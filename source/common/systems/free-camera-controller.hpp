@@ -39,6 +39,7 @@ namespace our
         {
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
+            world->deleteMarkedEntities();
             CameraComponent *camera = nullptr;
             FreeCameraControllerComponent *controller = nullptr;
             for (auto entity : world->getEntities())
@@ -285,33 +286,21 @@ namespace our
 
             for (auto coin : coins)
             {
-                if (((int(frog->localTransform.position.z) == 3 || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x))))
-
+                if (((int(frog->localTransform.position.z) == 3) || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x)))
+                {
                     std::cout << "Collison Coin Occur!!" << std::endl;
+                    world->markForRemoval(coin);
+                }
             }
             if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
             {
 
-                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 1 * deltaTime, 0.0f);
+                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
                 woodenBox->localTransform.position = newPosition;
-                std::cout << "Box!!!" << std::endl;
+                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f);
+                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f);
+                std::cout << "Box Flying!!!" << std::endl;
             }
-
-            // for (auto entity : world->getEntities())
-            // {
-            //     Health *health = entity->getComponent<Health>();
-            //     std::cout << health->getID() << std::endl;
-            //     std::cout << int(entity->localTransform.position.z) << std::endl;
-
-            //     if (health)
-            //     {
-            //         if (int(frog->localTransform.position.z) == 3 || int(frog->localTransform.position.z) == 0)
-            //         {
-            //             std::cout << "Collison Occur!!" << std::endl;
-            //             health->active = !health->active;
-            //         }
-            //     }
-            // }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
