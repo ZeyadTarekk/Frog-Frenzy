@@ -24,7 +24,8 @@
           "fs": "assets/shaders/textured.frag"
         },
         "lighted": {
-          "vs": "assets/shaders/lighted.vert"
+          "vs": "assets/shaders/lighted.vert",
+          "fs": "assets/shaders/lighted.frag"
         }
       },
       "textures": {
