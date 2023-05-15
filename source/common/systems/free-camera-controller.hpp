@@ -24,7 +24,7 @@ namespace our
         bool mouse_locked = false; // Is the mouse locked
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
-        float levelEnd = -14.6f;   // The end of the level
+        float levelEnd = -16.0f;   // The end of the level
         float waterWidth = 2.0f;   // The width of the water
 
     public:
@@ -267,10 +267,11 @@ namespace our
                         // Update the frog's position based on the trunk's movement
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
-                } else if (
+                }
+                else if (
                     frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
-                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z
-                ) {
+                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
+                {
                     // frog dies
                     std::cout << "Frog in Water: " << rand() << std::endl;
                 }

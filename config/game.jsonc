@@ -38,7 +38,8 @@
         "coin": "assets/textures/coin.jpg",
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
-        "monkey": "assets/textures/monkey.png"
+        "monkey": "assets/textures/monkey.png",
+        "block": "assets/textures/barrier2Diffuse.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -51,7 +52,8 @@
         "woodenBox": "assets/models/wooden.obj",
         "tire": "assets/models/sphere.obj",
         "rock": "assets/models/rock.obj",
-        "monkey": "assets/models/monkey.obj"
+        "monkey": "assets/models/monkey.obj",
+        "block": "assets/models/rock.obj"
       },
       "samplers": {
         "default": {},
@@ -88,6 +90,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "rock",
+          "sampler": "default"
+        },
+        "blockMaterial": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "block",
           "sampler": "default"
         },
         "metal": {
@@ -338,8 +355,8 @@
       },
       {
         "rotation": [0, 90, 0],
-        "position": [0, -3, -13],
-        "scale": [0.5, 0.5, 0.5],
+        "position": [0, -3, -16],
+        "scale": [0.5, 0.4, 0.5],
         "name": "woodenBox",
         "components": [
           {
@@ -350,7 +367,7 @@
           {
             "name": "woodenBox",
             "type": "Movement",
-            "angularVelocity": [0, 10, 0],
+            "angularVelocity": [0, 0, 0],
             "linearVelocity": [0, 0, 0]
           }
         ]
@@ -395,6 +412,23 @@
             "name": "monkey",
             "linearVelocity": [0, 0.1, 0.3],
             "angularVelocity": [0, 360, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 0, 0],
+        "position": [0, 0, -20],
+        "scale": [2, 5, 2],
+        "name": "block",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "material": "blockMaterial",
+            "mesh": "rock"
+          },
+          {
+            "type": "Movement",
+            "name": "block"
           }
         ]
       },
