@@ -250,11 +250,13 @@ namespace our
             // check if car hits frog
             for (auto car : cars)
             {
+                glm::mat4 carTransformationMatrix = car->getLocalToWorldMatrix();
+                glm::vec3 carPosition = glm::vec3(carTransformationMatrix[3]);
                 if (
-                    frog->localTransform.position.x < car->localTransform.position.x + 2.3f &&
-                    frog->localTransform.position.x > car->localTransform.position.x - 2.3f &&
-                    frog->localTransform.position.z < car->localTransform.position.z + 1.1f &&
-                    frog->localTransform.position.z > car->localTransform.position.z - 1.1f)
+                    frog->localTransform.position.x < carPosition.x + 2.3f &&
+                    frog->localTransform.position.x > carPosition.x - 2.3f &&
+                    frog->localTransform.position.z < carPosition.z + 1.1f &&
+                    frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
                     // frog dies
                     std::cout << "frog dies-" << rand() << std::endl;
