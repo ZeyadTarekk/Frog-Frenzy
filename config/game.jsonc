@@ -22,6 +22,9 @@
         "textured": {
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
+        },
+        "lighted": {
+          "vs": "assets/shaders/lighted.vert"
         }
       },
       "textures": {
@@ -38,7 +41,6 @@
         "coin": "assets/textures/coin.jpg",
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png"
-
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -59,31 +61,31 @@
         }
       },
       "materials": {
-        "tire":{
+        "tire": {
           "type": "textured",
           "shader": "textured",
           "pipelineState": {
-              "faceCulling":{
-                  "enabled": false
-              },
-              "depthTesting":{
-                  "enabled": true
-              }
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
           },
           "tint": [1, 1, 1, 1],
           "texture": "car",
           "sampler": "default"
         },
-        "rock":{
+        "rock": {
           "type": "textured",
           "shader": "textured",
           "pipelineState": {
-              "faceCulling":{
-                  "enabled": false
-              },
-              "depthTesting":{
-                  "enabled": true
-              }
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
           },
           "tint": [1, 1, 1, 1],
           "texture": "rock",
@@ -451,11 +453,11 @@
             "material": "road"
           }
         ],
-        "children":[
+        "children": [
           {
             "position": [-0.5, -0.5, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -465,7 +467,7 @@
               },
               {
                 "name": "car",
-                "id":"1",
+                "id": "1",
                 "type": "Movement",
                 "linearVelocity": [0, -0.1, 0]
               }
@@ -481,11 +483,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -498,11 +500,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -515,11 +517,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -532,11 +534,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -544,7 +546,7 @@
           {
             "position": [-0.5, 1.2, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -554,7 +556,7 @@
               },
               {
                 "name": "car",
-                "id":"2",
+                "id": "2",
                 "type": "Movement",
                 "linearVelocity": [0, 0.0, 0]
               }
@@ -570,11 +572,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -587,11 +589,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -604,11 +606,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -621,11 +623,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -633,7 +635,7 @@
           {
             "position": [0.5, 1.2, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -643,7 +645,7 @@
               },
               {
                 "name": "car",
-                "id":"3",
+                "id": "3",
                 "type": "Movement",
                 "linearVelocity": [0, 0.0, 0]
               }
@@ -659,11 +661,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -676,11 +678,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -693,11 +695,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -710,11 +712,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -722,7 +724,7 @@
           {
             "position": [0.5, 0, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -732,7 +734,7 @@
               },
               {
                 "name": "car",
-                "id":"4",
+                "id": "4",
                 "type": "Movement",
                 "linearVelocity": [0, -0.1, 0]
               }
@@ -748,11 +750,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -765,11 +767,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -782,11 +784,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -799,11 +801,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -881,11 +883,11 @@
             "material": "road"
           }
         ],
-        "children":[
+        "children": [
           {
             "position": [-0.5, -0.5, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -895,7 +897,7 @@
               },
               {
                 "name": "car",
-                "id":"5",
+                "id": "5",
                 "type": "Movement",
                 "linearVelocity": [0, -0.1, 0]
               }
@@ -911,11 +913,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -928,11 +930,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -945,11 +947,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -962,11 +964,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -974,7 +976,7 @@
           {
             "position": [-0.5, 1.2, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -984,7 +986,7 @@
               },
               {
                 "name": "car",
-                "id":"6",
+                "id": "6",
                 "type": "Movement",
                 "linearVelocity": [0, 0.0, 0]
               }
@@ -1000,11 +1002,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1017,11 +1019,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1034,11 +1036,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1051,11 +1053,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -1063,7 +1065,7 @@
           {
             "position": [0.5, 1.2, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -1073,7 +1075,7 @@
               },
               {
                 "name": "car",
-                "id":"7",
+                "id": "7",
                 "type": "Movement",
                 "linearVelocity": [0, 0.0, 0]
               }
@@ -1089,11 +1091,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1106,11 +1108,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1123,11 +1125,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1140,11 +1142,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
@@ -1152,7 +1154,7 @@
           {
             "position": [0.5, 0, 0], // (y,x,z)
             "rotation": [90, 90, 90],
-            "scale": [0.3, 1, 0.1],// w,h,l
+            "scale": [0.3, 1, 0.1], // w,h,l
             "name": "car",
             "components": [
               {
@@ -1162,7 +1164,7 @@
               },
               {
                 "name": "car",
-                "id":"8",
+                "id": "8",
                 "type": "Movement",
                 "linearVelocity": [0, -0.1, 0]
               }
@@ -1178,11 +1180,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                    "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1195,11 +1197,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1212,11 +1214,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               },
               {
@@ -1229,11 +1231,11 @@
                     "mesh": "tire",
                     "material": "tire"
                   },
-                {
-                  "name":"tire",
+                  {
+                    "name": "tire",
                     "type": "Movement",
                     "angularVelocity": [500, 0, 0]
-                }
+                  }
                 ]
               }
             ]
