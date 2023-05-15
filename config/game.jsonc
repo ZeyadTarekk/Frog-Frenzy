@@ -417,7 +417,7 @@
       },
       {
         "rotation": [0, 0, 0],
-        "position": [0, 0, -20],
+        "position": [0, 0, -22],
         "scale": [2, 5, 2],
         "name": "block",
         "components": [

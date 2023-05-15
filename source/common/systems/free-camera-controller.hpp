@@ -11,6 +11,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
+#include <random>
 
 namespace our
 {
@@ -26,6 +27,11 @@ namespace our
         float levelStart = 24.5f;  // The start of the level
         float levelEnd = -16.0f;   // The end of the level
         float waterWidth = 2.0f;   // The width of the water
+        float widthLeft = -8.f;    // left width of the level
+        float widthRight = 8.f;    // right width of the level
+        float startFrog = 9.0f;    // The start of the frog
+        int entered = 1;
+        vector<glm::vec3> positionsOfCoins;
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -158,7 +164,28 @@ namespace our
                     trunks.push_back(entity);
                 }
                 else if (name == "coin")
+                {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_real_distribution<float> disX(widthLeft, widthRight);
+                    std::uniform_real_distribution<float> disZ((levelEnd + 2) / 2, (startFrog - 2) / 2);
+                    glm::vec3 randomPosition = glm::vec3(disX(gen), 0.0f, disZ(gen));
+                    if (entered == 1)
+                    {
+                        entity->localTransform.position = randomPosition;
+                        // cout << randomPosition.x << " " << randomPosition.y << " " << randomPosition.z << endl;
+                        positionsOfCoins.push_back(randomPosition);
+                        entered++;
+                    }
+                    else if (entered == 2)
+                    {
+                        entity->localTransform.position = randomPosition;
+                        positionsOfCoins.push_back(randomPosition);
+                        entered++;
+                    }
+                    cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
                     coins.push_back(entity);
+                }
                 else if (!woodenBox && name == "woodenBox")
                     woodenBox = entity;
             }
@@ -243,7 +270,7 @@ namespace our
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
                     // frog dies
-                    std::cout << "Car Collision: " << rand() << std::endl;
+                    // std::cout << "Car Collision: " << rand() << std::endl;
                 }
             }
             for (auto trunk : trunks)
@@ -255,7 +282,7 @@ namespace our
                 {
                     // ! move the frog with the trunk
 
-                    std::cout << "frog move with the trunk-" << rand() << std::endl;
+                    // std::cout << "frog move with the trunk-" << rand() << std::endl;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -279,7 +306,8 @@ namespace our
 
             for (auto coin : coins)
             {
-                if (((int(frog->localTransform.position.z) == 3) || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x)))
+                // cout << frog->localTransform.position.z << " " << positionsOfCoins[0].z << std::endl;
+                if ((int(frog->localTransform.position.z) == int(coin->localTransform.position.z)) && (int(frog->localTransform.position.x) == int(coin->localTransform.position.x)))
                 {
                     std::cout << "Collison Coin Occur!!" << std::endl;
                     world->markForRemoval(coin);
