@@ -25,7 +25,7 @@ namespace our
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
         float levelEnd = -14.6f;   // The end of the level
-        float waterWidth = 4.0f;   // The width of the water
+        float waterWidth = 2.0f;   // The width of the water
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -186,14 +186,6 @@ namespace our
                     if (frog->localTransform.position.z < levelEnd)
                         return;
 
-                    // prevent the frog from passing through the water
-                    if (frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z)
-                    {
-                        // frog dies
-                        // TODO: play death sound, end game
-                        // return;
-                    }
-
                     // update the camera position
                     position += front * (deltaTime * current_sensitivity.z);
                     // update the frog position
@@ -206,14 +198,6 @@ namespace our
                 {
                     if (frog->localTransform.position.z > levelStart)
                         return;
-
-                    // prevent the frog from passing through the water
-                    if (frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
-                    {
-                        // frog dies
-                        // TODO: play death sound, end game
-                        // return;
-                    }
 
                     position -= front * (deltaTime * current_sensitivity.z);
                     frog->localTransform.position -= front * (deltaTime * current_sensitivity.z);
@@ -259,7 +243,7 @@ namespace our
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
                     // frog dies
-                    std::cout << "frog dies-" << rand() << std::endl;
+                    std::cout << "Car Collision: " << rand() << std::endl;
                 }
             }
             for (auto trunk : trunks)
@@ -283,6 +267,12 @@ namespace our
                         // Update the frog's position based on the trunk's movement
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
+                } else if (
+                    frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
+                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z
+                ) {
+                    // frog dies
+                    std::cout << "Frog in Water: " << rand() << std::endl;
                 }
             }
 
