@@ -73,7 +73,9 @@ namespace our {
 
     public:
     
-    time_t startTime,endTime;
+        time_t startTime, endTime;
+        int timeDiff;
+        int levelDuration = 60;
 
         // Create an application with following configuration
         Application(const nlohmann::json& app_config) : app_config(app_config) {}
