@@ -31,7 +31,7 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
-        bool isGameOver = false;    // Is the game over ?
+        bool isGameOver = false; // Is the game over ?
         vector<glm::vec3> positionsOfCoins;
 
         // Entities in the game
@@ -214,9 +214,9 @@ namespace our
                 app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
             {
                 // MOVING   =>  Jump Effect
-                frog->localTransform.position.y = float(0.05f * sin(glfwGetTime() * 10) + 0.05f) - 1;               // make the frog jump
-                frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2;     // make the frog rotate
-                frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                             // make the frog scale
+                frog->localTransform.position.y = float(0.05f * sin(glfwGetTime() * 10) + 0.05f) - 1;           // make the frog jump
+                frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
+                frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
 
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
@@ -279,8 +279,7 @@ namespace our
                     frog->localTransform.position.x < carPosition.x + 2.3f &&
                     frog->localTransform.position.x > carPosition.x - 2.3f &&
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
-                    frog->localTransform.position.z > carPosition.z - 1.1f
-                )
+                    frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
                     this->gameOver();
                 }
@@ -290,12 +289,8 @@ namespace our
                 if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
                     frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
-                    frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f
-                )
+                    frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
-                    // ! move the frog with the trunk
-
-                    // std::cout << "frog move with the trunk-" << rand() << std::endl;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -335,7 +330,7 @@ namespace our
                 std::cout << "Box Flying!!!" << std::endl;
             }
 
-            if(app->timeDiff <= 0)
+            if (app->timeDiff <= 0)
             {
                 this->gameOver();
             }
@@ -344,7 +339,8 @@ namespace our
         //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
         void gameOver()
         {
-            if (monkey) {
+            if (monkey)
+            {
                 monkey->localTransform.position.y = 0;
             }
 
