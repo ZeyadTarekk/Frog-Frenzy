@@ -286,6 +286,7 @@ namespace our
             }
             for (auto trunk : trunks)
             {
+                // Move the frog with the trunk
                 if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
                     frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
