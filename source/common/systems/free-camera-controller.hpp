@@ -191,7 +191,7 @@ namespace our
                         positionsOfCoins.push_back(randomPosition);
                         entered++;
                     }
-                    cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
+                    // cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
                     coins.push_back(entity);
                 }
                 else if (!woodenBox && name == "woodenBox")
@@ -333,6 +333,11 @@ namespace our
                 frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f);
                 entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f);
                 std::cout << "Box Flying!!!" << std::endl;
+            }
+
+            if(app->timeDiff <= 0)
+            {
+                this->gameOver();
             }
         }
 
