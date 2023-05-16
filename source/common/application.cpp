@@ -11,6 +11,7 @@
 #include <filesystem>
 
 #include <flags/flags.h>
+#include <time.h>
 
 // Include the Dear ImGui implementation headers
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD2
@@ -170,7 +171,6 @@ our::WindowConfiguration our::Application::getWindowConfiguration()
     int height = window_config["size"]["height"].get<int>();
 
     bool isFullScreen = window_config["fullscreen"].get<bool>();
-
     return {title, {width, height}, isFullScreen};
 }
 
@@ -234,6 +234,14 @@ int our::Application::run(int run_for_frames)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
+
+    //? configuration of timer
+    ImFont *font2 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\Brand New Retro Italic.ttf", 30.0f);
+    ImFont *font1 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\Erotica.ttf", 60.0f);
+    ImFont *font3 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\game_over.ttf", 180.0f);
+    ImFont *font4 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\game_over.ttf", 100.0f);
+    ImFont *font5 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\timer.ttf", 100.0f);
+    ImFont *font6 = io.Fonts->AddFontFromFileTTF("assets\\fonts\\Brand New Retro Italic.ttf", 60.0f);
     ImGui::StyleColorsDark();
 
     // Initialize ImGui for GLFW and OpenGL
@@ -290,6 +298,50 @@ int our::Application::run(int run_for_frames)
 
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
+
+        if (currentState == states["play"])
+        {
+            time(&endTime);
+
+            ImGui::SetNextWindowSize(ImVec2(1280, 200));
+            ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoMove);
+            ImGui::SetWindowPos(" ", ImVec2(0, 0));
+
+            ImGuiStyle *style = &ImGui::GetStyle();
+
+            ImVec4 *colors = style->Colors;
+            colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Border] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGrip] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
+            ImGui::PushFont(font5);
+            ImGui::SetCursorPosX(0);
+
+            std::string t1 = "00:";
+            if (timeDiff != 0)      //  stop at 0
+            {
+                timeDiff = levelDuration - abs(startTime - endTime);
+            }
+            std::string t2 = std::to_string(int(timeDiff));
+            std::string countdown;
+
+            if (10 - timeDiff > 0)
+                countdown = t1 + "0" + t2;
+            else
+                countdown = t1 + t2;
+            ImGui::Text(countdown.c_str());
+            ImGui::PopFont();
+
+            ImGui::SetCursorPosX(960);
+            ImGui::SetCursorPosY(60);
+
+            ImGui::End();
+        }
 
         // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
         // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.

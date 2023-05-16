@@ -12,6 +12,7 @@
 
 #include "input/keyboard.hpp"
 #include "input/mouse.hpp"
+#include <time.h>
 
 namespace our {
 
@@ -71,6 +72,10 @@ namespace our {
         virtual void setupCallbacks();                              // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
+    
+        time_t startTime, endTime;
+        int timeDiff;
+        int levelDuration = 60;
 
         // Create an application with following configuration
         Application(const nlohmann::json& app_config) : app_config(app_config) {}
@@ -102,6 +107,7 @@ namespace our {
             if(it != states.end()){
                 nextState = it->second;
             }
+            time(&startTime);
         }
 
         // Closes the Application
