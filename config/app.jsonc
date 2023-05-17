@@ -22,6 +22,10 @@
         "textured": {
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
+        },
+        "lighting":{
+          "vs": "assets/shaders/lighted.vert",
+          "fs": "assets/shaders/lighted.frag"
         }
       },
       "textures": {
@@ -45,8 +49,8 @@
       },
       "materials": {
         "metal": {
-          "type": "tinted",
-          "shader": "tinted",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -55,7 +59,10 @@
               "enabled": true
             }
           },
-          "tint": [0.45, 0.4, 0.5, 1]
+          // "tint": [0.45, 0.4, 0.5, 1]
+          "texture": "grass",
+          "sampler": "default",
+          "albedo":"grass"
         },
         "glass": {
           "type": "textured",
@@ -80,8 +87,8 @@
           "sampler": "pixelated"
         },
         "grass": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -92,11 +99,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "grass",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"grass"
         },
         "monkey": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -110,8 +118,8 @@
           "sampler": "default"
         },
         "moon": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -122,7 +130,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "moon",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"moon",
+          // "specular": "white",
+                    // "emissive": "black",
+                    "ambient_occlusion": "moon"
+                    // "roughness": "black"
         }
       }
     },
@@ -240,6 +253,7 @@
         ]
       },
       {
+
         "position": [0, 10, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],
@@ -252,7 +266,17 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 90, 0]
-          }
+          },
+          {
+            "type": "Light",
+            "lightType": "directional",
+            "diffuse": [5, 5, 5],
+            "specular": [0.93, 0.94, 0.96],
+            "attenuation": [0.0005, 0.0005, 0.0005],
+            "cone_angles": [-50,50],
+            "direction": [1, 0, 0]
+
+        }
         ]
       }
     ]

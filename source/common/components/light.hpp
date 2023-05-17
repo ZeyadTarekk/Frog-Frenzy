@@ -18,11 +18,13 @@ namespace our {
     class LightComponent : public Component {
     public:
         LightType LightType; // The type of the light (DIRECTIONAL or SPOT or POINT)
-        glm::vec3 position; // The position of the light
-        glm::vec3 direction = {0,0,0}; // The direction of the light
-        glm::vec3 color; // The color of the light
+        // glm::vec3 position; // The position of the light
+        glm::vec3 direction ; // The direction of the light
+        // glm::vec3 color; // The color of the light
         glm::vec3 attenuation; // The attenuation of the light
-        glm::vec2 coneAngles; // The cone angles of the light
+        glm::vec2 cone_angles; // The cone angles of the light
+        glm::vec3 diffuse ; // The diffuse of the light
+        glm::vec3 specular ; // The specular of the light
         
         // The ID of this component type is "Light"
         static std::string getID() { return "Light"; }

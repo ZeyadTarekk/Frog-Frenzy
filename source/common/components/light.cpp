@@ -24,11 +24,13 @@ namespace our
         {
             LightType = LightType::SPOT;
         }
-        position = data.value("position", position);
+        // position = data.value("position", position);
         direction = data.value("direction", direction);
-        color = data.value("color", color);
+        // color = data.value("color", color);
         attenuation = data.value("attenuation", attenuation);
-        coneAngles = data.value("coneAngles", coneAngles);
+        cone_angles = data.value("cone_angles", cone_angles);
+        diffuse = data.value("diffuse", diffuse);
+        specular = data.value("specular", specular);
     }
 
 }
