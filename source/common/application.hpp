@@ -77,7 +77,8 @@ namespace our
     public:
         time_t startTime, endTime;
         int timeDiff;
-        int levelDuration = 10;
+        int levelDuration = 60;
+        int level = 1;
 
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
