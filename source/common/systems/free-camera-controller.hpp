@@ -12,6 +12,9 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <random>
+#include <thread>
+#include <filesystem>
+#include <SFML/Audio.hpp>
 
 namespace our
 {
@@ -347,6 +350,28 @@ namespace our
             }
 
             this->isGameOver = true;
+            
+            //  Plays game over audio in a separate thread
+            std::thread audioThread(this->playAudio, "game_over.ogg");
+            audioThread.detach();
+        }
+
+        //  Plays game over audio
+        static void playAudio(std::string audioFileName)
+        {
+            std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+            sf::SoundBuffer buffer;
+            if (!buffer.loadFromFile(audioPath))
+            {
+                return;
+            }
+            sf::Sound sound;
+            sound.setBuffer(buffer);
+            sound.play();
+            sound.setVolume(100);
+
+            // Wait until the sound finishes playing
+            while (sound.getStatus() == sf::Sound::Playing);
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
