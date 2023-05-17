@@ -314,21 +314,22 @@ namespace our
 
             for (auto coin : coins)
             {
-                // cout << frog->localTransform.position.z << " " << positionsOfCoins[0].z << std::endl;
                 if ((int(frog->localTransform.position.z) == int(coin->localTransform.position.z)) && (int(frog->localTransform.position.x) == int(coin->localTransform.position.x)))
                 {
-                    std::cout << "Collison Coin Occur!!" << std::endl;
-                    world->markForRemoval(coin);
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_real_distribution<float> dis(5.0f, 10.0f);
+                    app->levelDuration += int(dis(gen)); //? adding extra random time  (5~10)
+                    world->markForRemoval(coin);         //? removing coin after collision detection
                 }
             }
             if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
             {
-
+                // make wooden box flying when collision with frog
                 glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition;
-                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f);
-                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f);
-                std::cout << "Box Flying!!!" << std::endl;
+                woodenBox->localTransform.position = newPosition; // update position of wooden box
+                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
+                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
             }
 
             if (app->timeDiff <= 0)
