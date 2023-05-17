@@ -37,6 +37,8 @@ namespace our
         bool isGameOver = false; // Is the game over ?
         vector<glm::vec3> positionsOfCoins;
 
+        static bool isFrogMovementAudioRunning;
+
         // Entities in the game
         Entity *monkey = nullptr;
 
@@ -45,6 +47,15 @@ namespace our
         void enter(Application *app)
         {
             this->app = app;
+            if (app->level == 1)
+            {
+                std::thread audioThread(this->playAudio, "level_1.ogg");
+                audioThread.detach();
+            } else if (app->level == 2)
+            {
+                std::thread audioThread(this->playAudio, "level_2.ogg");
+                audioThread.detach();
+            }
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -221,6 +232,15 @@ namespace our
                 frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
                 frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
 
+                //  prevent multiple audios playing at the same time
+                if (!isFrogMovementAudioRunning)
+                {
+                    isFrogMovementAudioRunning = true;
+                    //  Plays frog movement audio in a separate thread
+                    std::thread audioThread(this->playAudio, "frog_move.ogg");
+                    audioThread.detach();
+                }
+
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
                 {
@@ -372,6 +392,11 @@ namespace our
 
             // Wait until the sound finishes playing
             while (sound.getStatus() == sf::Sound::Playing);
+
+            if (audioFileName == "frog_move.ogg")
+            {
+                isFrogMovementAudioRunning = false;
+            }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
@@ -385,4 +410,6 @@ namespace our
         }
     };
 
+    //  Definition of static data members
+    bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
 }
