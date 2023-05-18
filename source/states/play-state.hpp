@@ -38,7 +38,7 @@ class Playstate: public our::State {
 
     void onDraw(double deltaTime) override {
         // Here, we just run a bunch of systems to control the world logic
-        our::GameState state = getApp().getGameState();
+        our::GameState state = getApp()->getGameState();
         if (state != our::GameState::PAUSE) {
             movementSystem.update(&world, (float)deltaTime);
             cameraController.update(&world, (float)deltaTime);
@@ -60,16 +60,16 @@ class Playstate: public our::State {
             getApp()->changeState("menu");
         }
 
-        // if (keyboard.justPressed(GLFW_KEY_P))
-        // {
-        //     if (getApp().getGameState() == our::GameState::PLAYING)
-        //     {
-        //         getApp().setGameState(our::GameState::PAUSE);
-        //     } else if (getApp().getGameState() == our::GameState::PAUSE)
-        //     {
-        //         getApp().setGameState(our::GameState::PLAYING);
-        //     }
-        // }
+        if (keyboard.justPressed(GLFW_KEY_P))
+        {
+            if (getApp()->getGameState() == our::GameState::PLAYING)
+            {
+                getApp()->setGameState(our::GameState::PAUSE);
+            } else if (getApp()->getGameState() == our::GameState::PAUSE)
+            {
+                getApp()->setGameState(our::GameState::PLAYING);
+            }
+        }
     }
 
     void onDestroy() override {

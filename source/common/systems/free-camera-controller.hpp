@@ -15,7 +15,7 @@
 #include <thread>
 #include <filesystem>
 // #include <unistd.h>
-#include <Windows.h>
+// #include <Windows.h>
 #include <irrKlang.h>
 using namespace irrklang;
 
@@ -430,7 +430,7 @@ namespace our
 
         void finishLevel(World *world)
         {
-            Sleep(3000);
+            // Sleep(3000);
             app->upgradeLevel();
             app->setGameState(GameState::PLAYING);
             auto &config = app->getConfig()["scene"];
