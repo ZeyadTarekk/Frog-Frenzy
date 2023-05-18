@@ -29,18 +29,6 @@ namespace our
                 if (movement)
                 {
                     // Change the position and rotation based on the linear & angular velocity and delta time.
-                    if (movement->name == "car")
-                    {
-
-                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
-                        {
-                            entity->localTransform.position += deltaTime * movement->linearVelocity;
-                        }
-                        else
-                        {
-                            entity->localTransform.position[0] = -8.0f;
-                        }
-                    }
                     if (movement->name == "monkey" || movement->name == "moon" || movement->name == "coin" || movement->name == "woodenBox")
                     {
                         entity->localTransform.position += deltaTime * movement->linearVelocity;
@@ -48,16 +36,23 @@ namespace our
                     }
                     if (movement->name == "trunkWood")
                     {
-                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 12.0f)
+                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
                         {
                             // inside the water
                             entity->localTransform.position += deltaTime * movement->linearVelocity;
                         }
-                        else
+                        else if (entity->localTransform.position[0] >= 8.0f)
                         {
                             // outside the width so bring it inside
-                            entity->localTransform.position[0] = -8.0f;
+                            entity->localTransform.position[0] = 8.0f;
+                            movement->linearVelocity[0] = -movement->linearVelocity[0];
                         }
+                        else
+                        {
+                            entity->localTransform.position[0] = -8.0f;
+                            movement->linearVelocity[0] = -movement->linearVelocity[0];
+                        }
+
                         // std::cout << "wood " << entity->localTransform.position[0] << " " << entity->localTransform.position[2] << std::endl;
                     }
                 }
