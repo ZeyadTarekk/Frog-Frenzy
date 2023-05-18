@@ -14,7 +14,8 @@
 #include <random>
 #include <thread>
 #include <filesystem>
-#include <SFML/Audio.hpp>
+#include <irrKlang.h>
+using namespace irrklang;
 
 namespace our
 {
@@ -24,7 +25,7 @@ namespace our
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        static Application *app;          // The application in which the state runs
+        static Application *app;   // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
@@ -51,7 +52,8 @@ namespace our
             {
                 std::thread audioThread(this->playAudio, "level_1.ogg");
                 audioThread.detach();
-            } else if (app->level == 2)
+            }
+            else if (app->level == 2)
             {
                 std::thread audioThread(this->playAudio, "level_2.ogg");
                 audioThread.detach();
@@ -350,7 +352,7 @@ namespace our
             {
                 // make wooden box flying when collision with frog
                 glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition; // update position of wooden box
+                woodenBox->localTransform.position = newPosition;                         // update position of wooden box
                 frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
                 entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
             }
@@ -370,7 +372,7 @@ namespace our
             }
 
             this->isGameOver = true;
-            
+
             //  Plays game over audio in a separate thread
             std::thread audioThread(this->playAudio, "game_over.ogg");
             audioThread.detach();
@@ -380,18 +382,32 @@ namespace our
         static void playAudio(std::string audioFileName)
         {
             std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-            sf::SoundBuffer buffer;
-            if (!buffer.loadFromFile(audioPath))
-            {
-                return;
-            }
-            sf::Sound sound;
-            sound.setBuffer(buffer);
-            sound.play();
-            sound.setVolume(100 * (app->getVolume()));
 
-            // Wait until the sound finishes playing
-            while (sound.getStatus() == sf::Sound::Playing);
+            ISoundEngine *engine = createIrrKlangDevice();
+
+            if (!engine)
+                return; // error starting up the engine
+
+            // play some sound stream, looped
+            engine->play2D("assets/audios/level_1.ogg", true);
+
+            char i = 0;
+            std::cin >> i; // wait for user to press some key
+
+            engine->drop(); // delete engine
+
+            // sf::SoundBuffer buffer;
+            // if (!buffer.loadFromFile(audioPath))
+            // {
+            //     return;
+            // }
+            // sf::Sound sound;
+            // sound.setBuffer(buffer);
+            // sound.play();
+            // sound.setVolume(100 * (app->getVolume()));
+
+            // // Wait until the sound finishes playing
+            // while (sound.getStatus() == sf::Sound::Playing);
 
             if (audioFileName == "frog_move.ogg")
             {
@@ -412,5 +428,5 @@ namespace our
 
     //  Definition of static data members
     bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
-    Application* our::FreeCameraControllerSystem::app = nullptr;
+    Application *our::FreeCameraControllerSystem::app = nullptr;
 }

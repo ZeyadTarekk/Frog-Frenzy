@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
     // play some sound stream, looped
     engine->play2D("sounds/03 City.mp3", true);
-
+    printf("After play");
     char i = 0;
     std::cin >> i; // wait for user to press some key
 
