@@ -301,13 +301,14 @@ int our::Application::run(int run_for_frames)
 
         if (currentState == states["play"] && gameState != GameState::GAME_OVER && gameState != GameState::WIN)
         {
+            ImGuiStyle *style = &ImGui::GetStyle();
+            style->WindowMenuButtonPosition = ImGuiDir_None;
+
             time(&endTime);
 
             ImGui::SetNextWindowSize(ImVec2(1280, 200));
             ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoMove);
             ImGui::SetWindowPos(" ", ImVec2(0, 0));
-
-            ImGuiStyle *style = &ImGui::GetStyle();
 
             ImVec4 *colors = style->Colors;
             colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
