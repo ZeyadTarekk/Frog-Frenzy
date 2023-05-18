@@ -319,7 +319,7 @@
     },
     "world": [
       {
-        "position": [0, 10, 0],
+        "position": [0, 30, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],
         "components": [
@@ -334,7 +334,7 @@
           },
           {
             "type": "Light",
-            "lightType": "spot",
+            "lightType": "point",
             "diffuse": [0.15, 0.25, 0.35],
             "specular": [0.093, 0.094, 0.096],
             "attenuation": [0.0005, 0.0005, 0.0005],

@@ -238,7 +238,6 @@ namespace our
             {
                 if (material != nullptr)
                 {
-                 
                 material->setup();
                 // vertex shader
                 // send the camera position to the shader
@@ -255,7 +254,6 @@ namespace our
                 material->shader->set("Sky.top", glm::vec3(0.0f, 1.0f, 0.5f));
                 material->shader->set("Sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
                 material->shader->set("Sky.bottom", glm::vec3(0.1f, 0.1f, 0.1f));
-
                 //  send the light count
                 material->shader->set("light_count",(GLint)lightComponents.size());
                 // loop over the light components and send the light data to the shader
@@ -265,21 +263,24 @@ namespace our
                     // in case of directional light we need to send the direction of the light only
                     if(lightComponents[i]->LightType==LightType::DIRECTIONAL)
                     {
-                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->direction);
-                        material->shader->set("lights[" + std::to_string(i) + "].direction", directional_direction);
+                        // calculate the light direction in world space from entity component 
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        material->shader->set("lights[" + std::to_string(i) + "].direction",directional_direction  );
                     }
                     // in case of point light we need to send the position of the light only
                     else if (lightComponents[i] ->LightType == LightType::POINT)
                     {
-                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0, 0.0, 0.0, 1.0));
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3] );
                         material->shader->set("lights[" + std::to_string(i) + "].position",position );
                     }
                     // in case of spot light we need to send the position and direction of the light 
                     else if (lightComponents[i]->LightType == LightType::SPOT)
                     {
-                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->direction);
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        // cout the direction of the light
+                        std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
                         // we multiply local to world matrix by (0,0,0,1) to get the vec3 and drop the w component
-                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0, 0.0, 0.0, 1.0));
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3]);
                         material->shader->set("lights[" + std::to_string(i) + "].position", position);
                         material->shader->set("lights[" + std::to_string(i) + "].direction", directional_direction );
                         material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lightComponents[i]->cone_angles);
