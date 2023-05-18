@@ -15,6 +15,8 @@
 #include <thread>
 #include <filesystem>
 #include <SFML/Audio.hpp>
+#include <irrKlang.h>
+using namespace irrklang;
 
 namespace our
 {
@@ -148,6 +150,12 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
+            //  Pause / Resume the game
+            if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
+            {
+
+            }
+            
             if (isGameOver)
             {
                 return;
@@ -380,18 +388,25 @@ namespace our
         static void playAudio(std::string audioFileName)
         {
             std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-            sf::SoundBuffer buffer;
-            if (!buffer.loadFromFile(audioPath))
-            {
-                return;
-            }
-            sf::Sound sound;
-            sound.setBuffer(buffer);
-            sound.play();
-            sound.setVolume(100 * (app->getVolume()));
+            
+            ISoundEngine* engine = createIrrKlangDevice();
 
-            // Wait until the sound finishes playing
-            while (sound.getStatus() == sf::Sound::Playing);
+            if (!engine)
+                return;
+
+            ISoundSource* sound = engine->addSoundSourceFromFile(audioPath.c_str());
+
+            if (!sound)
+                return;
+
+            ISound* audio = engine->play2D(sound);
+
+            while (engine->isCurrentlyPlaying(sound));
+
+            // Audio has finished playing
+            // Perform any actions you want to do after the audio is finished
+
+            engine->drop();
 
             if (audioFileName == "frog_move.ogg")
             {
