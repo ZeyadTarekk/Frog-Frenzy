@@ -361,7 +361,26 @@
       },
       {
         "rotation": [0, 90, 0],
-        "position": [0, -0.999, 7],
+        "position": [-8, -0.999, 8],
+        "scale": [2, 0.75, 1.5],
+        "name": "trunkWood",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "trunkWood",
+            "material": "trunkWoodMaterial"
+          },
+          {
+            "name": "trunkWood",
+            "type": "Movement",
+            "linearVelocity": [2, 0, 0]
+            // "angularVelocity": [0, 45, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [8, -0.999, 7],
         "scale": [2, 0.75, 1.5],
         "name": "trunkWood",
         "components": [

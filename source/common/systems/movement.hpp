@@ -48,18 +48,39 @@ namespace our
                     }
                     if (movement->name == "trunkWood")
                     {
-                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 12.0f)
+                        if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 8.0f)
                         {
                             // inside the water
                             entity->localTransform.position += deltaTime * movement->linearVelocity;
                         }
-                        else
+                        else if (entity->localTransform.position[0] >= 8.0f)
                         {
                             // outside the width so bring it inside
-                            entity->localTransform.position[0] = -8.0f;
+                            entity->localTransform.position[0] = 8.0f;
+                            movement->linearVelocity[0] =  -movement->linearVelocity[0];
                         }
+                        else
+                        {
+                            entity->localTransform.position[0] = -8.0f;
+                            movement->linearVelocity[0] =  -movement->linearVelocity[0];
+                        }
+        
                         // std::cout << "wood " << entity->localTransform.position[0] << " " << entity->localTransform.position[2] << std::endl;
                     }
+                    // else if (movement->name == "trunkWood2")
+                    // {
+                    //     if (-8.0f <= entity->localTransform.position[0] && entity->localTransform.position[0] <= 12.0f)
+                    //     {
+                    //         // inside the water
+                    //         entity->localTransform.position -= deltaTime * movement->linearVelocity;
+                    //     }
+                    //     else
+                    //     {
+                    //         // outside the width so bring it inside
+                    //         entity->localTransform.position[0] = 12.0f;
+                    //     }
+                    //     // std::cout << "wood " << entity->localTransform.position[0] << " " << entity->localTransform.position[2] << std::endl;
+                    // }
                 }
             }
         }
