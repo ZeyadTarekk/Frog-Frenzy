@@ -14,7 +14,6 @@
 #include <random>
 #include <thread>
 #include <filesystem>
-#include <SFML/Audio.hpp>
 #include <irrKlang.h>
 using namespace irrklang;
 
@@ -26,7 +25,7 @@ namespace our
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        static Application *app;          // The application in which the state runs
+        static Application *app;   // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
@@ -36,7 +35,6 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
-        bool isGameOver = false; // Is the game over ?
         vector<glm::vec3> positionsOfCoins;
 
         static bool isFrogMovementAudioRunning;
@@ -53,7 +51,8 @@ namespace our
             {
                 std::thread audioThread(this->playAudio, "level_1.ogg");
                 audioThread.detach();
-            } else if (app->level == 2)
+            }
+            else if (app->level == 2)
             {
                 std::thread audioThread(this->playAudio, "level_2.ogg");
                 audioThread.detach();
@@ -150,13 +149,7 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            //  Pause / Resume the game
-            if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
-            {
-
-            }
-            
-            if (isGameOver)
+            if (app->isGameOver)
             {
                 return;
             }
@@ -358,9 +351,10 @@ namespace our
             {
                 // make wooden box flying when collision with frog
                 glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition; // update position of wooden box
+                woodenBox->localTransform.position = newPosition;                         // update position of wooden box
                 frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
                 entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
+                app->isWinner = true;
             }
 
             if (app->timeDiff <= 0)
@@ -377,8 +371,8 @@ namespace our
                 monkey->localTransform.position.y = 0;
             }
 
-            this->isGameOver = true;
-            
+            app->isGameOver = true;
+
             //  Plays game over audio in a separate thread
             std::thread audioThread(this->playAudio, "game_over.ogg");
             audioThread.detach();
@@ -387,26 +381,24 @@ namespace our
         //  Plays game over audio
         static void playAudio(std::string audioFileName)
         {
-            std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-            
-            ISoundEngine* engine = createIrrKlangDevice();
-
+            // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+            std::string audioPath = "assets/audios/" + audioFileName;
+            ISoundEngine *engine = createIrrKlangDevice();
+            std::cout << audioPath << std::endl;
             if (!engine)
                 return;
 
-            ISoundSource* sound = engine->addSoundSourceFromFile(audioPath.c_str());
+            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
 
             if (!sound)
                 return;
 
-            ISound* audio = engine->play2D(sound);
+            ISound *audio = engine->play2D(sound);
 
-            while (engine->isCurrentlyPlaying(sound));
+            while (engine->isCurrentlyPlaying(sound))
+                ;
 
-            // Audio has finished playing
-            // Perform any actions you want to do after the audio is finished
-
-            engine->drop();
+            engine->drop(); // delete engine
 
             if (audioFileName == "frog_move.ogg")
             {
@@ -427,5 +419,5 @@ namespace our
 
     //  Definition of static data members
     bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
-    Application* our::FreeCameraControllerSystem::app = nullptr;
+    Application *our::FreeCameraControllerSystem::app = nullptr;
 }

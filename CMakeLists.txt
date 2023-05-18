@@ -93,7 +93,6 @@ include_directories(
         vendor/glm
         vendor/imgui
         vendor/utils
-        vendor/sfml/include
         vendor/irrklang/include
 )
 
@@ -119,22 +118,5 @@ set(STATES_SOURCES
 # For each example, we add an executable target
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
-
-# Set the path to Irrklang library
-set(IRRKLANG_DIR "vendor/irrklang")
-
-# Add the Irrklang library
-add_library(Irrklang INTERFACE)
-
-# Set the include directories for Irrklang
-target_include_directories(Irrklang INTERFACE ${IRRKLANG_DIR}/include)
-
-# Set the library directories for Irrklang
-# if (WIN32)
-target_link_directories(Irrklang INTERFACE ${IRRKLANG_DIR}/lib/Winx64-visualStudio)
-# elseif (UNIX)
-#   target_link_directories(Irrklang INTERFACE ${IRRKLANG_DIR}/lib/Linux-gcc)
-# endif()
-
 add_executable(GAME_APPLICATION source/main.cpp ${STATES_SOURCES} ${COMMON_SOURCES} ${VENDOR_SOURCES})
-target_link_libraries(GAME_APPLICATION glfw Irrklang)
+target_link_libraries(GAME_APPLICATION glfw ${CMAKE_SOURCE_DIR}/vendor/irrklang/lib/Winx64-visualStudio/irrKlang.lib)

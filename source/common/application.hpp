@@ -58,7 +58,7 @@ namespace our
     {
     private:
         float volume = 0.5;
-    
+
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
 
@@ -82,6 +82,8 @@ namespace our
         int timeDiff;
         int levelDuration = 60;
         int level = 1;
+        bool isGameOver = false; // Is the game over ?
+        bool isWinner = false;   // level up
 
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
@@ -133,13 +135,15 @@ namespace our
         // Increase the sound volume
         void increaseSound()
         {
-            if (volume < 1) volume += 0.1;
+            if (volume < 1)
+                volume += 0.1;
         }
 
         // Decrease the sound volume
         void decreaseSound()
         {
-            if (volume > 0) volume -= 0.1;
+            if (volume > 0)
+                volume -= 0.1;
         }
 
         float getVolume()
