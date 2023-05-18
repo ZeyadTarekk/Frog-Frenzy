@@ -94,7 +94,6 @@ include_directories(
         vendor/imgui
         vendor/utils
         vendor/irrklang/include
-        vendor/sfml/include
 )
 
 
@@ -119,6 +118,5 @@ set(STATES_SOURCES
 # For each example, we add an executable target
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
-#find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 add_executable(GAME_APPLICATION source/main.cpp ${STATES_SOURCES} ${COMMON_SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(GAME_APPLICATION glfw ${CMAKE_SOURCE_DIR}/vendor/irrklang/lib/Winx64-visualStudio/irrKlang.lib)

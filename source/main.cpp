@@ -2,8 +2,6 @@
 #include <fstream>
 #include <flags/flags.h>
 #include <json/json.hpp>
-#include <irrKlang.h>
-using namespace irrklang;
 
 #include <application.hpp>
 
@@ -21,20 +19,6 @@ using namespace irrklang;
 
 int main(int argc, char **argv)
 {
-    ISoundEngine *engine = createIrrKlangDevice();
-
-    if (!engine)
-        return 0; // error starting up the engine
-
-    // play some sound stream, looped
-    engine->play2D("sounds/03 City.mp3", true);
-    printf("After play");
-    char i = 0;
-    std::cin >> i; // wait for user to press some key
-
-    engine->drop(); // delete engine
-
-    printf("Hello world!");
     flags::args args(argc, argv); // Parse the command line arguments
     // config_path is the path to the json file containing the application configuration
     // Default: "config/app.json"

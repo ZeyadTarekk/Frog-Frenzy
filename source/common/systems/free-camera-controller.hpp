@@ -381,33 +381,24 @@ namespace our
         //  Plays game over audio
         static void playAudio(std::string audioFileName)
         {
-            std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-
+            // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+            std::string audioPath = "assets/audios/" + audioFileName;
             ISoundEngine *engine = createIrrKlangDevice();
-
+            std::cout << audioPath << std::endl;
             if (!engine)
-                return; // error starting up the engine
+                return;
 
-            // play some sound stream, looped
-            engine->play2D("assets/audios/level_1.ogg", true);
+            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
 
-            char i = 0;
-            std::cin >> i; // wait for user to press some key
+            if (!sound)
+                return;
+
+            ISound *audio = engine->play2D(sound);
+
+            while (engine->isCurrentlyPlaying(sound))
+                ;
 
             engine->drop(); // delete engine
-
-            // sf::SoundBuffer buffer;
-            // if (!buffer.loadFromFile(audioPath))
-            // {
-            //     return;
-            // }
-            // sf::Sound sound;
-            // sound.setBuffer(buffer);
-            // sound.play();
-            // sound.setVolume(100 * (app->getVolume()));
-
-            // // Wait until the sound finishes playing
-            // while (sound.getStatus() == sf::Sound::Playing);
 
             if (audioFileName == "frog_move.ogg")
             {
