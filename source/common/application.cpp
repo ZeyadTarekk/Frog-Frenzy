@@ -323,11 +323,14 @@ int our::Application::run(int run_for_frames)
             ImGui::SetCursorPosX(0);
 
             std::string t1 = "00:";
-            int time = 60 - abs(startTime - endTime);
-            std::string t2 = std::to_string(int(time));
+            if (timeDiff != 0)      //  stop at 0
+            {
+                timeDiff = levelDuration - abs(startTime - endTime);
+            }
+            std::string t2 = std::to_string(int(timeDiff));
             std::string countdown;
 
-            if (10 - time > 0)
+            if (10 - timeDiff > 0)
                 countdown = t1 + "0" + t2;
             else
                 countdown = t1 + t2;

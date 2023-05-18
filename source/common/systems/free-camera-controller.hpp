@@ -11,6 +11,11 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
+#include <random>
+#include <thread>
+#include <filesystem>
+#include <irrKlang.h>
+using namespace irrklang;
 
 namespace our
 {
@@ -20,18 +25,39 @@ namespace our
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        Application *app;          // The application in which the state runs
+        static Application *app;   // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
-        float levelEnd = -14.6f;   // The end of the level
+        float levelEnd = -16.0f;   // The end of the level
         float waterWidth = 2.0f;   // The width of the water
+        float widthLeft = -8.f;    // left width of the level
+        float widthRight = 8.f;    // right width of the level
+        float startFrog = 9.0f;    // The start of the frog
+        int entered = 1;
+        bool isGameOver = false; // Is the game over ?
+        vector<glm::vec3> positionsOfCoins;
+
+        static bool isFrogMovementAudioRunning;
+
+        // Entities in the game
+        Entity *monkey = nullptr;
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
         {
             this->app = app;
+            if (app->level == 1)
+            {
+                std::thread audioThread(this->playAudio, "level_1.ogg");
+                audioThread.detach();
+            }
+            else if (app->level == 2)
+            {
+                std::thread audioThread(this->playAudio, "level_2.ogg");
+                audioThread.detach();
+            }
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -124,8 +150,12 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            // handle frog movement
-            // We get the frog entity
+            if (isGameOver)
+            {
+                return;
+            }
+
+            // Entities in the frame
             Entity *frog = nullptr;
             Entity *water = nullptr;
             Entity *holdingComponent = nullptr;
@@ -158,13 +188,41 @@ namespace our
                     trunks.push_back(entity);
                 }
                 else if (name == "coin")
+                {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_real_distribution<float> disX(widthLeft, widthRight);
+                    std::uniform_real_distribution<float> disZ((levelEnd + 2) / 2, (startFrog - 2) / 2);
+                    glm::vec3 randomPosition = glm::vec3(disX(gen), 0.0f, disZ(gen));
+                    if (entered == 1)
+                    {
+                        entity->localTransform.position = randomPosition;
+                        // cout << randomPosition.x << " " << randomPosition.y << " " << randomPosition.z << endl;
+                        positionsOfCoins.push_back(randomPosition);
+                        entered++;
+                    }
+                    else if (entered == 2)
+                    {
+                        entity->localTransform.position = randomPosition;
+                        positionsOfCoins.push_back(randomPosition);
+                        entered++;
+                    }
+                    // cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
                     coins.push_back(entity);
+                }
                 else if (!woodenBox && name == "woodenBox")
+                {
                     woodenBox = entity;
+                }
+                else if (!monkey && name == "monkey")
+                {
+                    monkey = entity;
+                }
             }
             if (!frog)
                 return;
 
+            // handle frog movement
             if (
                 app->getKeyboard().isPressed(GLFW_KEY_UP) ||
                 app->getKeyboard().isPressed(GLFW_KEY_DOWN) ||
@@ -172,12 +230,18 @@ namespace our
                 app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
             {
                 // MOVING   =>  Jump Effect
-                // make the frog jump
-                frog->localTransform.position.y = float(0.05f * sin(glfwGetTime() * 10) + 0.05f) - 1;
-                // make the frog rotate
-                frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2;
-                // make the frog scale
-                frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;
+                frog->localTransform.position.y = float(0.05f * sin(glfwGetTime() * 10) + 0.05f) - 1;           // make the frog jump
+                frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
+                frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
+
+                //  prevent multiple audios playing at the same time
+                if (!isFrogMovementAudioRunning)
+                {
+                    isFrogMovementAudioRunning = true;
+                    //  Plays frog movement audio in a separate thread
+                    std::thread audioThread(this->playAudio, "frog_move.ogg");
+                    audioThread.detach();
+                }
 
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
@@ -231,7 +295,7 @@ namespace our
                 frog->localTransform.scale.y = 0.05f;
             }
 
-            // check if car hits frog
+            // check if a car hits the frog
             for (auto car : cars)
             {
                 glm::mat4 carTransformationMatrix = car->getLocalToWorldMatrix();
@@ -242,20 +306,17 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    // frog dies
-                    std::cout << "Car Collision: " << rand() << std::endl;
+                    this->gameOver();
                 }
             }
             for (auto trunk : trunks)
             {
+                // Move the frog with the trunk
                 if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
                     frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
                     frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
-                    // ! move the frog with the trunk
-
-                    std::cout << "frog move with the trunk-" << rand() << std::endl;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -267,31 +328,81 @@ namespace our
                         // Update the frog's position based on the trunk's movement
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
-                } else if (
+                }
+                else if (
                     frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
-                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z
-                ) {
-                    // frog dies
-                    std::cout << "Frog in Water: " << rand() << std::endl;
+                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
+                {
+                    this->gameOver();
                 }
             }
 
             for (auto coin : coins)
             {
-                if (((int(frog->localTransform.position.z) == 3) || (int(frog->localTransform.position.z) == 0)) && (int(frog->localTransform.position.x) == (coin->localTransform.position.x)))
+                if ((int(frog->localTransform.position.z) == int(coin->localTransform.position.z)) && (int(frog->localTransform.position.x) == int(coin->localTransform.position.x)))
                 {
-                    std::cout << "Collison Coin Occur!!" << std::endl;
-                    world->markForRemoval(coin);
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_real_distribution<float> dis(5.0f, 10.0f);
+                    app->levelDuration += int(dis(gen)); //? adding extra random time  (5~10)
+                    world->markForRemoval(coin);         //? removing coin after collision detection
                 }
             }
             if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
             {
-
+                // make wooden box flying when collision with frog
                 glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition;
-                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f);
-                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f);
-                std::cout << "Box Flying!!!" << std::endl;
+                woodenBox->localTransform.position = newPosition;                         // update position of wooden box
+                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
+                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
+            }
+
+            if (app->timeDiff <= 0)
+            {
+                this->gameOver();
+            }
+        }
+
+        //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
+        void gameOver()
+        {
+            if (monkey)
+            {
+                monkey->localTransform.position.y = 0;
+            }
+
+            this->isGameOver = true;
+
+            //  Plays game over audio in a separate thread
+            std::thread audioThread(this->playAudio, "game_over.ogg");
+            audioThread.detach();
+        }
+
+        //  Plays game over audio
+        static void playAudio(std::string audioFileName)
+        {
+            // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+            std::string audioPath = "assets/audios/" + audioFileName;
+            ISoundEngine *engine = createIrrKlangDevice();
+            std::cout << audioPath << std::endl;
+            if (!engine)
+                return;
+
+            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
+
+            if (!sound)
+                return;
+
+            ISound *audio = engine->play2D(sound);
+
+            while (engine->isCurrentlyPlaying(sound))
+                ;
+
+            engine->drop(); // delete engine
+
+            if (audioFileName == "frog_move.ogg")
+            {
+                isFrogMovementAudioRunning = false;
             }
         }
 
@@ -306,4 +417,7 @@ namespace our
         }
     };
 
+    //  Definition of static data members
+    bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
+    Application *our::FreeCameraControllerSystem::app = nullptr;
 }
