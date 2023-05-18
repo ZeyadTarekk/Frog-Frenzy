@@ -56,6 +56,9 @@ namespace our
     // It offers the functionalities needed by all the examples.
     class Application
     {
+    private:
+        float volume = 0.5;
+    
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
 
@@ -130,13 +133,18 @@ namespace our
         // Increase the sound volume
         void increaseSound()
         {
-            std::cout << "Increase the sound volume\n";
+            if (volume < 1) volume += 0.1;
         }
 
         // Decrease the sound volume
         void decreaseSound()
         {
-            std::cout << "Decrease the sound volume\n";
+            if (volume > 0) volume -= 0.1;
+        }
+
+        float getVolume()
+        {
+            return volume;
         }
 
         // Class Getters.

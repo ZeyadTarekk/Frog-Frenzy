@@ -24,7 +24,7 @@ namespace our
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        Application *app;          // The application in which the state runs
+        static Application *app;          // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
         float levelWidth = 19.0f;  // The width of the level
         float levelStart = 24.5f;  // The start of the level
@@ -388,7 +388,7 @@ namespace our
             sf::Sound sound;
             sound.setBuffer(buffer);
             sound.play();
-            sound.setVolume(100);
+            sound.setVolume(100 * (app->getVolume()));
 
             // Wait until the sound finishes playing
             while (sound.getStatus() == sf::Sound::Playing);
@@ -412,4 +412,5 @@ namespace our
 
     //  Definition of static data members
     bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
+    Application* our::FreeCameraControllerSystem::app = nullptr;
 }
