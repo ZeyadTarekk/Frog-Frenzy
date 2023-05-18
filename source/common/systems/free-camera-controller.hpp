@@ -14,11 +14,21 @@
 #include <random>
 #include <thread>
 #include <filesystem>
+#include <unistd.h>
 #include <irrKlang.h>
 using namespace irrklang;
 
 namespace our
 {
+
+    //  The game state is used to determine the state of the game
+    enum class GameState
+    {
+        PLAYING,
+        GAME_OVER,
+        WIN,
+        PAUSE
+    };
 
     // The free camera controller system is responsible for moving every entity which contains a FreeCameraControllerComponent.
     // This system is added as a slightly complex example for how use the ECS framework to implement logic.
@@ -35,6 +45,10 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
+        GameState gameState = GameState::PLAYING;
+        
+        int maxHeightAtWin = 10;
+
         vector<glm::vec3> positionsOfCoins;
 
         static bool isFrogMovementAudioRunning;
@@ -47,16 +61,26 @@ namespace our
         void enter(Application *app)
         {
             this->app = app;
-            if (app->level == 1)
+            if (app->getLevel() == 1)
             {
                 // std::thread audioThread(this->playAudio, "level_1.ogg");
                 // audioThread.detach();
             }
-            else if (app->level == 2)
+            else if (app->getLevel() == 2)
             {
                 // std::thread audioThread(this->playAudio, "level_2.ogg");
                 // audioThread.detach();
             }
+        }
+
+        GameState getGameState()
+        {
+            return gameState;
+        }
+
+        void setGameState(GameState gameState)
+        {
+            this->gameState = gameState;
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -149,7 +173,7 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            if (app->isGameOver)
+            if (gameState == GameState::GAME_OVER)
             {
                 return;
             }
@@ -166,7 +190,7 @@ namespace our
             for (auto entity : world->getEntities())
             {
                 std::string name = entity->name;
-                if (!frog && name == "frog")
+                if (name == "frog")
                 {
                     frog = entity;
                 }
@@ -174,7 +198,7 @@ namespace our
                 {
                     holdingComponent = entity;
                 }
-                else if (!water && name == "water")
+                else if (name == "water")
                 {
                     water = entity;
                 }
@@ -209,17 +233,32 @@ namespace our
                     // cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
                     coins.push_back(entity);
                 }
-                else if (!woodenBox && name == "woodenBox")
+                else if (name == "woodenBox")
                 {
                     woodenBox = entity;
                 }
-                else if (!monkey && name == "monkey")
+                else if (name == "monkey")
                 {
                     monkey = entity;
                 }
             }
             if (!frog)
                 return;
+
+            if (gameState == GameState::WIN)
+            {
+                // make wooden box flying when collision with frog
+                glm::vec3 deltaPosition = glm::vec3(0.0f, 5 * deltaTime, 0.0f);
+                woodenBox->localTransform.position += deltaPosition;            // update position of wooden box
+                frog->localTransform.position += deltaPosition;                 // update position of frog
+                position += deltaPosition;                                      // update position of camera
+
+                if (position.y >= maxHeightAtWin)
+                {
+                    finishLevel(world);
+                }
+                return;
+            }
 
             // handle frog movement
             if (
@@ -343,21 +382,21 @@ namespace our
                     std::random_device rd;
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> dis(5.0f, 10.0f);
-                    app->levelDuration += int(dis(gen)); //? adding extra random time  (5~10)
-                    world->markForRemoval(coin);         //? removing coin after collision detection
+                    app->addCoins(dis(gen));                //? adding extra random time  (5~10)
+                    world->markForRemoval(coin);            //? removing coin after collision detection
                 }
             }
-            if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
+            if (
+                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1 &&
+                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1 &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1 &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1
+            )
             {
-                // make wooden box flying when collision with frog
-                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition;                         // update position of wooden box
-                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
-                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
-                app->isWinner = true;
+                gameState = GameState::WIN;
             }
 
-            if (app->timeDiff <= 0)
+            if (app->getTimeDiff() <= 0)
             {
                 this->gameOver();
             }
@@ -371,7 +410,7 @@ namespace our
                 monkey->localTransform.position.y = 0;
             }
 
-            app->isGameOver = true;
+            this->gameState = GameState::GAME_OVER;
 
             //  Plays game over audio in a separate thread
             // std::thread audioThread(this->playAudio, "game_over.ogg");
@@ -400,11 +439,26 @@ namespace our
 
         //     engine->drop(); // delete engine
 
+
         //     if (audioFileName == "frog_move.ogg")
         //     {
         //         isFrogMovementAudioRunning = false;
         //     }
         // }
+
+        void finishLevel(World *world)
+        {
+            sleep(3);
+            app->upgradeLevel();
+            gameState = GameState::PLAYING;
+            auto& config = app->getConfig()["scene"];
+            int newLevel = app->getLevel();
+            std::string levelName = "world_level_" + std::to_string(newLevel);
+            if(config.contains(levelName)){
+                world->clear();
+                world->deserialize(config[levelName]);
+            }
+        }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
         void exit()

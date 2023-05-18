@@ -6,7 +6,7 @@
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
 #include <systems/movement.hpp>
-#include <systems/Car-generator.hpp>
+#include <systems/car-generator.hpp>
 #include <asset-loader.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
@@ -26,8 +26,8 @@ class Playstate: public our::State {
             our::deserializeAllAssets(config["assets"]);
         }
         // If we have a world in the scene config, we use it to populate our world
-        if(config.contains("world")){
-            world.deserialize(config["world"]);
+        if(config.contains("world_level_1")){
+            world.deserialize(config["world_level_1"]);
         }
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
@@ -38,18 +38,37 @@ class Playstate: public our::State {
 
     void onDraw(double deltaTime) override {
         // Here, we just run a bunch of systems to control the world logic
-        movementSystem.update(&world, (float)deltaTime);
-        cameraController.update(&world, (float)deltaTime);
-        carGeneratorSystem.update(&world, (float)deltaTime);
+        our::GameState state = cameraController.getGameState();
+        if (state != our::GameState::PAUSE) {
+            movementSystem.update(&world, (float)deltaTime);
+            cameraController.update(&world, (float)deltaTime);
+            carGeneratorSystem.update(&world, (float)deltaTime);
+        }
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
 
         // Get a reference to the keyboard object
         auto& keyboard = getApp()->getKeyboard();
 
+        // if (cameraController.getGameState() == our::GameState::PAUSE)
+        // {
+        //     getApp()->fixTime();
+        // }
+
         if(keyboard.justPressed(GLFW_KEY_ESCAPE)){
             // If the escape  key is pressed in this frame, go to the play state
             getApp()->changeState("menu");
+        }
+
+        if (keyboard.justPressed(GLFW_KEY_P))
+        {
+            if (cameraController.getGameState() == our::GameState::PLAYING)
+            {
+                cameraController.setGameState(our::GameState::PAUSE);
+            } else if (cameraController.getGameState() == our::GameState::PAUSE)
+            {
+                cameraController.setGameState(our::GameState::PLAYING);
+            }
         }
     }
 
