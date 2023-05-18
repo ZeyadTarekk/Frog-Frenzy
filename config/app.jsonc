@@ -132,10 +132,7 @@
           "texture": "moon",
           "sampler": "default",
           "albedo":"moon",
-          // "specular": "white",
-                    // "emissive": "black",
-                    "ambient_occlusion": "moon"
-                    // "roughness": "black"
+          "ambient_occlusion": "moon"
         }
       }
     },
@@ -253,7 +250,6 @@
         ]
       },
       {
-
         "position": [0, 10, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],

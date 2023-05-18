@@ -50,13 +50,13 @@ namespace our
             this->app = app;
             if (app->level == 1)
             {
-                std::thread audioThread(this->playAudio, "level_1.ogg");
-                audioThread.detach();
+                // std::thread audioThread(this->playAudio, "level_1.ogg");
+                // audioThread.detach();
             }
             else if (app->level == 2)
             {
-                std::thread audioThread(this->playAudio, "level_2.ogg");
-                audioThread.detach();
+                // std::thread audioThread(this->playAudio, "level_2.ogg");
+                // audioThread.detach();
             }
         }
 
@@ -239,8 +239,8 @@ namespace our
                 {
                     isFrogMovementAudioRunning = true;
                     //  Plays frog movement audio in a separate thread
-                    std::thread audioThread(this->playAudio, "frog_move.ogg");
-                    audioThread.detach();
+                    // std::thread audioThread(this->playAudio, "frog_move.ogg");
+                    // audioThread.detach();
                 }
 
                 // UP
@@ -374,37 +374,37 @@ namespace our
             this->isGameOver = true;
 
             //  Plays game over audio in a separate thread
-            std::thread audioThread(this->playAudio, "game_over.ogg");
-            audioThread.detach();
+            // std::thread audioThread(this->playAudio, "game_over.ogg");
+            // audioThread.detach();
         }
 
         //  Plays game over audio
-        static void playAudio(std::string audioFileName)
-        {
-            // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-            std::string audioPath = "assets/audios/" + audioFileName;
-            ISoundEngine *engine = createIrrKlangDevice();
-            std::cout << audioPath << std::endl;
-            if (!engine)
-                return;
+        // static void playAudio(std::string audioFileName)
+        // {
+        //     // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+        //     std::string audioPath = "assets/audios/" + audioFileName;
+        //     ISoundEngine *engine = createIrrKlangDevice();
+        //     std::cout << audioPath << std::endl;
+        //     if (!engine)
+        //         return;
 
-            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
+        //     ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
 
-            if (!sound)
-                return;
+        //     if (!sound)
+        //         return;
 
-            ISound *audio = engine->play2D(sound);
+        //     ISound *audio = engine->play2D(sound);
 
-            while (engine->isCurrentlyPlaying(sound))
-                ;
+        //     while (engine->isCurrentlyPlaying(sound))
+        //         ;
 
-            engine->drop(); // delete engine
+        //     engine->drop(); // delete engine
 
-            if (audioFileName == "frog_move.ogg")
-            {
-                isFrogMovementAudioRunning = false;
-            }
-        }
+        //     if (audioFileName == "frog_move.ogg")
+        //     {
+        //         isFrogMovementAudioRunning = false;
+        //     }
+        // }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
         void exit()

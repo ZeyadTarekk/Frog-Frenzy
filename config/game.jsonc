@@ -23,7 +23,7 @@
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
         },
-        "lighted": {
+        "lighting": {
           "vs": "assets/shaders/lighted.vert",
           "fs": "assets/shaders/lighted.frag"
         }
@@ -192,8 +192,8 @@
           "sampler": "pixelated"
         },
         "grass": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -204,7 +204,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "grass",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"grass"
         },
         "fence": {
           "type": "textured",
@@ -222,8 +223,8 @@
           "sampler": "default"
         },
         "road": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -234,7 +235,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "road",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"road"
         },
         "frog": {
           "type": "textured",
@@ -297,8 +299,8 @@
           "sampler": "default"
         },
         "moon": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -309,11 +311,39 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "moon",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"moon"
+          // "ambient_occlusion": "moon"
         }
       }
     },
     "world": [
+      {
+        "position": [0, 10, 0],
+        "rotation": [45, 45, 0],
+        "scale": [5, 5, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "sphere",
+            "material": "moon"
+          },
+          {
+            "type": "Movement",
+            "angularVelocity": [0, 90, 0]
+          },
+          {
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.15, 0.25, 0.35],
+            "specular": [0.093, 0.094, 0.096],
+            "attenuation": [0.0005, 0.0005, 0.0005],
+            "cone_angles": [-50,50],
+            "direction": [1, 0, 0]
+
+        }
+        ]
+      },
       {
         "position": [0, 0, 11],
         "components": [
@@ -1211,6 +1241,7 @@
             "scale": [0.3, 1, 0.1],// w,h,l
             "name": "car",
             "components": [
+              
               {
                 "type": "Mesh Renderer",
                 "mesh": "car",
