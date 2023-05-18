@@ -299,7 +299,7 @@ int our::Application::run(int run_for_frames)
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
 
-        if (currentState == states["play"])
+        if (currentState == states["play"] && !isGameOver && !isWinner)
         {
             time(&endTime);
 
@@ -323,7 +323,7 @@ int our::Application::run(int run_for_frames)
             ImGui::SetCursorPosX(0);
 
             std::string t1 = "00:";
-            if (timeDiff != 0)      //  stop at 0
+            if (timeDiff != 0) //  stop at 0
             {
                 timeDiff = levelDuration - abs(startTime - endTime);
             }

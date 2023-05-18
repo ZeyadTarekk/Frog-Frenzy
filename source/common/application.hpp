@@ -82,6 +82,8 @@ namespace our
         virtual void setupCallbacks();                        // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
+        bool isGameOver = false; // Is the game over ?
+        bool isWinner = false;   // level up
 
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
@@ -133,13 +135,15 @@ namespace our
         // Increase the sound volume
         void increaseSound()
         {
-            if (volume < 1) volume += 0.1;
+            if (volume < 1)
+                volume += 0.1;
         }
 
         // Decrease the sound volume
         void decreaseSound()
         {
-            if (volume > 0) volume -= 0.1;
+            if (volume > 0)
+                volume -= 0.1;
         }
 
         float getVolume()
