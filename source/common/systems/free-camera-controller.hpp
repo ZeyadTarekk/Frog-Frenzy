@@ -35,7 +35,6 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
-        bool isGameOver = false; // Is the game over ?
         vector<glm::vec3> positionsOfCoins;
 
         static bool isFrogMovementAudioRunning;
@@ -150,7 +149,7 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            if (isGameOver)
+            if (app->isGameOver)
             {
                 return;
             }
@@ -355,6 +354,7 @@ namespace our
                 woodenBox->localTransform.position = newPosition;                         // update position of wooden box
                 frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
                 entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
+                app->isWinner = true;
             }
 
             if (app->timeDiff <= 0)
@@ -371,7 +371,7 @@ namespace our
                 monkey->localTransform.position.y = 0;
             }
 
-            this->isGameOver = true;
+            app->isGameOver = true;
 
             //  Plays game over audio in a separate thread
             // std::thread audioThread(this->playAudio, "game_over.ogg");
