@@ -299,7 +299,7 @@ int our::Application::run(int run_for_frames)
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
 
-        if (currentState == states["play"] && !isGameOver && !isWinner)
+        if (currentState == states["play"] && gameState != GameState::GAME_OVER && gameState != GameState::WIN)
         {
             time(&endTime);
 

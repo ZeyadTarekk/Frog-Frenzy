@@ -14,7 +14,8 @@
 #include <random>
 #include <thread>
 #include <filesystem>
-#include <unistd.h>
+// #include <unistd.h>
+// #include <Windows.h>
 #include <irrKlang.h>
 using namespace irrklang;
 
@@ -22,13 +23,6 @@ namespace our
 {
 
     //  The game state is used to determine the state of the game
-    enum class GameState
-    {
-        PLAYING,
-        GAME_OVER,
-        WIN,
-        PAUSE
-    };
 
     // The free camera controller system is responsible for moving every entity which contains a FreeCameraControllerComponent.
     // This system is added as a slightly complex example for how use the ECS framework to implement logic.
@@ -45,8 +39,7 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
-        GameState gameState = GameState::PLAYING;
-        
+
         int maxHeightAtWin = 10;
 
         vector<glm::vec3> positionsOfCoins;
@@ -61,6 +54,7 @@ namespace our
         void enter(Application *app)
         {
             this->app = app;
+            app->setGameState(GameState::PLAYING);
             if (app->getLevel() == 1)
             {
                 // std::thread audioThread(this->playAudio, "level_1.ogg");
@@ -71,16 +65,6 @@ namespace our
                 // std::thread audioThread(this->playAudio, "level_2.ogg");
                 // audioThread.detach();
             }
-        }
-
-        GameState getGameState()
-        {
-            return gameState;
-        }
-
-        void setGameState(GameState gameState)
-        {
-            this->gameState = gameState;
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -173,7 +157,7 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            if (gameState == GameState::GAME_OVER)
+            if (app->getGameState() == GameState::GAME_OVER)
             {
                 return;
             }
@@ -245,13 +229,13 @@ namespace our
             if (!frog)
                 return;
 
-            if (gameState == GameState::WIN)
+            if (app->getGameState() == GameState::WIN)
             {
                 // make wooden box flying when collision with frog
                 glm::vec3 deltaPosition = glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position += deltaPosition;            // update position of wooden box
-                frog->localTransform.position += deltaPosition;                 // update position of frog
-                position += deltaPosition;                                      // update position of camera
+                woodenBox->localTransform.position += deltaPosition; // update position of wooden box
+                frog->localTransform.position += deltaPosition;      // update position of frog
+                position += deltaPosition;                           // update position of camera
 
                 if (position.y >= maxHeightAtWin)
                 {
@@ -382,18 +366,17 @@ namespace our
                     std::random_device rd;
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> dis(5.0f, 10.0f);
-                    app->addCoins(dis(gen));                //? adding extra random time  (5~10)
-                    world->markForRemoval(coin);            //? removing coin after collision detection
+                    app->addCoins(dis(gen));     //? adding extra random time  (5~10)
+                    world->markForRemoval(coin); //? removing coin after collision detection
                 }
             }
             if (
                 frog->localTransform.position.z - woodenBox->localTransform.position.z < 1 &&
                 frog->localTransform.position.z - woodenBox->localTransform.position.z > -1 &&
                 frog->localTransform.position.x - woodenBox->localTransform.position.x < 1 &&
-                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1
-            )
+                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1)
             {
-                gameState = GameState::WIN;
+                app->setGameState(GameState::WIN);
             }
 
             if (app->getTimeDiff() <= 0)
@@ -410,7 +393,7 @@ namespace our
                 monkey->localTransform.position.y = 0;
             }
 
-            this->gameState = GameState::GAME_OVER;
+            app->setGameState(GameState::GAME_OVER);
 
             //  Plays game over audio in a separate thread
             // std::thread audioThread(this->playAudio, "game_over.ogg");
@@ -439,7 +422,6 @@ namespace our
 
         //     engine->drop(); // delete engine
 
-
         //     if (audioFileName == "frog_move.ogg")
         //     {
         //         isFrogMovementAudioRunning = false;
@@ -448,13 +430,14 @@ namespace our
 
         void finishLevel(World *world)
         {
-            sleep(3);
+            // Sleep(3000);
             app->upgradeLevel();
-            gameState = GameState::PLAYING;
-            auto& config = app->getConfig()["scene"];
+            app->setGameState(GameState::PLAYING);
+            auto &config = app->getConfig()["scene"];
             int newLevel = app->getLevel();
             std::string levelName = "world_level_" + std::to_string(newLevel);
-            if(config.contains(levelName)){
+            if (config.contains(levelName))
+            {
                 world->clear();
                 world->deserialize(config[levelName]);
             }
