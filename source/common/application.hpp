@@ -70,6 +70,7 @@ namespace our
         int levelDuration = 60;
         int level = 1;
         GameState gameState = GameState::PLAYING;
+        int score = 10;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -190,6 +191,15 @@ namespace our
         void setGameState(GameState gameState)
         {
             this->gameState = gameState;
+        }
+        void setScore(int score)
+        {
+            if (score > 0)
+                this->score = score;
+        }
+        int getScore()
+        {
+            return this->score;
         }
 
         // Class Getters.

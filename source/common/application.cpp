@@ -338,7 +338,14 @@ int our::Application::run(int run_for_frames)
             ImGui::PopFont();
 
             ImGui::SetCursorPosX(960);
-            ImGui::SetCursorPosY(60);
+            ImGui::SetCursorPosY(40);
+
+            ImGui::PushFont(font6);
+            std::string l1 = "Score: ";
+            std::string l2 = std::to_string(score);
+            std::string totalLine = l1 + l2;
+            ImGui::Text(totalLine.c_str());
+            ImGui::PopFont();
 
             ImGui::End();
         }
