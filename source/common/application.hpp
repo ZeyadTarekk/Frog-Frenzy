@@ -24,6 +24,13 @@ namespace our
         glm::i16vec2 size;
         bool isFullscreen;
     };
+    enum class GameState
+    {
+        PLAYING,
+        GAME_OVER,
+        WIN,
+        PAUSE
+    };
 
     class Application; // Forward declaration
 
@@ -62,7 +69,8 @@ namespace our
         int timeDiff;
         int levelDuration = 60;
         int level = 1;
-    
+        GameState gameState = GameState::PLAYING;
+
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
 
@@ -82,9 +90,6 @@ namespace our
         virtual void setupCallbacks();                        // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
-        bool isGameOver = false; // Is the game over ?
-        bool isWinner = false;   // level up
-
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
         // On destruction, delete all the states
@@ -176,6 +181,15 @@ namespace our
             level++;
             levelDuration -= 10;
             time(&startTime);
+        }
+        GameState getGameState()
+        {
+            return gameState;
+        }
+
+        void setGameState(GameState gameState)
+        {
+            this->gameState = gameState;
         }
 
         // Class Getters.
