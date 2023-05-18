@@ -12,6 +12,9 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <random>
+#include <thread>
+#include <filesystem>
+#include <SFML/Audio.hpp>
 
 namespace our
 {
@@ -34,6 +37,8 @@ namespace our
         bool isGameOver = false; // Is the game over ?
         vector<glm::vec3> positionsOfCoins;
 
+        static bool isFrogMovementAudioRunning;
+
         // Entities in the game
         Entity *monkey = nullptr;
 
@@ -42,6 +47,15 @@ namespace our
         void enter(Application *app)
         {
             this->app = app;
+            if (app->level == 1)
+            {
+                std::thread audioThread(this->playAudio, "level_1.ogg");
+                audioThread.detach();
+            } else if (app->level == 2)
+            {
+                std::thread audioThread(this->playAudio, "level_2.ogg");
+                audioThread.detach();
+            }
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -218,6 +232,15 @@ namespace our
                 frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
                 frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
 
+                //  prevent multiple audios playing at the same time
+                if (!isFrogMovementAudioRunning)
+                {
+                    isFrogMovementAudioRunning = true;
+                    //  Plays frog movement audio in a separate thread
+                    std::thread audioThread(this->playAudio, "frog_move.ogg");
+                    audioThread.detach();
+                }
+
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
                 {
@@ -286,14 +309,12 @@ namespace our
             }
             for (auto trunk : trunks)
             {
+                // Move the frog with the trunk
                 if (frog->localTransform.position.x < trunk->localTransform.position.x + 1.7f &&
                     frog->localTransform.position.x > trunk->localTransform.position.x - 1.7f &&
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
                     frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
-                    // ! move the frog with the trunk
-
-                    // std::cout << "frog move with the trunk-" << rand() << std::endl;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -349,6 +370,33 @@ namespace our
             }
 
             this->isGameOver = true;
+            
+            //  Plays game over audio in a separate thread
+            std::thread audioThread(this->playAudio, "game_over.ogg");
+            audioThread.detach();
+        }
+
+        //  Plays game over audio
+        static void playAudio(std::string audioFileName)
+        {
+            std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+            sf::SoundBuffer buffer;
+            if (!buffer.loadFromFile(audioPath))
+            {
+                return;
+            }
+            sf::Sound sound;
+            sound.setBuffer(buffer);
+            sound.play();
+            sound.setVolume(100);
+
+            // Wait until the sound finishes playing
+            while (sound.getStatus() == sf::Sound::Playing);
+
+            if (audioFileName == "frog_move.ogg")
+            {
+                isFrogMovementAudioRunning = false;
+            }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
@@ -362,4 +410,6 @@ namespace our
         }
     };
 
+    //  Definition of static data members
+    bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
 }
