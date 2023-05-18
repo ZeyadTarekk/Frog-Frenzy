@@ -340,12 +340,11 @@
             "attenuation": [0.0005, 0.0005, 0.0005],
             "cone_angles": [-50,50],
             "direction": [1, 0, 0]
-
         }
         ]
       },
       {
-        "position": [0, 0, 11],
+        "position": [0, 1, 12],
         "components": [
           {
             "type": "Camera"
@@ -357,7 +356,7 @@
         "children": [
           {
             "rotation": [0, 0, 0],
-            "position": [0, -2, -2],
+            "position": [0, -10, -2],
             "name": "monkey",
             "components": [
               {
