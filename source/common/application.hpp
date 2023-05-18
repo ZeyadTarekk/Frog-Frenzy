@@ -57,7 +57,11 @@ namespace our
     class Application
     {
     private:
+        time_t startTime, endTime;
         float volume = 0.5;
+        int timeDiff;
+        int levelDuration = 60;
+        int level = 1;
     
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -78,10 +82,6 @@ namespace our
         virtual void setupCallbacks();                        // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
-        time_t startTime, endTime;
-        int timeDiff;
-        int levelDuration = 60;
-        int level = 1;
 
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
@@ -145,6 +145,33 @@ namespace our
         float getVolume()
         {
             return volume;
+        }
+
+        int getLevel()
+        {
+            return level;
+        }
+
+        int getLevelDuration()
+        {
+            return levelDuration;
+        }
+
+        int getTimeDiff()
+        {
+            return timeDiff;
+        }
+
+        void addCoins(int addedTime)
+        {
+            levelDuration += addedTime;
+        }
+
+        void upgradeLevel()
+        {
+            level++;
+            levelDuration -= 10;
+            time(&startTime);
         }
 
         // Class Getters.
