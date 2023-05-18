@@ -440,6 +440,7 @@ namespace our
             {
                 world->clear();
                 world->deserialize(config[levelName]);
+                app->setScore(app->getScore() * 2);
             }
         }
 
