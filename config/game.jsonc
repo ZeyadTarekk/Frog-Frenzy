@@ -333,7 +333,7 @@
         }
       }
     },
-    "world_level_3": [
+    "world_level_1": [
       {
         "position": [0, 10, 0],
         "rotation": [45, 45, 0],
@@ -2458,7 +2458,7 @@
         ]
       }
     ],
-    "world_level_1": [
+    "world_level_4": [
       {
         "position": [0, 1, 12],
         "components": [
