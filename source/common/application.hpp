@@ -14,6 +14,8 @@
 #include "input/mouse.hpp"
 #include <time.h>
 #include <iostream>
+#include <irrKlang.h>
+using namespace irrklang;
 namespace our
 {
 
@@ -76,6 +78,7 @@ namespace our
         int score = 80;
         int lives = 3;
         int timeDiffOnPause;
+        ISoundEngine *soundEngine;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -100,6 +103,15 @@ namespace our
         {
             this->timeDiffOnPause = timeDiff;
         }
+        ISoundEngine *getSoundEngine()
+        {
+            return this->soundEngine;
+        }
+        void setSoundEngine(ISoundEngine *soundEngine)
+        {
+            this->soundEngine = soundEngine;
+        }
+
         int getTimeDiffOnPause()
         {
             return this->timeDiffOnPause;

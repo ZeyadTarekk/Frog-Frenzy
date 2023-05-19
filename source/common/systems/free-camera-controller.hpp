@@ -42,7 +42,6 @@ namespace our
         int entered = 1;                                              // number of coins randomed
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
-        ISoundEngine *soundEngine;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
 
         // Entities in the game
@@ -199,7 +198,7 @@ namespace our
         {
             this->app = app;
             app->setGameState(GameState::PLAYING);
-            soundEngine = createIrrKlangDevice();
+            app->setSoundEngine(createIrrKlangDevice());
             if (app->getLevel() == 1)
             {
                 // true to make it repeat infinitly
@@ -569,6 +568,7 @@ namespace our
         //  Plays game over audio
         void playAudio(std::string audioFileName, bool repeat = false)
         {
+            ISoundEngine *soundEngine = app->getSoundEngine();
             std::string audioPath = "assets/audios/" + audioFileName;
             if (!soundEngine)
                 return;
@@ -655,7 +655,7 @@ namespace our
                 app->getMouse().unlockMouse(app->getWindow());
             }
             // Drop the engine on exit
-            soundEngine->drop();
+            app->getSoundEngine()->drop();
         }
     };
 
