@@ -84,7 +84,7 @@ namespace our
                         {
                             // std::cout << "nside" << std::endl;
                             entity->localTransform.position += deltaTime * movement->linearVelocity;
-                            if (entity->localTransform.position[1] <= 0.0f)
+                            if (entity->localTransform.position[1] >= 0.0f)
                             {
                                 // id = 1  id%2 = 1
                                 // id=  2  id%2 = 0
