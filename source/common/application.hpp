@@ -67,9 +67,9 @@ namespace our
     private:
         time_t startTime, endTime;
         float volume = 0.5;
-        int levelDuration = 60;
+        int levelDuration = 80;
         int timerValue = levelDuration;
-        int timeDiff = 60;
+        int timeDiff = 80;
         int level = 1;
         int maxLevel = 5;
         GameState gameState = GameState::PLAYING;
@@ -213,7 +213,7 @@ namespace our
 
         void resetGame() {
             level = 1;
-            levelDuration = 60;
+            levelDuration = 80;
             timerValue = levelDuration;
             timeDiff = levelDuration;
             score = 0;
