@@ -49,6 +49,7 @@ namespace our
 
         // Entities in the game
         Entity *monkey = nullptr;
+        Entity *cup = nullptr;
 
         // map of positons of grass
         std::map<std::pair<int, int>, int> maze = {
@@ -380,6 +381,10 @@ namespace our
                 {
                     monkey = entity;
                 }
+                else if (name == "cup")
+                {
+                    cup = entity;
+                }
             }
             if (!frog)
                 return;
@@ -603,6 +608,10 @@ namespace our
             if (!upgraded)
             {
                 app->setGameState(GameState::FINISH);
+                if (cup)
+                {
+                    cup->localTransform.position.y = 0;
+                }
                 return;
             }
             app->setGameState(GameState::PLAYING);

@@ -44,7 +44,8 @@
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
         "monkey": "assets/textures/monkey.png",
-        "block": "assets/textures/barrier2Diffuse.png"
+        "block": "assets/textures/barrier2Diffuse.png",
+        "gold": "assets/textures/gold.jpeg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -59,7 +60,8 @@
         "tire": "assets/models/sphere.obj",
         "rock": "assets/models/rock.obj",
         "monkey": "assets/models/monkey.obj",
-        "block": "assets/models/rock.obj"
+        "block": "assets/models/rock.obj",
+        "cup": "assets/models/cup.obj"
       },
       "samplers": {
         "default": {},
@@ -298,6 +300,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "monkey",
+          "sampler": "default"
+        },
+        "cup": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "gold",
           "sampler": "default"
         },
         "car": {
@@ -3921,6 +3938,19 @@
                 "type": "Mesh Renderer",
                 "mesh": "monkey",
                 "material": "monkey"
+              }
+            ]
+          },
+          {
+            "rotation": [0, 90, 0],
+            "position": [0, -15, -6],
+            "scale": [0.02, 0.02, 0.02],
+            "name": "cup",
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "cup",
+                "material": "cup"
               }
             ]
           }
