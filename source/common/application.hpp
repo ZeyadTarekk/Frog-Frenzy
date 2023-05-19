@@ -29,7 +29,8 @@ namespace our
         PLAYING,
         GAME_OVER,
         WIN,
-        PAUSE
+        PAUSE,
+        FINISH
     };
 
     class Application; // Forward declaration
@@ -70,6 +71,7 @@ namespace our
         int timerValue = levelDuration;
         int timeDiff = 60;
         int level = 1;
+        int maxLevel = 5;
         GameState gameState = GameState::PLAYING;
         int score = 80;
         int lives = 3;
@@ -195,12 +197,28 @@ namespace our
             timerValue = levelDuration;
         }
 
-        void upgradeLevel()
+        bool upgradeLevel()
         {
+            if (level == maxLevel)
+            {
+                return false;
+            }
             level++;
             levelDuration -= 10;
             timerValue = levelDuration;
             timeDiff = levelDuration;
+            time(&startTime);
+            return true;
+        }
+
+        void resetGame() {
+            level = 1;
+            levelDuration = 60;
+            timerValue = levelDuration;
+            timeDiff = levelDuration;
+            score = 0;
+            lives = 3;
+            gameState = GameState::PLAYING;
             time(&startTime);
         }
 
