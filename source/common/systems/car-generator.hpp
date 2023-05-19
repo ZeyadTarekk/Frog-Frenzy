@@ -34,7 +34,7 @@ namespace our
                     // Change the position and rotation based on the linear & angular velocity and delta time.
                     if (movement->name == "car" ) {
 
-                        // std::cout << entity->localTransform.position[1] << std::endl;
+                        // std::cout << movement->linearVelocity[1] << std::endl;
                         if (-1.2f <= entity->localTransform.position[1] && entity->localTransform.position[1] <= 1.6f)
                         {
                             // std::cout << "nside" << std::endl;
@@ -60,6 +60,9 @@ namespace our
                                         int random_num = rand() % 8 + 1;
                                         movement->linearVelocity[1] = -0.1f * random_num;
                                         movement2->linearVelocity[1] = -0.1f * random_num;
+                                        if(movement->linearVelocity[1] == 0.0f && movement2->linearVelocity[1] == 0.0f) {
+                                            movement->linearVelocity[1] = -0.1f;
+                                        }
                                         // std::cout << "random " << random_num << std::endl;
                                         break;
                                     }
@@ -78,6 +81,7 @@ namespace our
                     }
                     
                     if (movement->name == "car2" ) {
+                        // std::cout << movement->linearVelocity[1] << std::endl;
 
                         // std::cout << entity->localTransform.position[1] << std::endl;
                         if (-1.6f <= entity->localTransform.position[1] && entity->localTransform.position[1] <= 1.2f)
@@ -107,6 +111,9 @@ namespace our
                                         movement->linearVelocity[1] = 0.1f * random_num;
                                         movement2->linearVelocity[1] = 0.1f * random_num;
                                         // std::cout << "random " << random_num << std::endl;
+                                        if(movement->linearVelocity[1] <= 0.0f && movement2->linearVelocity[1] <= 0.0f) {
+                                            movement->linearVelocity[1] = 0.1f;
+                                        }
                                         break;
                                     }
                                     }
@@ -121,9 +128,7 @@ namespace our
                             // movement->linearVelocity[1] = 0.0f;
                             movement->linearVelocity[1] = 0.0;
                         }
-                    }
-                 
-                 
+                    }                 
                     
                     if (movement->name == "tire")
                     {
