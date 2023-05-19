@@ -71,6 +71,7 @@ namespace our
         int level = 1;
         GameState gameState = GameState::PLAYING;
         int score = 10;
+        int lives = 3;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -183,7 +184,43 @@ namespace our
             levelDuration -= 10;
             time(&startTime);
         }
-        GameState getGameState()
+
+        // void restartGame(World *world)
+        // {
+        //     int currentLives = this->getLives();
+        //     auto &config = this->getConfig()["scene"];
+        //     if (currentLives == 0)
+        //     {
+        //         this->setGameState(GameState::PLAYING);
+        //         std::string levelName = "world_level_1";
+        //         if (config.contains(levelName))
+        //         {
+        //             world->clear();
+        //             world->deserialize(config[levelName]);
+        //             this->setLives(3);
+        //             this->level = 1;
+        //         }
+        //     }
+        //     else
+        //     {
+
+        //         this->setLives(currentLives - 1);
+        //         this->setGameState(GameState::PLAYING);
+
+        //         int currentLevel = this->getLevel();
+        //         std::string levelName = "world_level_" + std::to_string(currentLevel);
+        //         std::cout << levelName << std::endl;
+        //         if (config.contains(levelName))
+        //         {
+        //             world->clear();
+        //             world->deserialize(config[levelName]);
+        //             this->level = currentLevel;
+        //         }
+        //     }
+        // }
+
+        GameState
+        getGameState()
         {
             return gameState;
         }
@@ -200,6 +237,14 @@ namespace our
         int getScore()
         {
             return this->score;
+        }
+        void setLives(int lives)
+        {
+            this->lives = lives;
+        }
+        int getLives()
+        {
+            return this->lives;
         }
 
         // Class Getters.

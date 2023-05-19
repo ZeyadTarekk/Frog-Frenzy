@@ -329,6 +329,8 @@ namespace our
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
                     this->gameOver();
+                    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                    this->restartLevel(world);
                 }
             }
             for (auto trunk : trunks)
@@ -355,7 +357,10 @@ namespace our
                     frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
                     frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
                 {
+                    std::cout << "Entered water\n";
                     this->gameOver();
+                    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                    this->restartLevel(world);
                 }
             }
 
@@ -371,17 +376,22 @@ namespace our
                 }
             }
             if (
-                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1 &&
-                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1 &&
-                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1 &&
-                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1)
+                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1.0f &&
+                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1.0f)
             {
+                std::cout << "Entered win\n";
+                std::cout << frog->localTransform.position.z << " " << frog->localTransform.position.x << std::endl;
+                std::cout << woodenBox->localTransform.position.z << " " << woodenBox->localTransform.position.x << std::endl;
                 app->setGameState(GameState::WIN);
             }
 
             if (app->getTimeDiff() <= 0)
             {
                 this->gameOver();
+                // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                this->restartLevel(world);
             }
         }
 
@@ -441,6 +451,44 @@ namespace our
                 world->clear();
                 world->deserialize(config[levelName]);
                 app->setScore(app->getScore() * 2);
+                if (app->getScore() >= 100)
+                {
+                    // Check if the score reaches 100 increase the lives by 1
+                    app->setScore(0);
+                    app->setLives(app->getLives() + 1);
+                }
+            }
+        }
+
+        void restartLevel(World *world)
+        {
+            int currentLives = app->getLives();
+            auto &config = app->getConfig()["scene"];
+            if (currentLives == 0)
+            {
+                app->setGameState(GameState::PLAYING);
+                std::string levelName = "world_level_1";
+                if (config.contains(levelName))
+                {
+                    world->clear();
+                    world->deserialize(config[levelName]);
+                    app->setLives(3);
+                }
+            }
+            else
+            {
+
+                app->setLives(currentLives - 1);
+                app->setGameState(GameState::PLAYING);
+
+                int currentLevel = app->getLevel();
+                std::string levelName = "world_level_" + std::to_string(currentLevel);
+                std::cout << levelName << std::endl;
+                if (config.contains(levelName))
+                {
+                    world->clear();
+                    world->deserialize(config[levelName]);
+                }
             }
         }
 
