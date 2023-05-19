@@ -8,7 +8,8 @@
 - [x] ~~Timer~~
 - [x] ~~End Game **Skull**~~
 - [x] ~~Box at the end of map and fly (**Wining**)~~
-- [ ] Coins to gain more time
+- [ ] Coins to gain more time (random positions)
+- [ ] Integeration with skull End-game **diving into sea , collision with car and time**
 ### Level 2
 - [ ] Two directional
 - [x] ~~Green land~~

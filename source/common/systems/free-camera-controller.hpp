@@ -14,48 +14,201 @@
 #include <random>
 #include <thread>
 #include <filesystem>
+#include <utility>
+// #include <unistd.h>
+#include <chrono>
 #include <irrKlang.h>
 using namespace irrklang;
 
 namespace our
 {
 
+    //  The game state is used to determine the state of the game
+
     // The free camera controller system is responsible for moving every entity which contains a FreeCameraControllerComponent.
     // This system is added as a slightly complex example for how use the ECS framework to implement logic.
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        static Application *app;   // The application in which the state runs
-        bool mouse_locked = false; // Is the mouse locked
-        float levelWidth = 19.0f;  // The width of the level
-        float levelStart = 24.5f;  // The start of the level
-        float levelEnd = -16.0f;   // The end of the level
-        float waterWidth = 2.0f;   // The width of the water
-        float widthLeft = -8.f;    // left width of the level
-        float widthRight = 8.f;    // right width of the level
-        float startFrog = 9.0f;    // The start of the frog
-        int entered = 1;
-        vector<glm::vec3> positionsOfCoins;
+        static Application *app;                                      // The application in which the state runs
+        bool mouse_locked = false;                                    // Is the mouse locked
+        float levelWidth = 19.0f;                                     // The width of the level
+        float levelStart = 24.5f;                                     // The start of the level
+        float levelEnd[5] = {-16.0f, -16.0f, -16.0f, -16.0f, -25.0f}; // The end of the levels
+        float waterWidth = 2.0f;                                      // The width of the water
+        float widthLeft = -8.f;                                       // left width of the level
+        float widthRight = 8.f;                                       // right width of the level
+        float startFrog = 9.0f;                                       // The start of the frog
+        int entered = 1;                                              // number of coins randomed
+        bool frogAboveTrunk = false;
+        int maxHeightAtWin = 10;
+
+        vector<glm::vec3> positionsOfCoins; // positions of the current coins
 
         static bool isFrogMovementAudioRunning;
 
         // Entities in the game
         Entity *monkey = nullptr;
 
+        // map of positons of grass
+        std::map<std::pair<int, int>, int> maze = {
+            {{2, 18}, 1},
+            {{1, 18}, 1},
+            {{0, 18}, 1},
+            {{-1, 18}, 1},
+            {{-2, 18}, 1},
+            {{-2, 17}, 1},
+            {{-2, 16}, 1},
+            {{-2, 15}, 1},
+            {{-2, 14}, 1},
+            {{-2, 13}, 1},
+            {{-2, 12}, 1},
+            {{-2, 11}, 1},
+            {{-2, 10}, 1},
+            {{-3, 15}, 1},
+            {{-4, 15}, 1},
+            {{-5, 15}, 1},
+            {{-6, 15}, 1},
+            {{-3, 14}, 1},
+            {{-4, 14}, 1},
+            {{-5, 14}, 1},
+            {{-6, 14}, 1},
+            {{-3, 13}, 1},
+            {{-4, 13}, 1},
+            {{-5, 13}, 1},
+            {{-6, 13}, 1},
+            {{-4, 12}, 1},
+            {{-4, 11}, 1},
+            {{-4, 10}, 1},
+            {{-4, 9}, 1},
+            {{-4, 8}, 1},
+            {{-4, 7}, 1},
+            {{-4, 6}, 1},
+            {{-4, 5}, 1},
+            {{-4, 4}, 1},
+            {{-4, 3}, 1},
+            {{-4, 2}, 1},
+            {{-4, 1}, 1},
+            {{-4, 0}, 1},
+            {{-4, -1}, 1},
+            {{-4, -2}, 1},
+            {{-5, -1}, 1},
+            {{-6, -1}, 1},
+            {{-5, -2}, 1},
+            {{-6, -2}, 1},
+            {{-6, -3}, 1},
+            {{-6, -4}, 1},
+            {{-6, -5}, 1},
+            {{-6, -6}, 1},
+            {{-6, -7}, 1},
+            {{-6, -8}, 1},
+            {{-6, -9}, 1},
+            {{-6, -10}, 1},
+            {{-6, -11}, 1},
+            {{-6, -12}, 1},
+            {{-6, -13}, 1},
+            {{-6, -14}, 1},
+            {{-6, -15}, 1},
+            {{-6, -16}, 1},
+            {{-6, -17}, 1},
+            {{-6, -18}, 1},
+            {{-6, -19}, 1},
+            {{-6, -18}, 1},
+            {{-5, -18}, 1},
+            {{-4, -18}, 1},
+            {{-6, -19}, 1},
+            {{-5, -19}, 1},
+            {{-4, -19}, 1},
+            {{-4, -20}, 1},
+            {{-4, -21}, 1},
+            {{-4, -22}, 1},
+            {{-4, -23}, 1},
+            {{-4, -24}, 1},
+            {{-4, -22}, 1},
+            {{-3, -22}, 1},
+            {{-2, -22}, 1},
+            {{-1, -22}, 1},
+            {{0, -22}, 1},
+            {{1, -22}, 1},
+            {{2, -22}, 1},
+            {{3, -22}, 1},
+            {{4, -22}, 1},
+            {{5, -22}, 1},
+            {{6, -22}, 1},
+            {{-4, -23}, 1},
+            {{-3, -23}, 1},
+            {{-2, -23}, 1},
+            {{-1, -23}, 1},
+            {{0, -23}, 1},
+            {{1, -23}, 1},
+            {{2, -23}, 1},
+            {{3, -23}, 1},
+            {{4, -23}, 1},
+            {{5, -23}, 1},
+            {{-4, -24}, 1},
+            {{-3, -24}, 1},
+            {{-2, -24}, 1},
+            {{-1, -24}, 1},
+            {{0, -24}, 1},
+            {{1, -24}, 1},
+            {{2, -24}, 1},
+            {{3, -24}, 1},
+            {{4, -24}, 1},
+            {{5, -24}, 1},
+            {{5, -21}, 1},
+            {{5, -20}, 1},
+            {{5, -19}, 1},
+            {{5, -18}, 1},
+            {{5, -17}, 1},
+            {{5, -16}, 1},
+            {{5, -15}, 1},
+            {{5, -14}, 1},
+            {{5, -13}, 1},
+            {{5, -12}, 1},
+            {{5, -11}, 1},
+            {{5, -10}, 1},
+            {{5, -9}, 1},
+            {{5, -8}, 1},
+            {{5, -7}, 1},
+            {{5, -6}, 1},
+            {{5, -5}, 1},
+            {{6, -21}, 1},
+            {{6, -20}, 1},
+            {{6, -19}, 1},
+            {{6, -18}, 1},
+            {{6, -17}, 1},
+            {{6, -16}, 1},
+            {{6, -15}, 1},
+            {{6, -14}, 1},
+            {{6, -13}, 1},
+            {{6, -12}, 1},
+            {{6, -11}, 1},
+            {{6, -10}, 1},
+            {{6, -9}, 1},
+            {{6, -8}, 1},
+            {{6, -7}, 1},
+            {{6, -6}, 1},
+            {{6, -5}, 1},
+            {{7, -5}, 1},
+            {{7, -6}, 1},
+            {{7, -7}, 1},
+        };
+
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
         {
             this->app = app;
-            if (app->level == 1)
+            app->setGameState(GameState::PLAYING);
+            if (app->getLevel() == 1)
             {
-                std::thread audioThread(this->playAudio, "level_1.ogg");
-                audioThread.detach();
+                // std::thread audioThread(this->playAudio, "level_1.ogg");
+                // audioThread.detach();
             }
-            else if (app->level == 2)
+            else if (app->getLevel() == 2)
             {
-                std::thread audioThread(this->playAudio, "level_2.ogg");
-                audioThread.detach();
+                // std::thread audioThread(this->playAudio, "level_2.ogg");
+                // audioThread.detach();
             }
         }
 
@@ -149,24 +302,39 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
-            if (app->isGameOver)
+            if (app->getGameState() == GameState::GAME_OVER)
             {
+                restartLevel(world);
+                return;
+            }
+            else if (app->getGameState() == GameState::FINISH)
+            {
+                if (app->getKeyboard().isPressed(GLFW_KEY_ENTER))
+                {
+                    app->resetGame();
+                    auto &config = app->getConfig()["scene"];
+                    if (config.contains("world_level_1"))
+                    {
+                        world->clear();
+                        world->deserialize(config["world_level_1"]);
+                    }
+                }
                 return;
             }
 
             // Entities in the frame
             Entity *frog = nullptr;
-            Entity *water = nullptr;
             Entity *holdingComponent = nullptr;
             Entity *woodenBox = nullptr;
 
             std::vector<Entity *> cars;
             std::vector<Entity *> trunks;
             std::vector<Entity *> coins;
+            std::vector<Entity *> water;
             for (auto entity : world->getEntities())
             {
                 std::string name = entity->name;
-                if (!frog && name == "frog")
+                if (name == "frog")
                 {
                     frog = entity;
                 }
@@ -174,9 +342,9 @@ namespace our
                 {
                     holdingComponent = entity;
                 }
-                else if (!water && name == "water")
+                else if (name == "water")
                 {
-                    water = entity;
+                    water.push_back(entity);
                 }
                 else if (name == "car")
                 {
@@ -188,38 +356,48 @@ namespace our
                 }
                 else if (name == "coin")
                 {
+                    //? generate random coins in map
                     std::random_device rd;
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> disX(widthLeft, widthRight);
-                    std::uniform_real_distribution<float> disZ((levelEnd + 2) / 2, (startFrog - 2) / 2);
-                    glm::vec3 randomPosition = glm::vec3(disX(gen), 0.0f, disZ(gen));
-                    if (entered == 1)
-                    {
-                        entity->localTransform.position = randomPosition;
-                        // cout << randomPosition.x << " " << randomPosition.y << " " << randomPosition.z << endl;
-                        positionsOfCoins.push_back(randomPosition);
-                        entered++;
-                    }
-                    else if (entered == 2)
+                    std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel() - 1] + 2) / 2, (startFrog - 2) / 2);
+                    glm::vec3 randomPosition = glm::vec3(disX(gen), -1.0f, disZ(gen));
+                    if (entered < 4)
                     {
                         entity->localTransform.position = randomPosition;
                         positionsOfCoins.push_back(randomPosition);
                         entered++;
+                        // printf("entered %d\n", entered);
                     }
-                    // cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
+
                     coins.push_back(entity);
                 }
-                else if (!woodenBox && name == "woodenBox")
+                else if (name == "woodenBox")
                 {
                     woodenBox = entity;
                 }
-                else if (!monkey && name == "monkey")
+                else if (name == "monkey")
                 {
                     monkey = entity;
                 }
             }
             if (!frog)
                 return;
+
+            if (app->getGameState() == GameState::WIN)
+            {
+                // make wooden box flying when collision with frog
+                glm::vec3 deltaPosition = glm::vec3(0.0f, 5 * deltaTime, 0.0f);
+                woodenBox->localTransform.position += deltaPosition; // update position of wooden box
+                frog->localTransform.position += deltaPosition;      // update position of frog
+                position += deltaPosition;                           // update position of camera
+
+                if (position.y >= maxHeightAtWin)
+                {
+                    finishLevel(world);
+                }
+                return;
+            }
 
             // handle frog movement
             if (
@@ -238,15 +416,15 @@ namespace our
                 {
                     isFrogMovementAudioRunning = true;
                     //  Plays frog movement audio in a separate thread
-                    std::thread audioThread(this->playAudio, "frog_move.ogg");
-                    audioThread.detach();
+                    // std::thread audioThread(this->playAudio, "frog_move.ogg");
+                    // audioThread.detach();
                 }
 
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
                 {
                     // prevent the frog from passing through the wall
-                    if (frog->localTransform.position.z < levelEnd)
+                    if (frog->localTransform.position.z < levelEnd[app->getLevel() - 1])
                         return;
 
                     // update the camera position
@@ -284,6 +462,15 @@ namespace our
                     frog->localTransform.position -= right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.rotation.y = glm::pi<float>() * 0.5f;
                 }
+
+                //  Maze
+                int x = round(frog->localTransform.position.x);
+                int z = round(frog->localTransform.position.z);
+
+                if (app->getLevel() == 5 && !maze[{x, z}])
+                {
+                    this->gameOver(world);
+                }
             }
             else
             {
@@ -305,9 +492,10 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    this->gameOver();
+                    this->gameOver(world);
                 }
             }
+            frogAboveTrunk = false;
             for (auto trunk : trunks)
             {
                 // Move the frog with the trunk
@@ -316,6 +504,7 @@ namespace our
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
                     frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
+                    frogAboveTrunk = true;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -328,13 +517,15 @@ namespace our
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
                 }
-                else if (
-                    frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
-                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
-                {
-                    this->gameOver();
-                }
             }
+            if (!frogAboveTrunk)
+                for (auto wat : water)
+                {
+                    if (
+                        frog->localTransform.position.z - waterWidth / 2 < wat->localTransform.position.z &&
+                        frog->localTransform.position.z + waterWidth / 2 > wat->localTransform.position.z)
+                        this->gameOver(world);
+                }
 
             for (auto coin : coins)
             {
@@ -343,67 +534,129 @@ namespace our
                     std::random_device rd;
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> dis(5.0f, 10.0f);
-                    app->levelDuration += int(dis(gen)); //? adding extra random time  (5~10)
-                    world->markForRemoval(coin);         //? removing coin after collision detection
+                    app->addCoins(dis(gen));     //? adding extra random time  (5~10)
+                    world->markForRemoval(coin); //? removing coin after collision detection
                 }
             }
-            if (int(woodenBox->localTransform.position.z) == int(frog->localTransform.position.z))
+            if (
+                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1.0f &&
+                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1.0f)
             {
-                // make wooden box flying when collision with frog
-                glm::vec3 newPosition = woodenBox->localTransform.position + glm::vec3(0.0f, 5 * deltaTime, 0.0f);
-                woodenBox->localTransform.position = newPosition;                         // update position of wooden box
-                frog->localTransform.position = newPosition + glm::vec3(0.0f, 2.5, 0.0f); // update position of frog
-                entity->localTransform.position = newPosition + glm::vec3(0.0f, 3, 2.0f); // update position of camera
-                app->isWinner = true;
+                app->setGameState(GameState::WIN);
             }
 
-            if (app->timeDiff <= 0)
+            if (app->getTimeDiff() <= 0)
             {
-                this->gameOver();
+                this->gameOver(world);
             }
         }
 
         //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
-        void gameOver()
+        void gameOver(World *world)
         {
             if (monkey)
             {
                 monkey->localTransform.position.y = 0;
             }
 
-            app->isGameOver = true;
+            app->setGameState(GameState::GAME_OVER);
 
             //  Plays game over audio in a separate thread
-            std::thread audioThread(this->playAudio, "game_over.ogg");
-            audioThread.detach();
+            // std::thread audioThread(this->playAudio, "game_over.ogg");
+            // audioThread.detach();
         }
 
         //  Plays game over audio
-        static void playAudio(std::string audioFileName)
+        // static void playAudio(std::string audioFileName)
+        // {
+        //     // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
+        //     std::string audioPath = "assets/audios/" + audioFileName;
+        //     ISoundEngine *engine = createIrrKlangDevice();
+        //     std::cout << audioPath << std::endl;
+        //     if (!engine)
+        //         return;
+
+        //     ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
+
+        //     if (!sound)
+        //         return;
+
+        //     ISound *audio = engine->play2D(sound);
+
+        //     while (engine->isCurrentlyPlaying(sound))
+        //         ;
+
+        //     engine->drop(); // delete engine
+
+        //     if (audioFileName == "frog_move.ogg")
+        //     {
+        //         isFrogMovementAudioRunning = false;
+        //     }
+        // }
+
+        void finishLevel(World *world)
         {
-            // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-            std::string audioPath = "assets/audios/" + audioFileName;
-            ISoundEngine *engine = createIrrKlangDevice();
-            std::cout << audioPath << std::endl;
-            if (!engine)
-                return;
-
-            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
-
-            if (!sound)
-                return;
-
-            ISound *audio = engine->play2D(sound);
-
-            while (engine->isCurrentlyPlaying(sound))
-                ;
-
-            engine->drop(); // delete engine
-
-            if (audioFileName == "frog_move.ogg")
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            bool upgraded = app->upgradeLevel();
+            if (!upgraded)
             {
-                isFrogMovementAudioRunning = false;
+                app->setGameState(GameState::FINISH);
+                return;
             }
+            app->setGameState(GameState::PLAYING);
+            auto &config = app->getConfig()["scene"];
+            int newLevel = app->getLevel();
+            std::string levelName = "world_level_" + std::to_string(newLevel);
+            if (config.contains(levelName))
+            {
+                world->clear();
+                world->deserialize(config[levelName]);
+                app->setScore(app->getScore() * 2);
+                int currentScore = app->getScore();
+                if (currentScore >= 100)
+                {
+                    // Check if the score reaches 100 increase the lives by 1
+                    app->setScore(currentScore - 100);
+                    app->setLives(app->getLives() + 1);
+                }
+            }
+        }
+
+        void restartLevel(World *world)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            app->setGameState(GameState::PLAYING);
+            int currentLives = app->getLives();
+            auto &config = app->getConfig()["scene"];
+            std::string levelName;
+            if (currentLives == 0)
+            {
+                app->setLives(3);
+                app->setScore(0);
+                levelName = "world_level_1";
+            }
+            else
+            {
+                app->setLives(currentLives - 1);
+
+                int currentLevel = app->getLevel();
+                levelName = "world_level_" + std::to_string(currentLevel);
+            }
+            if (config.contains(levelName))
+            {
+                world->clear();
+                world->deserialize(config[levelName]);
+            }
+            int currentScore = app->getScore();
+            if (currentScore >= 100)
+            {
+                // Check if the score reaches 100 increase the lives by 1
+                app->setScore(currentScore - 100);
+                app->setLives(app->getLives() + 1);
+            }
+            app->resetTime();
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked

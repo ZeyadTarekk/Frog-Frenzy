@@ -140,6 +140,7 @@ namespace our
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
         transparentCommands.clear();
+        lightComponents.clear();
         for (auto entity : world->getEntities())
         {
             // If we hadn't found a camera yet, we look for a camera in this entity
@@ -148,6 +149,11 @@ namespace our
             // If this entity has a mesh renderer component
             if (auto meshRenderer = entity->getComponent<MeshRendererComponent>(); meshRenderer)
             {
+                // if this component has a light component, we add it to the light components list
+                if (auto light = entity->getComponent<LightComponent>(); light)
+                {
+                    lightComponents.push_back(light);
+                }
                 // We construct a command from it
                 RenderCommand command;
                 command.localToWorld = meshRenderer->getOwner()->getLocalToWorldMatrix();
@@ -226,10 +232,72 @@ namespace our
             //? 2- sets up the material of the object by calling setup func. that sets the material properties
             //? 3- binding to crossponding shader ("transform")
             //? 4- draw mesh  to render object
-
+            // check if the command  is a lighted material or not
+            
+            if (auto material = dynamic_cast<LightMaterial *>(command.material))
+            {
+                if (material != nullptr)
+                {
+                material->setup();
+                // vertex shader
+                // send the camera position to the shader
+                material->shader->set("eye", eyeTransparency);
+                // send the view projection matrix to the shader
+                material->shader->set("VP", VP);
+                // send the model matrix to the shader
+                material->shader->set("M", command.localToWorld);
+                // send the model view matrix to the shader
+                material->shader->set("M_IT", glm::transpose(glm::inverse(command.localToWorld)));
+                // fragment shader
+                // sky light color data
+                // send the sky light color data to the shader
+                material->shader->set("Sky.top", glm::vec3(0.0f, 1.0f, 0.5f));
+                material->shader->set("Sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
+                material->shader->set("Sky.bottom", glm::vec3(0.1f, 0.1f, 0.1f));
+                //  send the light count
+                material->shader->set("light_count",(GLint)lightComponents.size());
+                // loop over the light components and send the light data to the shader
+                for (auto i = 0; i < (int)lightComponents.size(); i++)
+                {
+                    material->shader->set("lights[" + std::to_string(i) + "].type", (GLint)lightComponents[i]->LightType);
+                    // in case of directional light we need to send the direction of the light only
+                    if(lightComponents[i]->LightType==LightType::DIRECTIONAL)
+                    {
+                        // calculate the light direction in world space from entity component 
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        material->shader->set("lights[" + std::to_string(i) + "].direction",directional_direction  );
+                    }
+                    // in case of point light we need to send the position of the light only
+                    else if (lightComponents[i] ->LightType == LightType::POINT)
+                    {
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3] );
+                        material->shader->set("lights[" + std::to_string(i) + "].position",position );
+                    }
+                    // in case of spot light we need to send the position and direction of the light 
+                    else if (lightComponents[i]->LightType == LightType::SPOT)
+                    {
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        // cout the direction of the light
+                        // std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
+                        // we multiply local to world matrix by (0,0,0,1) to get the vec3 and drop the w component
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3]);
+                        material->shader->set("lights[" + std::to_string(i) + "].position", position);
+                        material->shader->set("lights[" + std::to_string(i) + "].direction", directional_direction );
+                        material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lightComponents[i]->cone_angles);
+                    }
+                    // material->shader->set("lights[" + std::to_string(i) + "].color", lightComponents[i]->color);
+                    material->shader->set("lights[" + std::to_string(i) + "].attenuation", lightComponents[i]->attenuation);
+                    material->shader->set("lights[" + std::to_string(i) + "].diffuse", lightComponents[i]->diffuse);
+                    material->shader->set("lights[" + std::to_string(i) + "].specular", lightComponents[i]->specular);
+                }
+                }
+            }
+            else {
             glm::mat4 modelViewProjection = VP * command.localToWorld;
             command.material->setup();
             command.material->shader->set("transform", modelViewProjection);
+            }
+            
             command.mesh->draw();
         }
 
@@ -270,9 +338,75 @@ namespace our
             //? 3- binding to crossponding shader ("transform")
             //? 4- draw mesh  to render object
 
+            // glm::mat4 modelViewProjection = VP * command.localToWorld;
+            // command.material->setup();
+            // command.material->shader->set("transform", modelViewProjection);
+            // command.mesh->draw();
+             
+            if (auto material = dynamic_cast<LightMaterial *>(command.material))
+            {
+                if (material != nullptr)
+                {
+                material->setup();
+                // vertex shader
+                // send the camera position to the shader
+                material->shader->set("eye", eyeTransparency);
+                // send the view projection matrix to the shader
+                material->shader->set("VP", VP);
+                // send the model matrix to the shader
+                material->shader->set("M", command.localToWorld);
+                // send the model view matrix to the shader
+                material->shader->set("M_IT", glm::transpose(glm::inverse(command.localToWorld)));
+                // fragment shader
+                // sky light color data
+                // send the sky light color data to the shader
+                material->shader->set("Sky.top", glm::vec3(0.0f, 1.0f, 0.5f));
+                material->shader->set("Sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
+                material->shader->set("Sky.bottom", glm::vec3(0.1f, 0.1f, 0.1f));
+                //  send the light count
+                material->shader->set("light_count",(GLint)lightComponents.size());
+                // loop over the light components and send the light data to the shader
+                for (auto i = 0; i < (int)lightComponents.size(); i++)
+                {
+                    material->shader->set("lights[" + std::to_string(i) + "].type", (GLint)lightComponents[i]->LightType);
+                    // in case of directional light we need to send the direction of the light only
+                    if(lightComponents[i]->LightType==LightType::DIRECTIONAL)
+                    {
+                        // calculate the light direction in world space from entity component 
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        material->shader->set("lights[" + std::to_string(i) + "].direction",directional_direction  );
+                    }
+                    // in case of point light we need to send the position of the light only
+                    else if (lightComponents[i] ->LightType == LightType::POINT)
+                    {
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3] );
+                        material->shader->set("lights[" + std::to_string(i) + "].position",position );
+                    }
+                    // in case of spot light we need to send the position and direction of the light 
+                    else if (lightComponents[i]->LightType == LightType::SPOT)
+                    {
+                        glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
+                        // cout the direction of the light
+                        // std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
+                        // we multiply local to world matrix by (0,0,0,1) to get the vec3 and drop the w component
+                        glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3]);
+                        material->shader->set("lights[" + std::to_string(i) + "].position", position);
+                        material->shader->set("lights[" + std::to_string(i) + "].direction", directional_direction );
+                        material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lightComponents[i]->cone_angles);
+                    }
+                    // material->shader->set("lights[" + std::to_string(i) + "].color", lightComponents[i]->color);
+                    material->shader->set("lights[" + std::to_string(i) + "].attenuation", lightComponents[i]->attenuation);
+                    material->shader->set("lights[" + std::to_string(i) + "].diffuse", lightComponents[i]->diffuse);
+                    material->shader->set("lights[" + std::to_string(i) + "].specular", lightComponents[i]->specular);
+                }
+                }
+            }
+            else {
             glm::mat4 modelViewProjection = VP * command.localToWorld;
             command.material->setup();
             command.material->shader->set("transform", modelViewProjection);
+            }
+            
             command.mesh->draw();
         }
 

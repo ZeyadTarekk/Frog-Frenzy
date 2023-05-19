@@ -24,6 +24,14 @@ namespace our
         glm::i16vec2 size;
         bool isFullscreen;
     };
+    enum class GameState
+    {
+        PLAYING,
+        GAME_OVER,
+        WIN,
+        PAUSE,
+        FINISH
+    };
 
     class Application; // Forward declaration
 
@@ -57,7 +65,17 @@ namespace our
     class Application
     {
     private:
+        time_t startTime, endTime;
         float volume = 0.5;
+        int levelDuration = 60;
+        int timerValue = levelDuration;
+        int timeDiff = 60;
+        int level = 1;
+        int maxLevel = 5;
+        GameState gameState = GameState::PLAYING;
+        int score = 80;
+        int lives = 3;
+        int timeDiffOnPause;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -78,13 +96,20 @@ namespace our
         virtual void setupCallbacks();                        // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
-        time_t startTime, endTime;
-        int timeDiff;
-        int levelDuration = 60;
-        int level = 1;
-        bool isGameOver = false; // Is the game over ?
-        bool isWinner = false;   // level up
-
+        void setTimeDiffOnPause(int timeDiff)
+        {
+            this->timeDiffOnPause = timeDiff;
+        }
+        int getTimeDiffOnPause()
+        {
+            return this->timeDiffOnPause;
+        }
+        void setCurrentTimeDiff(int timeDiff)
+        {
+            this->timeDiff = timeDiff;
+            timerValue = timeDiff;
+            time(&startTime);
+        }
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
         // On destruction, delete all the states
@@ -149,6 +174,85 @@ namespace our
         float getVolume()
         {
             return volume;
+        }
+
+        int getLevel()
+        {
+            return level;
+        }
+
+        int getLevelDuration()
+        {
+            return levelDuration;
+        }
+
+        int getTimeDiff()
+        {
+            return timeDiff;
+        }
+
+        void addCoins(int addedTime)
+        {
+
+            timerValue += addedTime;
+        }
+
+        bool upgradeLevel()
+        {
+            if (level == maxLevel)
+            {
+                return false;
+            }
+            level++;
+            levelDuration -= 10;
+            timerValue = levelDuration;
+            timeDiff = levelDuration;
+            time(&startTime);
+            return true;
+        }
+
+        void resetGame() {
+            level = 1;
+            levelDuration = 60;
+            timerValue = levelDuration;
+            timeDiff = levelDuration;
+            score = 0;
+            lives = 3;
+            gameState = GameState::PLAYING;
+            time(&startTime);
+        }
+
+        void resetTime()
+        {
+            time(&startTime);
+            timeDiff = levelDuration;
+        }
+
+        GameState
+        getGameState()
+        {
+            return gameState;
+        }
+
+        void setGameState(GameState gameState)
+        {
+            this->gameState = gameState;
+        }
+        void setScore(int score)
+        {
+            this->score = score;
+        }
+        int getScore()
+        {
+            return this->score;
+        }
+        void setLives(int lives)
+        {
+            this->lives = lives;
+        }
+        int getLives()
+        {
+            return this->lives;
         }
 
         // Class Getters.

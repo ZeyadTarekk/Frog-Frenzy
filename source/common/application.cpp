@@ -299,15 +299,16 @@ int our::Application::run(int run_for_frames)
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
 
-        if (currentState == states["play"] && !isGameOver && !isWinner)
+        if (currentState == states["play"] && gameState == GameState::PLAYING)
         {
+            ImGuiStyle *style = &ImGui::GetStyle();
+            style->WindowMenuButtonPosition = ImGuiDir_None;
+
             time(&endTime);
 
             ImGui::SetNextWindowSize(ImVec2(1280, 200));
             ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoMove);
             ImGui::SetWindowPos(" ", ImVec2(0, 0));
-
-            ImGuiStyle *style = &ImGui::GetStyle();
 
             ImVec4 *colors = style->Colors;
             colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -325,7 +326,7 @@ int our::Application::run(int run_for_frames)
             std::string t1 = "00:";
             if (timeDiff != 0) //  stop at 0
             {
-                timeDiff = levelDuration - abs(startTime - endTime);
+                timeDiff = timerValue - abs(startTime - endTime);
             }
             std::string t2 = std::to_string(int(timeDiff));
             std::string countdown;
@@ -337,10 +338,66 @@ int our::Application::run(int run_for_frames)
             ImGui::Text(countdown.c_str());
             ImGui::PopFont();
 
+            //? draw lives
+            ImGui::SetCursorPosX(600);
+            ImGui::SetCursorPosY(40);
+
+            ImGui::PushFont(font6);
+            std::string livesLine = "Lives: " + std::to_string(lives);
+            ImGui::Text(livesLine.c_str());
+            ImGui::PopFont();
+
+            //? draw score
             ImGui::SetCursorPosX(960);
-            ImGui::SetCursorPosY(60);
+            ImGui::SetCursorPosY(40);
+
+            ImGui::PushFont(font6);
+            std::string l1 = "Score: ";
+            std::string l2 = std::to_string(score);
+            std::string totalLine = l1 + l2;
+            ImGui::Text(totalLine.c_str());
+            ImGui::PopFont();
+
+            //? drawing levels
+            ImGui::SetCursorPosX(960);
+            ImGui::SetCursorPosY(90);
+
+            ImGui::PushFont(font6);
+            std::string lev1 = "Level: ";
+            std::string lev2 = std::to_string(this->getLevel());
+            std::string levelLine = lev1 + lev2;
+            ImGui::Text(levelLine.c_str());
+            ImGui::PopFont();
 
             ImGui::End();
+        }
+        //? Congratulations (Winning State)
+        if (this->getLevel() == 5 && gameState == GameState::WIN)
+        {
+            ImGuiStyle *style = &ImGui::GetStyle();
+            style->WindowMenuButtonPosition = ImGuiDir_None;
+            ImGui::SetNextWindowSize(ImVec2(1280, 720));
+            ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoMove);
+            ImGui::SetWindowPos(" ", ImVec2(0, 0));
+
+            ImVec4 *colors = style->Colors;
+            colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Border] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGrip] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Text] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+            ImGui::SetCursorPosX(440);
+            ImGui::SetCursorPosY(360);
+            ImGui::PushFont(font1);
+
+            std::string finalText = "Congratulations!";
+            ImGui::Text(finalText.c_str());
+            ImGui::PopFont();
         }
 
         // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
