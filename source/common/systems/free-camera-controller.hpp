@@ -306,6 +306,19 @@ namespace our
             {
                 restartLevel(world);
                 return;
+            } else if (app->getGameState() == GameState::FINISH)
+            {
+                if (app->getKeyboard().isPressed(GLFW_KEY_ENTER))
+                {
+                    app->resetGame();
+                    auto &config = app->getConfig()["scene"];
+                    if (config.contains("world_level_1"))
+                    {
+                        world->clear();
+                        world->deserialize(config["world_level_1"]);
+                    }
+                }
+                return;
             }
 
             // Entities in the frame
@@ -589,8 +602,13 @@ namespace our
 
         void finishLevel(World *world)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-            app->upgradeLevel();
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            bool upgraded = app->upgradeLevel();
+            if (!upgraded)
+            {
+                app->setGameState(GameState::FINISH);
+                return;
+            }
             app->setGameState(GameState::PLAYING);
             auto &config = app->getConfig()["scene"];
             int newLevel = app->getLevel();
