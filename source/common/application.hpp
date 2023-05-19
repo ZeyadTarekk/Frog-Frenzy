@@ -68,14 +68,14 @@ namespace our
         time_t startTime, endTime;
         float volume = 0.5;
         int levelDuration = 80;
-        int timerValue = levelDuration;
-        int timeDiff = 80;
+        int timerValue = levelDuration; // current timer value
+        int timeDiff = 80;              // starter timer
         int level = 1;
-        int maxLevel = 5;
-        GameState gameState = GameState::PLAYING;
+        int maxLevel = 5;                         // number of levels displying
+        GameState gameState = GameState::PLAYING; // This is the default game state
         int score = 80;
-        int lives = 3;
-        int timeDiffOnPause;
+        int lives = 3;       // number of lives in the game
+        int timeDiffOnPause; // time difference between pause and resume
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -171,22 +171,22 @@ namespace our
                 volume -= 0.1;
         }
 
-        float getVolume()
+        float getVolume() const
         {
             return volume;
         }
 
-        int getLevel()
+        int getLevel() const
         {
             return level;
         }
 
-        int getLevelDuration()
+        int getLevelDuration() const
         {
             return levelDuration;
         }
 
-        int getTimeDiff()
+        int getTimeDiff() const
         {
             return timeDiff;
         }
@@ -211,7 +211,8 @@ namespace our
             return true;
         }
 
-        void resetGame() {
+        void resetGame()
+        {
             level = 1;
             levelDuration = 80;
             timerValue = levelDuration;
@@ -242,7 +243,7 @@ namespace our
         {
             this->score = score;
         }
-        int getScore()
+        int getScore() const
         {
             return this->score;
         }
@@ -250,7 +251,7 @@ namespace our
         {
             this->lives = lives;
         }
-        int getLives()
+        int getLives() const
         {
             return this->lives;
         }

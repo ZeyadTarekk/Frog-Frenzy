@@ -372,9 +372,10 @@ int our::Application::run(int run_for_frames)
 
             ImGui::End();
         }
-        //? Congratulations (Winning State )
+        //? Congratulations (Winning State)
         if (gameState == GameState::FINISH)
         {
+            //? configuration of displayed text
             ImGuiStyle *style = &ImGui::GetStyle();
             style->WindowMenuButtonPosition = ImGuiDir_None;
             ImGui::SetNextWindowSize(ImVec2(1280, 720));
@@ -392,7 +393,7 @@ int our::Application::run(int run_for_frames)
             colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
             colors[ImGuiCol_Text] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 
-            ImGui::SetCursorPosX(440);
+            ImGui::SetCursorPosX(360);
             ImGui::SetCursorPosY(360);
             ImGui::PushFont(font1);
 
