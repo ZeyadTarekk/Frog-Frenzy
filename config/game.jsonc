@@ -1612,6 +1612,26 @@
         ]
       },
       {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
         "position": [-10, 0, 0],
         "rotation": [0, -90, 0],
         "scale": [25, 6, 5],
@@ -2638,6 +2658,26 @@
       {
         "rotation": [0, 90, 0],
         "position": [3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
         "scale": [0.5, 0.5, 0.5],
         "name": "coin",
         "components": [
@@ -3862,6 +3902,26 @@
             "type": "Movement",
             "name": "coin",
             "id": "2",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
           }

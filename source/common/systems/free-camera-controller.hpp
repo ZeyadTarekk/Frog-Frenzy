@@ -39,7 +39,7 @@ namespace our
         float widthLeft = -8.f;                                       // left width of the level
         float widthRight = 8.f;                                       // right width of the level
         float startFrog = 9.0f;                                       // The start of the frog
-        int entered = 1;                                              // number of coins randomed
+        int enteredCoins = 1;                                         // number of coins randomed
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
@@ -359,11 +359,11 @@ namespace our
                     std::uniform_real_distribution<float> disX(widthLeft, widthRight);
                     std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel() - 1] + 2) / 2, (startFrog - 2) / 2);
                     glm::vec3 randomPosition = glm::vec3(disX(gen), -1.0f, disZ(gen));
-                    if (entered < 4)
+                    if (enteredCoins < 4)
                     {
                         entity->localTransform.position = randomPosition;
                         positionsOfCoins.push_back(randomPosition);
-                        entered++;
+                        enteredCoins++;
                         // printf("entered %d\n", entered);
                     }
 
@@ -610,6 +610,9 @@ namespace our
                     app->setLives(app->getLives() + 1);
                 }
             }
+            // clear coins
+            enteredCoins = 1;
+            positionsOfCoins.clear();
         }
 
         void restartLevel(World *world)
