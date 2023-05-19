@@ -3854,6 +3854,156 @@
           }
         ]
       }
+    ],
+    "world_level_5": [
+      {
+        "position": [0, 10, 0],
+        "rotation": [45, 45, 0],
+        "scale": [5, 5, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "sphere",
+            "material": "moon"
+          },
+          {
+            "type": "Movement",
+            "angularVelocity": [0, 90, 0]
+          },
+          {
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.15, 0.25, 0.35],
+            "specular": [0.093, 0.094, 0.096],
+            "attenuation": [0.0005, 0.0005, 0.0005],
+            "cone_angles": [-50,50],
+            "direction": [1, 0, 0]
+        }
+        ]
+      },
+      {
+        "position": [2, 1, 21],
+        "components": [
+          {
+            "type": "Camera"
+          },
+          {
+            "type": "Free Camera Controller"
+          }
+        ],
+        "children": [
+          {
+            "rotation": [0, 0, 0],
+            "position": [0, -10, -2],
+            "name": "monkey",
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "monkey",
+                "material": "monkey"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "position": [0, -1.5, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.005, 0.001, 0.01],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "maze",
+            "material": "grass"
+          }
+        ]
+      },
+      {
+        "position": [0, -1.5, 7],
+        "rotation": [-90, 0, 0],
+        "scale": [10, 50, 5],
+        "name": "water",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "water"
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [7, -3, -6],
+        "scale": [0.5, 0.4, 0.5],
+        "name": "woodenBox",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "woodenBox",
+            "material": "woodenBoxMaterial"
+          },
+          {
+            "name": "woodenBox",
+            "type": "Movement",
+            "angularVelocity": [0, 0, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [-90, 90, 0],
+        "position": [2, -1, 18],
+        "scale": [0.05, 0.05, 0.05],
+        "name": "frog",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "frog",
+            "material": "frog"
+          }
+        ]
+      },
+      {
+        "rotation": [0, 0, 0],
+        "position": [0, 0, -22],
+        "scale": [2, 5, 2],
+        "name": "block",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "material": "blockMaterial",
+            "mesh": "rock"
+          },
+          {
+            "type": "Movement",
+            "name": "block"
+          }
+        ]
+      },
+      {
+        "position": [-10, 0, 0],
+        "rotation": [0, -90, 0],
+        "scale": [25, 6, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "fence"
+          }
+        ]
+      },
+      {
+        "position": [10, 0, 0],
+        "rotation": [0, -90, 0],
+        "scale": [25, 6, 5],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "fence"
+          }
+        ]
+      }
     ]
   }
 }
