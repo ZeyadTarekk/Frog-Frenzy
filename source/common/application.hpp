@@ -70,7 +70,7 @@ namespace our
         int timeDiff = 60;
         int level = 1;
         GameState gameState = GameState::PLAYING;
-        int score = 10;
+        int score = 80;
         int lives = 3;
 
     protected:
@@ -238,8 +238,7 @@ namespace our
         }
         void setScore(int score)
         {
-            if (score > 0)
-                this->score = score;
+            this->score = score;
         }
         int getScore()
         {

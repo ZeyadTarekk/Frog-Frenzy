@@ -454,7 +454,7 @@ namespace our
                 }
 
                 //  Maze
-                std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
+                // std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
                 int x = round(frog->localTransform.position.x);
                 int z = round(frog->localTransform.position.z);
 
@@ -535,9 +535,6 @@ namespace our
                 frog->localTransform.position.x - woodenBox->localTransform.position.x < 1.0f &&
                 frog->localTransform.position.x - woodenBox->localTransform.position.x > -1.0f)
             {
-                std::cout << "Entered win\n";
-                std::cout << frog->localTransform.position.z << " " << frog->localTransform.position.x << std::endl;
-                std::cout << woodenBox->localTransform.position.z << " " << woodenBox->localTransform.position.x << std::endl;
                 app->setGameState(GameState::WIN);
             }
 
@@ -603,10 +600,11 @@ namespace our
                 world->clear();
                 world->deserialize(config[levelName]);
                 app->setScore(app->getScore() * 2);
-                if (app->getScore() >= 100)
+                int currentScore = app->getScore();
+                if (currentScore >= 100)
                 {
                     // Check if the score reaches 100 increase the lives by 1
-                    app->setScore(0);
+                    app->setScore(currentScore - 100);
                     app->setLives(app->getLives() + 1);
                 }
             }
@@ -622,6 +620,7 @@ namespace our
             if (currentLives == 0)
             {
                 app->setLives(3);
+                app->setScore(0);
                 levelName = "world_level_1";
             }
             else
@@ -635,6 +634,13 @@ namespace our
             {
                 world->clear();
                 world->deserialize(config[levelName]);
+            }
+            int currentScore = app->getScore();
+            if (currentScore >= 100)
+            {
+                // Check if the score reaches 100 increase the lives by 1
+                app->setScore(currentScore - 100);
+                app->setLives(app->getLives() + 1);
             }
             app->resetTime();
         }
