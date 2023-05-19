@@ -196,10 +196,11 @@ namespace our
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
         {
-            std::cout << "Entered enter\n";
             this->app = app;
             app->setGameState(GameState::PLAYING);
-            app->setSoundEngine(createIrrKlangDevice());
+            ISoundEngine *soundEngine = app->getSoundEngine();
+            if (soundEngine == nullptr)
+                app->setSoundEngine(createIrrKlangDevice());
             int level = app->getLevel();
 
             // true to make it repeat infinitly
@@ -278,6 +279,15 @@ namespace our
             // If the LEFT SHIFT key is pressed, we multiply the position sensitivity by the speed up factor
             if (app->getKeyboard().isPressed(GLFW_KEY_LEFT_SHIFT))
                 current_sensitivity *= controller->speedupFactor;
+
+            if (app->getKeyboard().isPressed(GLFW_KEY_1))
+            {
+                app->decreaseSound();
+            }
+            if (app->getKeyboard().isPressed(GLFW_KEY_2))
+            {
+                app->increaseSound();
+            }
 
             // We change the camera position based on the keys WASD/QE
             // S & W moves the player back and forth
@@ -679,8 +689,6 @@ namespace our
                 mouse_locked = false;
                 app->getMouse().unlockMouse(app->getWindow());
             }
-            // Drop the engine on exit
-            app->getSoundEngine()->drop();
         }
     };
 
