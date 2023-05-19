@@ -3922,7 +3922,7 @@
         "position": [0, -1.5, 7],
         "rotation": [-90, 0, 0],
         "scale": [10, 50, 5],
-        "name": "water",
+        "name": "water_maze",
         "components": [
           {
             "type": "Mesh Renderer",
