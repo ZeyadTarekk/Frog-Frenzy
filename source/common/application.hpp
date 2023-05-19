@@ -66,8 +66,8 @@ namespace our
     private:
         time_t startTime, endTime;
         float volume = 0.5;
-        int timeDiff;
         int levelDuration = 60;
+        int timeDiff = 60;
         int level = 1;
         GameState gameState = GameState::PLAYING;
         int score = 10;
@@ -181,6 +181,7 @@ namespace our
         {
             level++;
             levelDuration -= 10;
+            timeDiff = levelDuration;
             time(&startTime);
         }
         GameState getGameState()

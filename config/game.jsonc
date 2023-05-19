@@ -50,6 +50,7 @@
         "cube": "assets/models/cube.obj",
         "frog": "assets/models/frog.obj",
         "plane": "assets/models/plane.obj",
+        "maze": "assets/models/maze.obj",
         "sphere": "assets/models/sphere.obj",
         "car": "assets/models/car.obj",
         "trunkWood": "assets/models/trunkwood.obj",
