@@ -193,8 +193,8 @@ namespace our
 
         void addCoins(int addedTime)
         {
-            levelDuration += addedTime;
-            timerValue = levelDuration;
+
+            timerValue += addedTime;
         }
 
         bool upgradeLevel()
