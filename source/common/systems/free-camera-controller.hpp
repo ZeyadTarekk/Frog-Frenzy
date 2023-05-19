@@ -196,17 +196,14 @@ namespace our
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
         {
+            std::cout << "Entered enter\n";
             this->app = app;
             app->setGameState(GameState::PLAYING);
             app->setSoundEngine(createIrrKlangDevice());
-            if (app->getLevel() == 1)
-            {
-                // true to make it repeat infinitly
-                playAudio("level_1.ogg", true);
-            }
-            else if (app->getLevel() == 2)
-            {
-            }
+            int level = app->getLevel();
+
+            // true to make it repeat infinitly
+            playAudio("level_1.ogg", true, true);
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -566,12 +563,16 @@ namespace our
         }
 
         //  Plays game over audio
-        void playAudio(std::string audioFileName, bool repeat = false)
+        void playAudio(std::string audioFileName, bool repeat = false, bool stopAll = false)
         {
             ISoundEngine *soundEngine = app->getSoundEngine();
             std::string audioPath = "assets/audios/" + audioFileName;
             if (!soundEngine)
                 return;
+            if (stopAll)
+            {
+                soundEngine->stopAllSounds();
+            }
             if (!soundEngine->isCurrentlyPlaying(audioPath.c_str()))
             {
                 // repeat is a boolean
@@ -613,6 +614,27 @@ namespace our
             // clear coins
             enteredCoins = 1;
             positionsOfCoins.clear();
+            if (newLevel == 1)
+            {
+                playAudio("level_1.ogg", true, true);
+            }
+            else if (newLevel == 2)
+            {
+                playAudio("level_2.mp3", true, true);
+            }
+            else if (newLevel == 3)
+            {
+
+                playAudio("level_3.mp3", true, true);
+            }
+            else if (newLevel == 4)
+            {
+                playAudio("level_4.mp3", true, true);
+            }
+            else if (newLevel == 5)
+            {
+                playAudio("level_5.mp3", true, true);
+            }
         }
 
         void restartLevel(World *world)
