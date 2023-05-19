@@ -202,13 +202,13 @@ namespace our
             app->setGameState(GameState::PLAYING);
             if (app->getLevel() == 1)
             {
-                // std::thread audioThread(this->playAudio, "level_1.ogg");
-                // audioThread.detach();
+                std::thread audioThread(&our::Application::playAudio, app, "menu.ogg");
+                audioThread.detach();
             }
             else if (app->getLevel() == 2)
             {
-                // std::thread audioThread(this->playAudio, "level_2.ogg");
-                // audioThread.detach();
+                std::thread audioThread(&our::Application::playAudio, app, "menu.ogg");
+                audioThread.detach();
             }
         }
 
@@ -415,9 +415,8 @@ namespace our
                 if (!isFrogMovementAudioRunning)
                 {
                     isFrogMovementAudioRunning = true;
-                    //  Plays frog movement audio in a separate thread
-                    // std::thread audioThread(this->playAudio, "frog_move.ogg");
-                    // audioThread.detach();
+                    std::thread audioThread(&our::Application::playAudio, app, "frog_move.ogg");
+                    audioThread.detach();
                 }
 
                 // UP

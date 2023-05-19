@@ -8,6 +8,7 @@
 #include <systems/movement.hpp>
 #include <systems/car-generator.hpp>
 #include <asset-loader.hpp>
+#include <thread>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate : public our::State
@@ -65,6 +66,10 @@ class Playstate : public our::State
         {
             // If the escape  key is pressed in this frame, go to the play state
             getApp()->changeState("menu");
+
+            //?  Plays menu  audio in a separate thread
+            std::thread audioThread(&our::Application::playAudio, getApp(), "menu.ogg");
+            audioThread.detach();
         }
 
         if (keyboard.justPressed(GLFW_KEY_P))

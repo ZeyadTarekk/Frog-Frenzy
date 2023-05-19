@@ -14,6 +14,9 @@
 #include "input/mouse.hpp"
 #include <time.h>
 #include <iostream>
+#include <irrKlang.h>
+#include <thread>
+using namespace irrklang;
 namespace our
 {
 
@@ -211,7 +214,8 @@ namespace our
             return true;
         }
 
-        void resetGame() {
+        void resetGame()
+        {
             level = 1;
             levelDuration = 60;
             timerValue = levelDuration;
@@ -255,8 +259,32 @@ namespace our
             return this->lives;
         }
 
+        void playAudio(std::string audioFileName)
+        {
+            std::string audioPath = "assets/audios/" + audioFileName;
+            ISoundEngine *engine = createIrrKlangDevice();
+            printf("%s", audioFileName.c_str());
+            if (!engine)
+                return;
+
+            ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
+
+            if (!sound)
+                return;
+
+            ISound *audio = engine->play2D(sound);
+
+            while (engine->isCurrentlyPlaying(sound))
+                ;
+
+            engine->drop(); // delete engine
+        }
+
         // Class Getters.
-        GLFWwindow *getWindow() { return window; }
+        GLFWwindow *getWindow()
+        {
+            return window;
+        }
         [[nodiscard]] const GLFWwindow *getWindow() const { return window; }
         Keyboard &getKeyboard() { return keyboard; }
         [[nodiscard]] const Keyboard &getKeyboard() const { return keyboard; }

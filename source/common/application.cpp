@@ -9,7 +9,7 @@
 #include <queue>
 #include <tuple>
 #include <filesystem>
-
+#include <thread>
 #include <flags/flags.h>
 #include <time.h>
 
@@ -298,6 +298,11 @@ int our::Application::run(int run_for_frames)
 
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
+        if (currentState == states["menu"])
+        {
+            // std::thread audioThread(&Application::playAudio, this, "menu.ogg");
+            // audioThread.detach();
+        }
 
         if (currentState == states["play"] && gameState == GameState::PLAYING)
         {
