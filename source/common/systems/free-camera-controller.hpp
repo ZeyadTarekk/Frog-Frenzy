@@ -202,14 +202,11 @@ namespace our
             soundEngine = createIrrKlangDevice();
             if (app->getLevel() == 1)
             {
+                // true to make it repeat infinitly
                 playAudio("level_1.ogg", true);
-                // std::thread audioThread(this->playAudio, "level_1.ogg", true);
-                // audioThread.detach();
             }
             else if (app->getLevel() == 2)
             {
-                // std::thread audioThread(this->playAudio, "level_2.ogg");
-                // audioThread.detach();
             }
         }
 
@@ -577,6 +574,8 @@ namespace our
                 return;
             if (!soundEngine->isCurrentlyPlaying(audioPath.c_str()))
             {
+                // repeat is a boolean
+                // when this boolean is true the audio repeats after it's finished
                 soundEngine->play2D(audioPath.c_str(), repeat);
             }
         }
@@ -655,6 +654,8 @@ namespace our
                 mouse_locked = false;
                 app->getMouse().unlockMouse(app->getWindow());
             }
+            // Drop the engine on exit
+            soundEngine->drop();
         }
     };
 
