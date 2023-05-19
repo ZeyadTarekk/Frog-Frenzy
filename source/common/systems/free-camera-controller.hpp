@@ -347,7 +347,7 @@ namespace our
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> disX(widthLeft, widthRight);
                     std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel() - 1] + 2) / 2, (startFrog - 2) / 2);
-                    glm::vec3 randomPosition = glm::vec3(disX(gen), 0.0f, disZ(gen));
+                    glm::vec3 randomPosition = glm::vec3(disX(gen), -1.0f, disZ(gen));
                     if (entered == 1)
                     {
                         entity->localTransform.position = randomPosition;

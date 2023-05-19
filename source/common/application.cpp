@@ -371,6 +371,34 @@ int our::Application::run(int run_for_frames)
 
             ImGui::End();
         }
+        //? Congratulations (Winning State )
+        if (this->getLevel() == 5 && gameState == GameState::WIN)
+        {
+            ImGuiStyle *style = &ImGui::GetStyle();
+            style->WindowMenuButtonPosition = ImGuiDir_None;
+            ImGui::SetNextWindowSize(ImVec2(1280, 720));
+            ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoMove);
+            ImGui::SetWindowPos(" ", ImVec2(0, 0));
+
+            ImVec4 *colors = style->Colors;
+            colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Border] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGrip] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Text] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+            ImGui::SetCursorPosX(440);
+            ImGui::SetCursorPosY(360);
+            ImGui::PushFont(font1);
+
+            std::string finalText = "Congratulations!";
+            ImGui::Text(finalText.c_str());
+            ImGui::PopFont();
+        }
 
         // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
         // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.
