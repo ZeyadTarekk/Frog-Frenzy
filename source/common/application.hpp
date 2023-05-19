@@ -185,6 +185,12 @@ namespace our
             time(&startTime);
         }
 
+        void resetTime()
+        {
+            time(&startTime);
+            timeDiff = levelDuration;
+        }
+
         // void restartGame(World *world)
         // {
         //     int currentLives = this->getLives();

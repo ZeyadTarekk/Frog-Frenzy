@@ -159,6 +159,7 @@ namespace our
 
             if (app->getGameState() == GameState::GAME_OVER)
             {
+                restartLevel(world);
                 return;
             }
 
@@ -328,9 +329,7 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    this->gameOver();
-                    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                    this->restartLevel(world);
+                    this->gameOver(world);
                 }
             }
             for (auto trunk : trunks)
@@ -358,9 +357,7 @@ namespace our
                     frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
                 {
                     std::cout << "Entered water\n";
-                    this->gameOver();
-                    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                    this->restartLevel(world);
+                    this->gameOver(world);
                 }
             }
 
@@ -389,14 +386,12 @@ namespace our
 
             if (app->getTimeDiff() <= 0)
             {
-                this->gameOver();
-                // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                this->restartLevel(world);
+                this->gameOver(world);
             }
         }
 
         //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
-        void gameOver()
+        void gameOver(World *world)
         {
             if (monkey)
             {
@@ -462,34 +457,29 @@ namespace our
 
         void restartLevel(World *world)
         {
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            app->setGameState(GameState::PLAYING);
             int currentLives = app->getLives();
             auto &config = app->getConfig()["scene"];
+            std::string levelName;
             if (currentLives == 0)
             {
-                app->setGameState(GameState::PLAYING);
-                std::string levelName = "world_level_1";
-                if (config.contains(levelName))
-                {
-                    world->clear();
-                    world->deserialize(config[levelName]);
-                    app->setLives(3);
-                }
+                app->setLives(3);
+                levelName = "world_level_1";
             }
             else
             {
-
                 app->setLives(currentLives - 1);
-                app->setGameState(GameState::PLAYING);
 
                 int currentLevel = app->getLevel();
-                std::string levelName = "world_level_" + std::to_string(currentLevel);
-                std::cout << levelName << std::endl;
-                if (config.contains(levelName))
-                {
-                    world->clear();
-                    world->deserialize(config[levelName]);
-                }
+                levelName = "world_level_" + std::to_string(currentLevel);
             }
+            if (config.contains(levelName))
+            {
+                world->clear();
+                world->deserialize(config[levelName]);
+            }
+            app->resetTime();
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
