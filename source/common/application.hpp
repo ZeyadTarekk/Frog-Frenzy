@@ -67,11 +67,13 @@ namespace our
         time_t startTime, endTime;
         float volume = 0.5;
         int levelDuration = 60;
+        int timerValue = levelDuration;
         int timeDiff = 60;
         int level = 1;
         GameState gameState = GameState::PLAYING;
         int score = 80;
         int lives = 3;
+        int timeDiffOnPause;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -92,6 +94,20 @@ namespace our
         virtual void setupCallbacks();                        // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
+        void setTimeDiffOnPause(int timeDiff)
+        {
+            this->timeDiffOnPause = timeDiff;
+        }
+        int getTimeDiffOnPause()
+        {
+            return this->timeDiffOnPause;
+        }
+        void setCurrentTimeDiff(int timeDiff)
+        {
+            this->timeDiff = timeDiff;
+            timerValue = timeDiff;
+            time(&startTime);
+        }
         // Create an application with following configuration
         Application(const nlohmann::json &app_config) : app_config(app_config) {}
         // On destruction, delete all the states
@@ -176,12 +192,14 @@ namespace our
         void addCoins(int addedTime)
         {
             levelDuration += addedTime;
+            timerValue = levelDuration;
         }
 
         void upgradeLevel()
         {
             level++;
             levelDuration -= 10;
+            timerValue = levelDuration;
             timeDiff = levelDuration;
             time(&startTime);
         }
@@ -191,40 +209,6 @@ namespace our
             time(&startTime);
             timeDiff = levelDuration;
         }
-
-        // void restartGame(World *world)
-        // {
-        //     int currentLives = this->getLives();
-        //     auto &config = this->getConfig()["scene"];
-        //     if (currentLives == 0)
-        //     {
-        //         this->setGameState(GameState::PLAYING);
-        //         std::string levelName = "world_level_1";
-        //         if (config.contains(levelName))
-        //         {
-        //             world->clear();
-        //             world->deserialize(config[levelName]);
-        //             this->setLives(3);
-        //             this->level = 1;
-        //         }
-        //     }
-        //     else
-        //     {
-
-        //         this->setLives(currentLives - 1);
-        //         this->setGameState(GameState::PLAYING);
-
-        //         int currentLevel = this->getLevel();
-        //         std::string levelName = "world_level_" + std::to_string(currentLevel);
-        //         std::cout << levelName << std::endl;
-        //         if (config.contains(levelName))
-        //         {
-        //             world->clear();
-        //             world->deserialize(config[levelName]);
-        //             this->level = currentLevel;
-        //         }
-        //     }
-        // }
 
         GameState
         getGameState()

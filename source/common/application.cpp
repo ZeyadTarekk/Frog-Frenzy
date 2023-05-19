@@ -299,7 +299,7 @@ int our::Application::run(int run_for_frames)
         if (currentState)
             currentState->onImmediateGui(); // Call to run any required Immediate GUI.
 
-        if (currentState == states["play"] && gameState != GameState::GAME_OVER && gameState != GameState::WIN)
+        if (currentState == states["play"] && gameState != GameState::GAME_OVER && gameState != GameState::WIN && gameState != GameState::PAUSE)
         {
             ImGuiStyle *style = &ImGui::GetStyle();
             style->WindowMenuButtonPosition = ImGuiDir_None;
@@ -326,7 +326,7 @@ int our::Application::run(int run_for_frames)
             std::string t1 = "00:";
             if (timeDiff != 0) //  stop at 0
             {
-                timeDiff = levelDuration - abs(startTime - endTime);
+                timeDiff = timerValue - abs(startTime - endTime);
             }
             std::string t2 = std::to_string(int(timeDiff));
             std::string countdown;
