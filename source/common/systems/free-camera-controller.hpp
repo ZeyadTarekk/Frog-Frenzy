@@ -14,6 +14,7 @@
 #include <random>
 #include <thread>
 #include <filesystem>
+#include <utility>
 // #include <unistd.h>
 #include <chrono>
 #include <irrKlang.h>
@@ -48,6 +49,11 @@ namespace our
 
         // Entities in the game
         Entity *monkey = nullptr;
+
+        std::map<std::pair<int, int>, int> maze = {
+            {{2, 18}, 1}, {{1, 18}, 1}, {{0, 18}, 1}, {{-1, 18}, 1}, {{-2, 18}, 1},
+            {{-2, 17}, 1}, {{-2, 16}, 1}, {{-2, 15}, 1}, {{-2, 14}, 1}, {{-2, 13}, 1}, {{-2, 12}, 1}, {{-2, 11}, 1}, {{-2, 10}, 1},
+        };
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -306,6 +312,15 @@ namespace our
                     position -= right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.position -= right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.rotation.y = glm::pi<float>() * 0.5f;
+                }
+
+                //  Maze
+                std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
+                int x = round(frog->localTransform.position.x);
+                int z = round(frog->localTransform.position.z);
+                
+                if(!maze[{x,z}]) {
+                    this->gameOver();
                 }
             }
             else

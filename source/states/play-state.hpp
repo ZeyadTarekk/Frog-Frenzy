@@ -26,8 +26,8 @@ class Playstate: public our::State {
             our::deserializeAllAssets(config["assets"]);
         }
         // If we have a world in the scene config, we use it to populate our world
-        if(config.contains("world_level_1")){
-            world.deserialize(config["world_level_1"]);
+        if(config.contains("world_level_3")){
+            world.deserialize(config["world_level_3"]);
         }
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
