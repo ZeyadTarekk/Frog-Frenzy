@@ -371,7 +371,7 @@ int our::Application::run(int run_for_frames)
 
             ImGui::End();
         }
-        //? Congratulations (Winning State )
+        //? Congratulations (Winning State)
         if (this->getLevel() == 5 && gameState == GameState::WIN)
         {
             ImGuiStyle *style = &ImGui::GetStyle();

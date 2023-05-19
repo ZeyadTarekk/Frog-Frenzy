@@ -306,7 +306,8 @@ namespace our
             {
                 restartLevel(world);
                 return;
-            } else if (app->getGameState() == GameState::FINISH)
+            }
+            else if (app->getGameState() == GameState::FINISH)
             {
                 if (app->getKeyboard().isPressed(GLFW_KEY_ENTER))
                 {
@@ -361,17 +362,12 @@ namespace our
                     std::uniform_real_distribution<float> disX(widthLeft, widthRight);
                     std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel() - 1] + 2) / 2, (startFrog - 2) / 2);
                     glm::vec3 randomPosition = glm::vec3(disX(gen), -1.0f, disZ(gen));
-                    if (entered == 1)
+                    if (entered < 4)
                     {
                         entity->localTransform.position = randomPosition;
                         positionsOfCoins.push_back(randomPosition);
                         entered++;
-                    }
-                    else if (entered == 2)
-                    {
-                        entity->localTransform.position = randomPosition;
-                        positionsOfCoins.push_back(randomPosition);
-                        entered++;
+                        // printf("entered %d\n", entered);
                     }
 
                     coins.push_back(entity);
