@@ -338,6 +338,14 @@ int our::Application::run(int run_for_frames)
             ImGui::Text(countdown.c_str());
             ImGui::PopFont();
 
+            ImGui::SetCursorPosX(600);
+            ImGui::SetCursorPosY(40);
+
+            ImGui::PushFont(font6);
+            std::string livesLine = "Lives: " + std::to_string(lives);
+            ImGui::Text(livesLine.c_str());
+            ImGui::PopFont();
+
             ImGui::SetCursorPosX(960);
             ImGui::SetCursorPosY(40);
 

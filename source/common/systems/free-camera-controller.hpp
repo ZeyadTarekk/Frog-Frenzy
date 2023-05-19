@@ -181,6 +181,7 @@ namespace our
 
             if (app->getGameState() == GameState::GAME_OVER)
             {
+                restartLevel(world);
                 return;
             }
 
@@ -359,7 +360,7 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    this->gameOver();
+                    this->gameOver(world);
                 }
             }
             frogAboveTrunk = false;
@@ -382,7 +383,13 @@ namespace our
                         // Update the frog's position based on the trunk's movement
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
-                    frogAboveTrunk = true;
+                }
+                else if (
+                    frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
+                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
+                {
+                    std::cout << "Entered water\n";
+                    this->gameOver(world);
                 }
             }
             if (!frogAboveTrunk)
@@ -406,22 +413,25 @@ namespace our
                 }
             }
             if (
-                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1 &&
-                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1 &&
-                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1 &&
-                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1)
+                frog->localTransform.position.z - woodenBox->localTransform.position.z < 1.0f &&
+                frog->localTransform.position.z - woodenBox->localTransform.position.z > -1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x < 1.0f &&
+                frog->localTransform.position.x - woodenBox->localTransform.position.x > -1.0f)
             {
+                std::cout << "Entered win\n";
+                std::cout << frog->localTransform.position.z << " " << frog->localTransform.position.x << std::endl;
+                std::cout << woodenBox->localTransform.position.z << " " << woodenBox->localTransform.position.x << std::endl;
                 app->setGameState(GameState::WIN);
             }
 
             if (app->getTimeDiff() <= 0)
             {
-                this->gameOver();
+                this->gameOver(world);
             }
         }
 
         //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
-        void gameOver()
+        void gameOver(World *world)
         {
             if (monkey)
             {
@@ -476,7 +486,40 @@ namespace our
                 world->clear();
                 world->deserialize(config[levelName]);
                 app->setScore(app->getScore() * 2);
+                if (app->getScore() >= 100)
+                {
+                    // Check if the score reaches 100 increase the lives by 1
+                    app->setScore(0);
+                    app->setLives(app->getLives() + 1);
+                }
             }
+        }
+
+        void restartLevel(World *world)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            app->setGameState(GameState::PLAYING);
+            int currentLives = app->getLives();
+            auto &config = app->getConfig()["scene"];
+            std::string levelName;
+            if (currentLives == 0)
+            {
+                app->setLives(3);
+                levelName = "world_level_1";
+            }
+            else
+            {
+                app->setLives(currentLives - 1);
+
+                int currentLevel = app->getLevel();
+                levelName = "world_level_" + std::to_string(currentLevel);
+            }
+            if (config.contains(levelName))
+            {
+                world->clear();
+                world->deserialize(config[levelName]);
+            }
+            app->resetTime();
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
