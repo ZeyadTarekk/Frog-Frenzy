@@ -338,6 +338,7 @@ int our::Application::run(int run_for_frames)
             ImGui::Text(countdown.c_str());
             ImGui::PopFont();
 
+            //? draw lives
             ImGui::SetCursorPosX(600);
             ImGui::SetCursorPosY(40);
 
@@ -346,6 +347,7 @@ int our::Application::run(int run_for_frames)
             ImGui::Text(livesLine.c_str());
             ImGui::PopFont();
 
+            //? draw score
             ImGui::SetCursorPosX(960);
             ImGui::SetCursorPosY(40);
 
@@ -354,6 +356,17 @@ int our::Application::run(int run_for_frames)
             std::string l2 = std::to_string(score);
             std::string totalLine = l1 + l2;
             ImGui::Text(totalLine.c_str());
+            ImGui::PopFont();
+
+            //? drawing levels
+            ImGui::SetCursorPosX(960);
+            ImGui::SetCursorPosY(90);
+
+            ImGui::PushFont(font6);
+            std::string lev1 = "Level: ";
+            std::string lev2 = std::to_string(this->getLevel());
+            std::string levelLine = lev1 + lev2;
+            ImGui::Text(levelLine.c_str());
             ImGui::PopFont();
 
             ImGui::End();
