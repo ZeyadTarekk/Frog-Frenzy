@@ -39,7 +39,7 @@ namespace our
         float widthRight = 8.f;    // right width of the level
         float startFrog = 9.0f;    // The start of the frog
         int entered = 1;
-
+        bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
 
         vector<glm::vec3> positionsOfCoins;
@@ -164,13 +164,13 @@ namespace our
 
             // Entities in the frame
             Entity *frog = nullptr;
-            Entity *water = nullptr;
             Entity *holdingComponent = nullptr;
             Entity *woodenBox = nullptr;
 
             std::vector<Entity *> cars;
             std::vector<Entity *> trunks;
             std::vector<Entity *> coins;
+            std::vector<Entity *> water;
             for (auto entity : world->getEntities())
             {
                 std::string name = entity->name;
@@ -184,7 +184,7 @@ namespace our
                 }
                 else if (name == "water")
                 {
-                    water = entity;
+                    water.push_back(entity);
                 }
                 else if (name == "car")
                 {
@@ -331,6 +331,7 @@ namespace our
                     this->gameOver();
                 }
             }
+            frogAboveTrunk = false;
             for (auto trunk : trunks)
             {
                 // Move the frog with the trunk
@@ -350,14 +351,17 @@ namespace our
                         // Update the frog's position based on the trunk's movement
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
-                }
-                else if (
-                    frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
-                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
-                {
-                    this->gameOver();
+                    frogAboveTrunk = true;
                 }
             }
+            if (!frogAboveTrunk)
+                for (auto wat : water)
+                {
+                    if (
+                        frog->localTransform.position.z - waterWidth / 2 < wat->localTransform.position.z &&
+                        frog->localTransform.position.z + waterWidth / 2 > wat->localTransform.position.z)
+                        this->gameOver();
+                }
 
             for (auto coin : coins)
             {
