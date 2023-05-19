@@ -30,15 +30,15 @@ namespace our
     // For more information, see "common/components/free-camera-controller.hpp"
     class FreeCameraControllerSystem
     {
-        static Application *app;   // The application in which the state runs
-        bool mouse_locked = false; // Is the mouse locked
-        float levelWidth = 19.0f;  // The width of the level
-        float levelStart = 24.5f;  // The start of the level
-        float levelEnd[5] = {-16.0f, -16.0f, -16.0f, -16.0f, -25.0f};   // The end of the level
-        float waterWidth = 2.0f;   // The width of the water
-        float widthLeft = -8.f;    // left width of the level
-        float widthRight = 8.f;    // right width of the level
-        float startFrog = 9.0f;    // The start of the frog
+        static Application *app;                                      // The application in which the state runs
+        bool mouse_locked = false;                                    // Is the mouse locked
+        float levelWidth = 19.0f;                                     // The width of the level
+        float levelStart = 24.5f;                                     // The start of the level
+        float levelEnd[5] = {-16.0f, -16.0f, -16.0f, -16.0f, -25.0f}; // The end of the level
+        float waterWidth = 2.0f;                                      // The width of the water
+        float widthLeft = -8.f;                                       // left width of the level
+        float widthRight = 8.f;                                       // right width of the level
+        float startFrog = 9.0f;                                       // The start of the frog
         int entered = 1;
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
@@ -51,24 +51,146 @@ namespace our
         Entity *monkey = nullptr;
 
         std::map<std::pair<int, int>, int> maze = {
-            {{2, 18}, 1}, {{1, 18}, 1}, {{0, 18}, 1}, {{-1, 18}, 1}, {{-2, 18}, 1},
-            {{-2, 17}, 1}, {{-2, 16}, 1}, {{-2, 15}, 1}, {{-2, 14}, 1}, {{-2, 13}, 1}, {{-2, 12}, 1}, {{-2, 11}, 1}, {{-2, 10}, 1},
-            {{-3, 15}, 1}, {{-4, 15}, 1}, {{-5, 15}, 1}, {{-6, 15}, 1},
-            {{-3, 14}, 1}, {{-4, 14}, 1}, {{-5, 14}, 1}, {{-6, 14}, 1},
-            {{-3, 13}, 1}, {{-4, 13}, 1}, {{-5, 13}, 1}, {{-6, 13}, 1},
-            {{-4, 12}, 1}, {{-4, 11}, 1}, {{-4, 10}, 1}, {{-4, 9}, 1}, {{-4, 8}, 1}, {{-4, 7}, 1}, {{-4, 6}, 1}, {{-4, 5}, 1}, {{-4, 4}, 1}, {{-4, 3}, 1}, {{-4, 2}, 1}, {{-4, 1}, 1}, {{-4, 0}, 1}, {{-4, -1}, 1}, {{-4, -2}, 1},
-            {{-5, -1}, 1}, {{-6, -1}, 1}, 
-            {{-5, -2}, 1}, {{-6, -2}, 1}, 
-            {{-6, -3}, 1}, {{-6, -4}, 1}, {{-6, -5}, 1}, {{-6, -6}, 1}, {{-6, -7}, 1}, {{-6, -8}, 1}, {{-6, -9}, 1}, {{-6, -10}, 1}, {{-6, -11}, 1}, {{-6, -12}, 1}, {{-6, -13}, 1}, {{-6, -14}, 1}, {{-6, -15}, 1}, {{-6, -16}, 1}, {{-6, -17}, 1}, {{-6, -18}, 1}, {{-6, -19}, 1}, 
-            {{-6, -18}, 1}, {{-5, -18}, 1}, {{-4, -18}, 1},
-            {{-6, -19}, 1}, {{-5, -19}, 1}, {{-4, -19}, 1},
-            {{-4, -20}, 1}, {{-4, -21}, 1}, {{-4, -22}, 1}, {{-4, -23}, 1}, {{-4, -24}, 1},
-            {{-4, -22}, 1}, {{-3, -22}, 1}, {{-2, -22}, 1}, {{-1, -22}, 1}, {{0, -22}, 1}, {{1, -22}, 1}, {{2, -22}, 1}, {{3, -22}, 1}, {{4, -22}, 1}, {{5, -22}, 1}, {{6, -22}, 1},
-            {{-4, -23}, 1}, {{-3, -23}, 1}, {{-2, -23}, 1}, {{-1, -23}, 1}, {{0, -23}, 1}, {{1, -23}, 1}, {{2, -23}, 1}, {{3, -23}, 1}, {{4, -23}, 1}, {{5, -23}, 1},
-            {{-4, -24}, 1}, {{-3, -24}, 1}, {{-2, -24}, 1}, {{-1, -24}, 1}, {{0, -24}, 1}, {{1, -24}, 1}, {{2, -24}, 1}, {{3, -24}, 1}, {{4, -24}, 1}, {{5, -24}, 1},
-            {{5, -21}, 1}, {{5, -20}, 1}, {{5, -19}, 1}, {{5, -18}, 1}, {{5, -17}, 1}, {{5, -16}, 1}, {{5, -15}, 1}, {{5, -14}, 1}, {{5, -13}, 1}, {{5, -12}, 1}, {{5, -11}, 1}, {{5, -10}, 1}, {{5, -9}, 1}, {{5, -8}, 1}, {{5, -7}, 1}, {{5, -6}, 1}, {{5, -5}, 1},
-            {{6, -21}, 1}, {{6, -20}, 1}, {{6, -19}, 1}, {{6, -18}, 1}, {{6, -17}, 1}, {{6, -16}, 1}, {{6, -15}, 1}, {{6, -14}, 1}, {{6, -13}, 1}, {{6, -12}, 1}, {{6, -11}, 1}, {{6, -10}, 1}, {{6, -9}, 1}, {{6, -8}, 1}, {{6, -7}, 1}, {{6, -6}, 1}, {{6, -5}, 1},
-            {{7, -5}, 1}, {{7, -6}, 1}, {{7, -7}, 1},
+            {{2, 18}, 1},
+            {{1, 18}, 1},
+            {{0, 18}, 1},
+            {{-1, 18}, 1},
+            {{-2, 18}, 1},
+            {{-2, 17}, 1},
+            {{-2, 16}, 1},
+            {{-2, 15}, 1},
+            {{-2, 14}, 1},
+            {{-2, 13}, 1},
+            {{-2, 12}, 1},
+            {{-2, 11}, 1},
+            {{-2, 10}, 1},
+            {{-3, 15}, 1},
+            {{-4, 15}, 1},
+            {{-5, 15}, 1},
+            {{-6, 15}, 1},
+            {{-3, 14}, 1},
+            {{-4, 14}, 1},
+            {{-5, 14}, 1},
+            {{-6, 14}, 1},
+            {{-3, 13}, 1},
+            {{-4, 13}, 1},
+            {{-5, 13}, 1},
+            {{-6, 13}, 1},
+            {{-4, 12}, 1},
+            {{-4, 11}, 1},
+            {{-4, 10}, 1},
+            {{-4, 9}, 1},
+            {{-4, 8}, 1},
+            {{-4, 7}, 1},
+            {{-4, 6}, 1},
+            {{-4, 5}, 1},
+            {{-4, 4}, 1},
+            {{-4, 3}, 1},
+            {{-4, 2}, 1},
+            {{-4, 1}, 1},
+            {{-4, 0}, 1},
+            {{-4, -1}, 1},
+            {{-4, -2}, 1},
+            {{-5, -1}, 1},
+            {{-6, -1}, 1},
+            {{-5, -2}, 1},
+            {{-6, -2}, 1},
+            {{-6, -3}, 1},
+            {{-6, -4}, 1},
+            {{-6, -5}, 1},
+            {{-6, -6}, 1},
+            {{-6, -7}, 1},
+            {{-6, -8}, 1},
+            {{-6, -9}, 1},
+            {{-6, -10}, 1},
+            {{-6, -11}, 1},
+            {{-6, -12}, 1},
+            {{-6, -13}, 1},
+            {{-6, -14}, 1},
+            {{-6, -15}, 1},
+            {{-6, -16}, 1},
+            {{-6, -17}, 1},
+            {{-6, -18}, 1},
+            {{-6, -19}, 1},
+            {{-6, -18}, 1},
+            {{-5, -18}, 1},
+            {{-4, -18}, 1},
+            {{-6, -19}, 1},
+            {{-5, -19}, 1},
+            {{-4, -19}, 1},
+            {{-4, -20}, 1},
+            {{-4, -21}, 1},
+            {{-4, -22}, 1},
+            {{-4, -23}, 1},
+            {{-4, -24}, 1},
+            {{-4, -22}, 1},
+            {{-3, -22}, 1},
+            {{-2, -22}, 1},
+            {{-1, -22}, 1},
+            {{0, -22}, 1},
+            {{1, -22}, 1},
+            {{2, -22}, 1},
+            {{3, -22}, 1},
+            {{4, -22}, 1},
+            {{5, -22}, 1},
+            {{6, -22}, 1},
+            {{-4, -23}, 1},
+            {{-3, -23}, 1},
+            {{-2, -23}, 1},
+            {{-1, -23}, 1},
+            {{0, -23}, 1},
+            {{1, -23}, 1},
+            {{2, -23}, 1},
+            {{3, -23}, 1},
+            {{4, -23}, 1},
+            {{5, -23}, 1},
+            {{-4, -24}, 1},
+            {{-3, -24}, 1},
+            {{-2, -24}, 1},
+            {{-1, -24}, 1},
+            {{0, -24}, 1},
+            {{1, -24}, 1},
+            {{2, -24}, 1},
+            {{3, -24}, 1},
+            {{4, -24}, 1},
+            {{5, -24}, 1},
+            {{5, -21}, 1},
+            {{5, -20}, 1},
+            {{5, -19}, 1},
+            {{5, -18}, 1},
+            {{5, -17}, 1},
+            {{5, -16}, 1},
+            {{5, -15}, 1},
+            {{5, -14}, 1},
+            {{5, -13}, 1},
+            {{5, -12}, 1},
+            {{5, -11}, 1},
+            {{5, -10}, 1},
+            {{5, -9}, 1},
+            {{5, -8}, 1},
+            {{5, -7}, 1},
+            {{5, -6}, 1},
+            {{5, -5}, 1},
+            {{6, -21}, 1},
+            {{6, -20}, 1},
+            {{6, -19}, 1},
+            {{6, -18}, 1},
+            {{6, -17}, 1},
+            {{6, -16}, 1},
+            {{6, -15}, 1},
+            {{6, -14}, 1},
+            {{6, -13}, 1},
+            {{6, -12}, 1},
+            {{6, -11}, 1},
+            {{6, -10}, 1},
+            {{6, -9}, 1},
+            {{6, -8}, 1},
+            {{6, -7}, 1},
+            {{6, -6}, 1},
+            {{6, -5}, 1},
+            {{7, -5}, 1},
+            {{7, -6}, 1},
+            {{7, -7}, 1},
         };
 
     public:
@@ -335,9 +457,10 @@ namespace our
                 std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
                 int x = round(frog->localTransform.position.x);
                 int z = round(frog->localTransform.position.z);
-                
-                if(app->getLevel() == 5 && !maze[{x,z}]) {
-                    this->gameOver();
+
+                if (app->getLevel() == 5 && !maze[{x, z}])
+                {
+                    this->gameOver(world);
                 }
             }
             else
@@ -372,6 +495,7 @@ namespace our
                     frog->localTransform.position.z < trunk->localTransform.position.z + 1.0f &&
                     frog->localTransform.position.z > trunk->localTransform.position.z - 1.0f)
                 {
+                    frogAboveTrunk = true;
                     // get the movement component of the trunk to know it's speed
                     MovementComponent *movement = trunk->getComponent<MovementComponent>();
                     // frog->localTransform.position.y += 1;
@@ -384,13 +508,6 @@ namespace our
                         frog->localTransform.position += deltaTime * movement->linearVelocity;
                     }
                 }
-                else if (
-                    frog->localTransform.position.z - waterWidth / 2 < water->localTransform.position.z &&
-                    frog->localTransform.position.z + waterWidth / 2 > water->localTransform.position.z)
-                {
-                    std::cout << "Entered water\n";
-                    this->gameOver(world);
-                }
             }
             if (!frogAboveTrunk)
                 for (auto wat : water)
@@ -398,7 +515,7 @@ namespace our
                     if (
                         frog->localTransform.position.z - waterWidth / 2 < wat->localTransform.position.z &&
                         frog->localTransform.position.z + waterWidth / 2 > wat->localTransform.position.z)
-                        this->gameOver();
+                        this->gameOver(world);
                 }
 
             for (auto coin : coins)
