@@ -454,7 +454,7 @@ namespace our
                 }
 
                 //  Maze
-                std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
+                // std::cout << "X: " << frog->localTransform.position.x << " Y: " << frog->localTransform.position.y << " Z: " << frog->localTransform.position.z << endl;
                 int x = round(frog->localTransform.position.x);
                 int z = round(frog->localTransform.position.z);
 
@@ -535,9 +535,9 @@ namespace our
                 frog->localTransform.position.x - woodenBox->localTransform.position.x < 1.0f &&
                 frog->localTransform.position.x - woodenBox->localTransform.position.x > -1.0f)
             {
-                std::cout << "Entered win\n";
-                std::cout << frog->localTransform.position.z << " " << frog->localTransform.position.x << std::endl;
-                std::cout << woodenBox->localTransform.position.z << " " << woodenBox->localTransform.position.x << std::endl;
+                // std::cout << "Entered win\n";
+                // std::cout << frog->localTransform.position.z << " " << frog->localTransform.position.x << std::endl;
+                // std::cout << woodenBox->localTransform.position.z << " " << woodenBox->localTransform.position.x << std::endl;
                 app->setGameState(GameState::WIN);
             }
 
