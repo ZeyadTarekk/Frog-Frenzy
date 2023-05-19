@@ -42,10 +42,8 @@ namespace our
         int entered = 1;                                              // number of coins randomed
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
-
+        ISoundEngine *soundEngine;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
-
-        static bool isFrogMovementAudioRunning;
 
         // Entities in the game
         Entity *monkey = nullptr;
@@ -200,9 +198,11 @@ namespace our
         {
             this->app = app;
             app->setGameState(GameState::PLAYING);
+            soundEngine = createIrrKlangDevice();
             if (app->getLevel() == 1)
             {
-                // std::thread audioThread(this->playAudio, "level_1.ogg");
+                playAudio("level_1.ogg", true);
+                // std::thread audioThread(this->playAudio, "level_1.ogg", true);
                 // audioThread.detach();
             }
             else if (app->getLevel() == 2)
@@ -411,14 +411,9 @@ namespace our
                 frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
                 frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
 
-                //  prevent multiple audios playing at the same time
-                if (!isFrogMovementAudioRunning)
-                {
-                    isFrogMovementAudioRunning = true;
-                    //  Plays frog movement audio in a separate thread
-                    // std::thread audioThread(this->playAudio, "frog_move.ogg");
-                    // audioThread.detach();
-                }
+                playAudio("frog_move.ogg");
+                // std::thread audioThread(this->playAudio, "frog_move.ogg");
+                // audioThread.detach();
 
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
@@ -564,37 +559,22 @@ namespace our
             app->setGameState(GameState::GAME_OVER);
 
             //  Plays game over audio in a separate thread
+            playAudio("game_over.ogg");
             // std::thread audioThread(this->playAudio, "game_over.ogg");
             // audioThread.detach();
         }
 
         //  Plays game over audio
-        // static void playAudio(std::string audioFileName)
-        // {
-        //     // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-        //     std::string audioPath = "assets/audios/" + audioFileName;
-        //     ISoundEngine *engine = createIrrKlangDevice();
-        //     std::cout << audioPath << std::endl;
-        //     if (!engine)
-        //         return;
-
-        //     ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
-
-        //     if (!sound)
-        //         return;
-
-        //     ISound *audio = engine->play2D(sound);
-
-        //     while (engine->isCurrentlyPlaying(sound))
-        //         ;
-
-        //     engine->drop(); // delete engine
-
-        //     if (audioFileName == "frog_move.ogg")
-        //     {
-        //         isFrogMovementAudioRunning = false;
-        //     }
-        // }
+        void playAudio(std::string audioFileName, bool repeat = false)
+        {
+            std::string audioPath = "assets/audios/" + audioFileName;
+            if (!soundEngine)
+                return;
+            if (!soundEngine->isCurrentlyPlaying(audioPath.c_str()))
+            {
+                soundEngine->play2D(audioPath.c_str(), repeat);
+            }
+        }
 
         void finishLevel(World *world)
         {
@@ -670,6 +650,5 @@ namespace our
     };
 
     //  Definition of static data members
-    bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
     Application *our::FreeCameraControllerSystem::app = nullptr;
 }
