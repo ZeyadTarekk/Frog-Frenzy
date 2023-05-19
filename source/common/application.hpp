@@ -78,7 +78,7 @@ namespace our
         int score = 80;
         int lives = 3;
         int timeDiffOnPause;
-        ISoundEngine *soundEngine;
+        ISoundEngine *soundEngine = nullptr;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -167,20 +167,35 @@ namespace our
         void close()
         {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
+            if (soundEngine != nullptr)
+            {
+                // Drop the engine on exit
+                soundEngine->drop();
+            }
         }
 
         // Increase the sound volume
         void increaseSound()
         {
+            if (soundEngine == nullptr)
+                this->soundEngine = createIrrKlangDevice();
             if (volume < 1)
+            {
                 volume += 0.1;
+                this->soundEngine->setSoundVolume(volume);
+            }
         }
 
         // Decrease the sound volume
         void decreaseSound()
         {
+            if (soundEngine == nullptr)
+                this->soundEngine = createIrrKlangDevice();
             if (volume > 0)
+            {
                 volume -= 0.1;
+                this->soundEngine->setSoundVolume(volume);
+            }
         }
 
         float getVolume()
@@ -223,7 +238,8 @@ namespace our
             return true;
         }
 
-        void resetGame() {
+        void resetGame()
+        {
             level = 1;
             levelDuration = 80;
             timerValue = levelDuration;
