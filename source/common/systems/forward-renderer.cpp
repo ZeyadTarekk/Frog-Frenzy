@@ -278,7 +278,7 @@ namespace our
                     {
                         glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
                         // cout the direction of the light
-                        std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
+                        // std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
                         // we multiply local to world matrix by (0,0,0,1) to get the vec3 and drop the w component
                         glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3]);
                         material->shader->set("lights[" + std::to_string(i) + "].position", position);
@@ -387,7 +387,7 @@ namespace our
                     {
                         glm::vec3 directional_direction = glm::normalize(lightComponents[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(lightComponents[i]->getOwner()->localTransform.rotation ,0));
                         // cout the direction of the light
-                        std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
+                        // std::cout << "directional_direction: " << directional_direction.x << " " << directional_direction.y << " " << directional_direction.z << std::endl;
                         // we multiply local to world matrix by (0,0,0,1) to get the vec3 and drop the w component
                         glm::vec3 position = glm::vec3(lightComponents[i]->getOwner()->getLocalToWorldMatrix()[3]);
                         material->shader->set("lights[" + std::to_string(i) + "].position", position);
