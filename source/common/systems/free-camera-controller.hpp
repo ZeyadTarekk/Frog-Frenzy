@@ -637,8 +637,7 @@ namespace our
             std::string levelName;
             if (currentLives == 0)
             {
-                app->setLives(3);
-                app->setScore(0);
+                app->resetGame();
                 levelName = "world_level_1";
             }
             else

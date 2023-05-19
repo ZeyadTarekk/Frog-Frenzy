@@ -319,6 +319,7 @@ int our::Application::run(int run_for_frames)
             colors[ImGuiCol_TitleBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
             colors[ImGuiCol_TitleBgActive] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
             colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+            colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
             ImGui::PushFont(font5);
             ImGui::SetCursorPosX(0);
@@ -372,7 +373,7 @@ int our::Application::run(int run_for_frames)
             ImGui::End();
         }
         //? Congratulations (Winning State )
-        if (this->getLevel() == 5 && gameState == GameState::WIN)
+        if (gameState == GameState::FINISH)
         {
             ImGuiStyle *style = &ImGui::GetStyle();
             style->WindowMenuButtonPosition = ImGuiDir_None;
@@ -398,6 +399,7 @@ int our::Application::run(int run_for_frames)
             std::string finalText = "Congratulations!";
             ImGui::Text(finalText.c_str());
             ImGui::PopFont();
+            ImGui::End();
         }
 
         // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
