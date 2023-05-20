@@ -268,6 +268,10 @@ namespace our
         }
         void setScore(int score)
         {
+            // setted to 0 after lost lives
+            if (score == 0)
+                score = 20;
+
             this->score = score;
         }
         int getScore()
