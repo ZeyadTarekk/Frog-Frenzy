@@ -567,6 +567,12 @@ namespace our
             app->setGameState(GameState::GAME_OVER);
 
             playAudio("game_over.ogg");
+
+            if (app->getGameState() == GameState::GAME_OVER && app->getLives() == 0)
+            {
+                app->changeState("gameOver");
+                printf("Game Over");
+            }
         }
 
         //  Plays game over audio
