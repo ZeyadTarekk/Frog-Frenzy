@@ -126,9 +126,9 @@ target_link_libraries(GAME_APPLICATION glfw ${CMAKE_SOURCE_DIR}/vendor/irrklang/
 add_custom_command(
         TARGET GAME_APPLICATION POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/bin/winx64-visualStudio/ikpFlac.dll 
-        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/bin/winx64-visualStudio/ikpMP3.dll
-        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/bin/winx64-visualStudio/irrKlang.dll
+        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/dlls/winx64-visualStudio/ikpFlac.dll 
+        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/dlls/winx64-visualStudio/ikpMP3.dll
+        ${PROJECT_SOURCE_DIR}/vendor/irrKlang/dlls/winx64-visualStudio/irrKlang.dll
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
         COMMENT "Copying irrKlang DLLs to the bin directory"
 )
