@@ -563,16 +563,17 @@ namespace our
             {
                 monkey->localTransform.position.y = 0;
             }
-
             app->setGameState(GameState::GAME_OVER);
 
-            playAudio("game_over.ogg");
-
+            // handle end game
             if (app->getGameState() == GameState::GAME_OVER && app->getLives() == 0)
             {
-                app->changeState("gameOver");
-                printf("Game Over");
+                playAudio("game_over.mp3");
+                app->changeState("end-game");
+                return;
             }
+
+            playAudio("game_over.ogg");
         }
 
         //  Plays game over audio

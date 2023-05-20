@@ -13,7 +13,7 @@
 // This struct is used to store the location and size of a button and the code it should execute when clicked
 
 // This state shows how to use some of the abstractions we created to make a menu.
-class GameOverstate : public our::State
+class EndGameState : public our::State
 {
 
     // A meterial holding the menu shader and the menu texture to draw
@@ -93,7 +93,7 @@ class GameOverstate : public our::State
         // Get a reference to the keyboard object
         auto &keyboard = getApp()->getKeyboard();
 
-        if (keyboard.justPressed(GLFW_KEY_ENTER))
+        if (keyboard.justPressed(GLFW_KEY_ENTER) || keyboard.justPressed(GLFW_KEY_ESCAPE) || keyboard.justPressed(GLFW_KEY_SPACE))
         {
             // If the space key is pressed in this frame, go to the play state
             getApp()->changeState("menu");
