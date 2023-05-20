@@ -238,13 +238,14 @@ namespace our
             return true;
         }
 
-        void resetGame()
+        void resetGame(bool resetScore = true)
         {
             level = 1;
             levelDuration = 80;
             timerValue = levelDuration;
             timeDiff = levelDuration;
-            score = 0;
+            if (resetScore)
+                score = 0;
             lives = 3;
             gameState = GameState::PLAYING;
             time(&startTime);

@@ -568,7 +568,7 @@ namespace our
             // handle end game
             if (app->getGameState() == GameState::GAME_OVER && app->getLives() == 0)
             {
-                playAudio("game_over.mp3");
+                playAudio("game_over.mp3", false, true);
                 app->changeState("end-game");
                 return;
             }
