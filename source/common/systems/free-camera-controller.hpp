@@ -573,7 +573,6 @@ namespace our
             {
                 monkey->localTransform.position.y = 0;
             }
-
             app->setGameState(GameState::GAME_OVER);
 
             playAudio("game_over.ogg");
@@ -661,8 +660,9 @@ namespace our
             std::string levelName;
             if (currentLives == 0)
             {
-                app->resetGame();
-                levelName = "world_level_1";
+                playAudio("game_over.mp3", false, true);
+                app->changeState("end-game");
+                return;
             }
             else
             {

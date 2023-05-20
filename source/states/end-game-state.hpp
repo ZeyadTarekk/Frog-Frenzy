@@ -11,33 +11,9 @@
 #include <array>
 
 // This struct is used to store the location and size of a button and the code it should execute when clicked
-struct Button
-{
-    // The position (of the top-left corner) of the button and its size in pixels
-    glm::vec2 position, size;
-    // The function that should be excuted when the button is clicked. It takes no arguments and returns nothing.
-    std::function<void()> action;
-
-    // This function returns true if the given vector v is inside the button. Otherwise, false is returned.
-    // This is used to check if the mouse is hovering over the button.
-    bool isInside(const glm::vec2 &v) const
-    {
-        return position.x <= v.x && position.y <= v.y &&
-               v.x <= position.x + size.x &&
-               v.y <= position.y + size.y;
-    }
-
-    // This function returns the local to world matrix to transform a rectangle of size 1x1
-    // (and whose top-left corner is at the origin) to be the button.
-    glm::mat4 getLocalToWorld() const
-    {
-        return glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f)) *
-               glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
-    }
-};
 
 // This state shows how to use some of the abstractions we created to make a menu.
-class Menustate : public our::State
+class EndGameState : public our::State
 {
 
     // A meterial holding the menu shader and the menu texture to draw
@@ -61,7 +37,7 @@ class Menustate : public our::State
         menuMaterial->shader->attach("assets/shaders/textured.frag", GL_FRAGMENT_SHADER);
         menuMaterial->shader->link();
         // Then we load the menu texture
-        menuMaterial->texture = our::texture_utils::loadImage("assets/textures/new_menu.jpg");
+        menuMaterial->texture = our::texture_utils::loadImage("assets/textures/gameOver.jfif");
         // Initially, the menu material will be black, then it will fade in
         menuMaterial->tint = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -110,28 +86,6 @@ class Menustate : public our::State
         // - The argument list () which is the arguments that the lambda should receive when it is called.
         //      We leave it empty since button actions receive no input.
         // - The body {} which contains the code to be executed.
-        buttons[0].position = {65.0f, 117.0f};
-        buttons[0].size = {346.0f, 120.0f};
-        buttons[0].action = [this]()
-        {
-            getApp()->resetGame(false);
-            this->getApp()->changeState("play");
-        };
-
-        buttons[1].position = {65.0f, 270.0f};
-        buttons[1].size = {346.0f, 120.0f};
-        buttons[1].action = [this]()
-        { this->getApp()->increaseSound(); };
-
-        buttons[2].position = {65.0f, 423.0f};
-        buttons[2].size = {346.0f, 120.0f};
-        buttons[2].action = [this]()
-        { this->getApp()->decreaseSound(); };
-
-        buttons[3].position = {65.0f, 582.0f};
-        buttons[3].size = {346.0f, 120.0f};
-        buttons[3].action = [this]()
-        { this->getApp()->close(); };
     }
 
     void onDraw(double deltaTime) override
@@ -139,16 +93,10 @@ class Menustate : public our::State
         // Get a reference to the keyboard object
         auto &keyboard = getApp()->getKeyboard();
 
-        if (keyboard.justPressed(GLFW_KEY_SPACE))
+        if (keyboard.justPressed(GLFW_KEY_ENTER) || keyboard.justPressed(GLFW_KEY_ESCAPE) || keyboard.justPressed(GLFW_KEY_SPACE))
         {
             // If the space key is pressed in this frame, go to the play state
-            getApp()->resetGame(false);
-            getApp()->changeState("play");
-        }
-        else if (keyboard.justPressed(GLFW_KEY_ESCAPE))
-        {
-            // If the escape key is pressed in this frame, exit the game
-            getApp()->close();
+            getApp()->changeState("menu");
         }
 
         // Get a reference to the mouse object and get the current mouse position
@@ -157,14 +105,6 @@ class Menustate : public our::State
         // std::cout << mousePosition.x << " " << mousePosition.y << std::endl;
         // If the mouse left-button is just pressed, check if the mouse was inside
         // any menu button. If it was inside a menu button, run the action of the button.
-        if (mouse.justPressed(0))
-        {
-            for (auto &button : buttons)
-            {
-                if (button.isInside(mousePosition))
-                    button.action();
-            }
-        }
 
         // Get the framebuffer size to set the viewport and the create the projection matrix.
         glm::ivec2 size = getApp()->getFrameBufferSize();
@@ -192,15 +132,6 @@ class Menustate : public our::State
         rectangle->draw();
 
         // For every button, check if the mouse is inside it. If the mouse is inside, we draw the highlight rectangle over it.
-        for (auto &button : buttons)
-        {
-            if (button.isInside(mousePosition))
-            {
-                highlightMaterial->setup();
-                highlightMaterial->shader->set("transform", VP * button.getLocalToWorld());
-                rectangle->draw();
-            }
-        }
     }
 
     void onDestroy() override
