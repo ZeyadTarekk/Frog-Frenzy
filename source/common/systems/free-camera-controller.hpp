@@ -565,14 +565,6 @@ namespace our
             }
             app->setGameState(GameState::GAME_OVER);
 
-            // handle end game
-            if (app->getGameState() == GameState::GAME_OVER && app->getLives() == 0)
-            {
-                playAudio("game_over.mp3", false, true);
-                app->changeState("end-game");
-                return;
-            }
-
             playAudio("game_over.ogg");
         }
 
@@ -658,8 +650,9 @@ namespace our
             std::string levelName;
             if (currentLives == 0)
             {
-                app->resetGame();
-                levelName = "world_level_1";
+                playAudio("game_over.mp3", false, true);
+                app->changeState("end-game");
+                return;
             }
             else
             {
