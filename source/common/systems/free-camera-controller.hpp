@@ -371,7 +371,6 @@ namespace our
                         entity->localTransform.position = randomPosition;
                         positionsOfCoins.push_back(randomPosition);
                         enteredCoins++;
-                        // printf("entered %d\n", entered);
                     }
 
                     coins.push_back(entity);
@@ -539,6 +538,7 @@ namespace our
                     std::uniform_real_distribution<float> dis(5.0f, 10.0f);
                     app->addCoins(dis(gen));     //? adding extra random time  (5~10)
                     world->markForRemoval(coin); //? removing coin after collision detection
+                    playAudio("coins.mp3");      //? playing audio at collision detection
                 }
             }
             if (
@@ -566,10 +566,7 @@ namespace our
 
             app->setGameState(GameState::GAME_OVER);
 
-            //  Plays game over audio in a separate thread
             playAudio("game_over.ogg");
-            // std::thread audioThread(this->playAudio, "game_over.ogg");
-            // audioThread.detach();
         }
 
         //  Plays game over audio
@@ -621,9 +618,7 @@ namespace our
                     app->setLives(app->getLives() + 1);
                 }
             }
-            // clear coins
-            enteredCoins = 1;
-            positionsOfCoins.clear();
+            resetCoins();
             if (newLevel == 1)
             {
                 playAudio("level_1.ogg", true, true);
@@ -679,6 +674,13 @@ namespace our
                 app->setLives(app->getLives() + 1);
             }
             app->resetTime();
+            resetCoins();
+        }
+        void resetCoins()
+        {
+            // clear coins
+            enteredCoins = 1;
+            positionsOfCoins.clear();
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
