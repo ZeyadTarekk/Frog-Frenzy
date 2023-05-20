@@ -14,6 +14,8 @@
 #include "input/mouse.hpp"
 #include <time.h>
 #include <iostream>
+#include <irrKlang.h>
+using namespace irrklang;
 namespace our
 {
 
@@ -29,7 +31,8 @@ namespace our
         PLAYING,
         GAME_OVER,
         WIN,
-        PAUSE
+        PAUSE,
+        FINISH
     };
 
     class Application; // Forward declaration
@@ -66,14 +69,16 @@ namespace our
     private:
         time_t startTime, endTime;
         float volume = 0.5;
-        int levelDuration = 60;
+        int levelDuration = 80;
         int timerValue = levelDuration;
-        int timeDiff = 60;
+        int timeDiff = 80;
         int level = 1;
+        int maxLevel = 5;
         GameState gameState = GameState::PLAYING;
         int score = 80;
         int lives = 3;
         int timeDiffOnPause;
+        ISoundEngine *soundEngine = nullptr;
 
     protected:
         GLFWwindow *window = nullptr; // Pointer to the window created by GLFW using "glfwCreateWindow()".
@@ -98,6 +103,15 @@ namespace our
         {
             this->timeDiffOnPause = timeDiff;
         }
+        ISoundEngine *getSoundEngine()
+        {
+            return this->soundEngine;
+        }
+        void setSoundEngine(ISoundEngine *soundEngine)
+        {
+            this->soundEngine = soundEngine;
+        }
+
         int getTimeDiffOnPause()
         {
             return this->timeDiffOnPause;
@@ -153,20 +167,35 @@ namespace our
         void close()
         {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
+            if (soundEngine != nullptr)
+            {
+                // Drop the engine on exit
+                soundEngine->drop();
+            }
         }
 
         // Increase the sound volume
         void increaseSound()
         {
+            if (soundEngine == nullptr)
+                this->soundEngine = createIrrKlangDevice();
             if (volume < 1)
+            {
                 volume += 0.1;
+                this->soundEngine->setSoundVolume(volume);
+            }
         }
 
         // Decrease the sound volume
         void decreaseSound()
         {
+            if (soundEngine == nullptr)
+                this->soundEngine = createIrrKlangDevice();
             if (volume > 0)
+            {
                 volume -= 0.1;
+                this->soundEngine->setSoundVolume(volume);
+            }
         }
 
         float getVolume()
@@ -191,16 +220,33 @@ namespace our
 
         void addCoins(int addedTime)
         {
-            levelDuration += addedTime;
-            timerValue = levelDuration;
+
+            timerValue += addedTime;
         }
 
-        void upgradeLevel()
+        bool upgradeLevel()
         {
+            if (level == maxLevel)
+            {
+                return false;
+            }
             level++;
             levelDuration -= 10;
             timerValue = levelDuration;
             timeDiff = levelDuration;
+            time(&startTime);
+            return true;
+        }
+
+        void resetGame()
+        {
+            level = 1;
+            levelDuration = 80;
+            timerValue = levelDuration;
+            timeDiff = levelDuration;
+            score = 0;
+            lives = 3;
+            gameState = GameState::PLAYING;
             time(&startTime);
         }
 

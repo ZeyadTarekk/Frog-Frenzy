@@ -34,41 +34,162 @@ namespace our
         bool mouse_locked = false;                                    // Is the mouse locked
         float levelWidth = 19.0f;                                     // The width of the level
         float levelStart = 24.5f;                                     // The start of the level
-        float levelEnd[5] = {-16.0f, -16.0f, -16.0f, -16.0f, -25.0f}; // The end of the level
+        float levelEnd[5] = {-16.0f, -16.0f, -16.0f, -16.0f, -25.0f}; // The end of the levels
         float waterWidth = 2.0f;                                      // The width of the water
         float widthLeft = -8.f;                                       // left width of the level
         float widthRight = 8.f;                                       // right width of the level
         float startFrog = 9.0f;                                       // The start of the frog
-        int entered = 1;
+        int enteredCoins = 1;                                         // number of coins randomed
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
-
-        vector<glm::vec3> positionsOfCoins;
-
-        static bool isFrogMovementAudioRunning;
+        vector<glm::vec3> positionsOfCoins; // positions of the current coins
 
         // Entities in the game
         Entity *monkey = nullptr;
+        Entity *cup = nullptr;
 
+        // map of positons of grass
         std::map<std::pair<int, int>, int> maze = {
-            {{2, 18}, 1}, {{1, 18}, 1}, {{0, 18}, 1}, {{-1, 18}, 1}, {{-2, 18}, 1},
-            {{-2, 17}, 1}, {{-2, 16}, 1}, {{-2, 15}, 1}, {{-2, 14}, 1}, {{-2, 13}, 1}, {{-2, 12}, 1}, {{-2, 11}, 1}, {{-2, 10}, 1},
-            {{-3, 15}, 1}, {{-4, 15}, 1}, {{-5, 15}, 1}, {{-6, 15}, 1},
-            {{-3, 14}, 1}, {{-4, 14}, 1}, {{-5, 14}, 1}, {{-6, 14}, 1},
-            {{-3, 13}, 1}, {{-4, 13}, 1}, {{-5, 13}, 1}, {{-6, 13}, 1},
-            {{-4, 12}, 1}, {{-4, 11}, 1}, {{-4, 10}, 1}, {{-4, 9}, 1}, {{-4, 8}, 1}, {{-4, 7}, 1}, {{-4, 6}, 1}, {{-4, 5}, 1}, {{-4, 4}, 1}, {{-4, 3}, 1}, {{-4, 2}, 1}, {{-4, 1}, 1}, {{-4, 0}, 1}, {{-4, -1}, 1}, {{-4, -2}, 1},
-            {{-5, -1}, 1}, {{-6, -1}, 1}, 
-            {{-5, -2}, 1}, {{-6, -2}, 1}, 
-            {{-6, -3}, 1}, {{-6, -4}, 1}, {{-6, -5}, 1}, {{-6, -6}, 1}, {{-6, -7}, 1}, {{-6, -8}, 1}, {{-6, -9}, 1}, {{-6, -10}, 1}, {{-6, -11}, 1}, {{-6, -12}, 1}, {{-6, -13}, 1}, {{-6, -14}, 1}, {{-6, -15}, 1}, {{-6, -16}, 1}, {{-6, -17}, 1}, {{-6, -18}, 1}, {{-6, -19}, 1}, 
-            {{-6, -18}, 1}, {{-5, -18}, 1}, {{-4, -18}, 1},
-            {{-6, -19}, 1}, {{-5, -19}, 1}, {{-4, -19}, 1},
-            {{-4, -20}, 1}, {{-4, -21}, 1}, {{-4, -22}, 1}, {{-4, -23}, 1}, {{-4, -24}, 1},
-            {{-4, -22}, 1}, {{-3, -22}, 1}, {{-2, -22}, 1}, {{-1, -22}, 1}, {{0, -22}, 1}, {{1, -22}, 1}, {{2, -22}, 1}, {{3, -22}, 1}, {{4, -22}, 1}, {{5, -22}, 1}, {{6, -22}, 1},
-            {{-4, -23}, 1}, {{-3, -23}, 1}, {{-2, -23}, 1}, {{-1, -23}, 1}, {{0, -23}, 1}, {{1, -23}, 1}, {{2, -23}, 1}, {{3, -23}, 1}, {{4, -23}, 1}, {{5, -23}, 1},
-            {{-4, -24}, 1}, {{-3, -24}, 1}, {{-2, -24}, 1}, {{-1, -24}, 1}, {{0, -24}, 1}, {{1, -24}, 1}, {{2, -24}, 1}, {{3, -24}, 1}, {{4, -24}, 1}, {{5, -24}, 1},
-            {{5, -21}, 1}, {{5, -20}, 1}, {{5, -19}, 1}, {{5, -18}, 1}, {{5, -17}, 1}, {{5, -16}, 1}, {{5, -15}, 1}, {{5, -14}, 1}, {{5, -13}, 1}, {{5, -12}, 1}, {{5, -11}, 1}, {{5, -10}, 1}, {{5, -9}, 1}, {{5, -8}, 1}, {{5, -7}, 1}, {{5, -6}, 1}, {{5, -5}, 1},
-            {{6, -21}, 1}, {{6, -20}, 1}, {{6, -19}, 1}, {{6, -18}, 1}, {{6, -17}, 1}, {{6, -16}, 1}, {{6, -15}, 1}, {{6, -14}, 1}, {{6, -13}, 1}, {{6, -12}, 1}, {{6, -11}, 1}, {{6, -10}, 1}, {{6, -9}, 1}, {{6, -8}, 1}, {{6, -7}, 1}, {{6, -6}, 1}, {{6, -5}, 1},
-            {{7, -5}, 1}, {{7, -6}, 1}, {{7, -7}, 1},
+            {{2, 18}, 1},
+            {{1, 18}, 1},
+            {{0, 18}, 1},
+            {{-1, 18}, 1},
+            {{-2, 18}, 1},
+            {{-2, 17}, 1},
+            {{-2, 16}, 1},
+            {{-2, 15}, 1},
+            {{-2, 14}, 1},
+            {{-2, 13}, 1},
+            {{-2, 12}, 1},
+            {{-2, 11}, 1},
+            {{-2, 10}, 1},
+            {{-3, 15}, 1},
+            {{-4, 15}, 1},
+            {{-5, 15}, 1},
+            {{-6, 15}, 1},
+            {{-3, 14}, 1},
+            {{-4, 14}, 1},
+            {{-5, 14}, 1},
+            {{-6, 14}, 1},
+            {{-3, 13}, 1},
+            {{-4, 13}, 1},
+            {{-5, 13}, 1},
+            {{-6, 13}, 1},
+            {{-4, 12}, 1},
+            {{-4, 11}, 1},
+            {{-4, 10}, 1},
+            {{-4, 9}, 1},
+            {{-4, 8}, 1},
+            {{-4, 7}, 1},
+            {{-4, 6}, 1},
+            {{-4, 5}, 1},
+            {{-4, 4}, 1},
+            {{-4, 3}, 1},
+            {{-4, 2}, 1},
+            {{-4, 1}, 1},
+            {{-4, 0}, 1},
+            {{-4, -1}, 1},
+            {{-4, -2}, 1},
+            {{-5, -1}, 1},
+            {{-6, -1}, 1},
+            {{-5, -2}, 1},
+            {{-6, -2}, 1},
+            {{-6, -3}, 1},
+            {{-6, -4}, 1},
+            {{-6, -5}, 1},
+            {{-6, -6}, 1},
+            {{-6, -7}, 1},
+            {{-6, -8}, 1},
+            {{-6, -9}, 1},
+            {{-6, -10}, 1},
+            {{-6, -11}, 1},
+            {{-6, -12}, 1},
+            {{-6, -13}, 1},
+            {{-6, -14}, 1},
+            {{-6, -15}, 1},
+            {{-6, -16}, 1},
+            {{-6, -17}, 1},
+            {{-6, -18}, 1},
+            {{-6, -19}, 1},
+            {{-6, -18}, 1},
+            {{-5, -18}, 1},
+            {{-4, -18}, 1},
+            {{-6, -19}, 1},
+            {{-5, -19}, 1},
+            {{-4, -19}, 1},
+            {{-4, -20}, 1},
+            {{-4, -21}, 1},
+            {{-4, -22}, 1},
+            {{-4, -23}, 1},
+            {{-4, -24}, 1},
+            {{-4, -22}, 1},
+            {{-3, -22}, 1},
+            {{-2, -22}, 1},
+            {{-1, -22}, 1},
+            {{0, -22}, 1},
+            {{1, -22}, 1},
+            {{2, -22}, 1},
+            {{3, -22}, 1},
+            {{4, -22}, 1},
+            {{5, -22}, 1},
+            {{6, -22}, 1},
+            {{-4, -23}, 1},
+            {{-3, -23}, 1},
+            {{-2, -23}, 1},
+            {{-1, -23}, 1},
+            {{0, -23}, 1},
+            {{1, -23}, 1},
+            {{2, -23}, 1},
+            {{3, -23}, 1},
+            {{4, -23}, 1},
+            {{5, -23}, 1},
+            {{-4, -24}, 1},
+            {{-3, -24}, 1},
+            {{-2, -24}, 1},
+            {{-1, -24}, 1},
+            {{0, -24}, 1},
+            {{1, -24}, 1},
+            {{2, -24}, 1},
+            {{3, -24}, 1},
+            {{4, -24}, 1},
+            {{5, -24}, 1},
+            {{5, -21}, 1},
+            {{5, -20}, 1},
+            {{5, -19}, 1},
+            {{5, -18}, 1},
+            {{5, -17}, 1},
+            {{5, -16}, 1},
+            {{5, -15}, 1},
+            {{5, -14}, 1},
+            {{5, -13}, 1},
+            {{5, -12}, 1},
+            {{5, -11}, 1},
+            {{5, -10}, 1},
+            {{5, -9}, 1},
+            {{5, -8}, 1},
+            {{5, -7}, 1},
+            {{5, -6}, 1},
+            {{5, -5}, 1},
+            {{6, -21}, 1},
+            {{6, -20}, 1},
+            {{6, -19}, 1},
+            {{6, -18}, 1},
+            {{6, -17}, 1},
+            {{6, -16}, 1},
+            {{6, -15}, 1},
+            {{6, -14}, 1},
+            {{6, -13}, 1},
+            {{6, -12}, 1},
+            {{6, -11}, 1},
+            {{6, -10}, 1},
+            {{6, -9}, 1},
+            {{6, -8}, 1},
+            {{6, -7}, 1},
+            {{6, -6}, 1},
+            {{6, -5}, 1},
+            {{7, -5}, 1},
+            {{7, -6}, 1},
+            {{7, -7}, 1},
         };
 
     public:
@@ -77,16 +198,13 @@ namespace our
         {
             this->app = app;
             app->setGameState(GameState::PLAYING);
-            if (app->getLevel() == 1)
-            {
-                // std::thread audioThread(this->playAudio, "level_1.ogg");
-                // audioThread.detach();
-            }
-            else if (app->getLevel() == 2)
-            {
-                // std::thread audioThread(this->playAudio, "level_2.ogg");
-                // audioThread.detach();
-            }
+            ISoundEngine *soundEngine = app->getSoundEngine();
+            if (soundEngine == nullptr)
+                app->setSoundEngine(createIrrKlangDevice());
+            int level = app->getLevel();
+
+            // true to make it repeat infinitly
+            playAudio("level_1.ogg", true, true);
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -162,6 +280,15 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_LEFT_SHIFT))
                 current_sensitivity *= controller->speedupFactor;
 
+            if (app->getKeyboard().isPressed(GLFW_KEY_1))
+            {
+                app->decreaseSound();
+            }
+            if (app->getKeyboard().isPressed(GLFW_KEY_2))
+            {
+                app->increaseSound();
+            }
+
             // We change the camera position based on the keys WASD/QE
             // S & W moves the player back and forth
             if (app->getKeyboard().isPressed(GLFW_KEY_W))
@@ -182,6 +309,20 @@ namespace our
             if (app->getGameState() == GameState::GAME_OVER)
             {
                 restartLevel(world);
+                return;
+            }
+            else if (app->getGameState() == GameState::FINISH)
+            {
+                if (app->getKeyboard().isPressed(GLFW_KEY_ENTER))
+                {
+                    app->resetGame();
+                    auto &config = app->getConfig()["scene"];
+                    if (config.contains("world_level_1"))
+                    {
+                        world->clear();
+                        world->deserialize(config["world_level_1"]);
+                    }
+                }
                 return;
             }
 
@@ -219,25 +360,20 @@ namespace our
                 }
                 else if (name == "coin")
                 {
+                    //? generate random coins in map
                     std::random_device rd;
                     std::mt19937 gen(rd());
                     std::uniform_real_distribution<float> disX(widthLeft, widthRight);
-                    std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel()-1] + 2) / 2, (startFrog - 2) / 2);
-                    glm::vec3 randomPosition = glm::vec3(disX(gen), 0.0f, disZ(gen));
-                    if (entered == 1)
-                    {
-                        entity->localTransform.position = randomPosition;
-                        // cout << randomPosition.x << " " << randomPosition.y << " " << randomPosition.z << endl;
-                        positionsOfCoins.push_back(randomPosition);
-                        entered++;
-                    }
-                    else if (entered == 2)
+                    std::uniform_real_distribution<float> disZ((levelEnd[app->getLevel() - 1] + 2) / 2, (startFrog - 2) / 2);
+                    glm::vec3 randomPosition = glm::vec3(disX(gen), -1.0f, disZ(gen));
+                    if (enteredCoins < 4)
                     {
                         entity->localTransform.position = randomPosition;
                         positionsOfCoins.push_back(randomPosition);
-                        entered++;
+                        enteredCoins++;
+                        // printf("entered %d\n", entered);
                     }
-                    // cout << "X: " << entity->localTransform.position.x << " Y: " << entity->localTransform.position.y << " Z: " << entity->localTransform.position.z << endl;
+
                     coins.push_back(entity);
                 }
                 else if (name == "woodenBox")
@@ -247,6 +383,10 @@ namespace our
                 else if (name == "monkey")
                 {
                     monkey = entity;
+                }
+                else if (name == "cup")
+                {
+                    cup = entity;
                 }
             }
             if (!frog)
@@ -279,20 +419,15 @@ namespace our
                 frog->localTransform.rotation.x = float(0.1f * sin(glfwGetTime() * 10)) - glm::pi<float>() / 2; // make the frog rotate
                 frog->localTransform.scale.y = 0.01f * sin(glfwGetTime() * 10) + 0.05f;                         // make the frog scale
 
-                //  prevent multiple audios playing at the same time
-                if (!isFrogMovementAudioRunning)
-                {
-                    isFrogMovementAudioRunning = true;
-                    //  Plays frog movement audio in a separate thread
-                    // std::thread audioThread(this->playAudio, "frog_move.ogg");
-                    // audioThread.detach();
-                }
+                playAudio("frog_move.ogg");
+                // std::thread audioThread(this->playAudio, "frog_move.ogg");
+                // audioThread.detach();
 
                 // UP
                 if (app->getKeyboard().isPressed(GLFW_KEY_UP))
                 {
                     // prevent the frog from passing through the wall
-                    if (frog->localTransform.position.z < levelEnd[app->getLevel()-1])
+                    if (frog->localTransform.position.z < levelEnd[app->getLevel() - 1])
                         return;
 
                     // update the camera position
@@ -432,42 +567,43 @@ namespace our
             app->setGameState(GameState::GAME_OVER);
 
             //  Plays game over audio in a separate thread
+            playAudio("game_over.ogg");
             // std::thread audioThread(this->playAudio, "game_over.ogg");
             // audioThread.detach();
         }
 
         //  Plays game over audio
-        // static void playAudio(std::string audioFileName)
-        // {
-        //     // std::string audioPath = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().parent_path().string() + "/assets/audios/" + audioFileName;
-        //     std::string audioPath = "assets/audios/" + audioFileName;
-        //     ISoundEngine *engine = createIrrKlangDevice();
-        //     std::cout << audioPath << std::endl;
-        //     if (!engine)
-        //         return;
-
-        //     ISoundSource *sound = engine->addSoundSourceFromFile(audioPath.c_str());
-
-        //     if (!sound)
-        //         return;
-
-        //     ISound *audio = engine->play2D(sound);
-
-        //     while (engine->isCurrentlyPlaying(sound))
-        //         ;
-
-        //     engine->drop(); // delete engine
-
-        //     if (audioFileName == "frog_move.ogg")
-        //     {
-        //         isFrogMovementAudioRunning = false;
-        //     }
-        // }
+        void playAudio(std::string audioFileName, bool repeat = false, bool stopAll = false)
+        {
+            ISoundEngine *soundEngine = app->getSoundEngine();
+            std::string audioPath = "assets/audios/" + audioFileName;
+            if (!soundEngine)
+                return;
+            if (stopAll)
+            {
+                soundEngine->stopAllSounds();
+            }
+            if (!soundEngine->isCurrentlyPlaying(audioPath.c_str()))
+            {
+                // repeat is a boolean
+                // when this boolean is true the audio repeats after it's finished
+                soundEngine->play2D(audioPath.c_str(), repeat);
+            }
+        }
 
         void finishLevel(World *world)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-            app->upgradeLevel();
+            bool upgraded = app->upgradeLevel();
+            if (!upgraded)
+            {
+                app->setGameState(GameState::FINISH);
+                if (cup)
+                {
+                    cup->localTransform.position.y = 0;
+                }
+                return;
+            }
             app->setGameState(GameState::PLAYING);
             auto &config = app->getConfig()["scene"];
             int newLevel = app->getLevel();
@@ -485,6 +621,30 @@ namespace our
                     app->setLives(app->getLives() + 1);
                 }
             }
+            // clear coins
+            enteredCoins = 1;
+            positionsOfCoins.clear();
+            if (newLevel == 1)
+            {
+                playAudio("level_1.ogg", true, true);
+            }
+            else if (newLevel == 2)
+            {
+                playAudio("level_2.mp3", true, true);
+            }
+            else if (newLevel == 3)
+            {
+
+                playAudio("level_3.mp3", true, true);
+            }
+            else if (newLevel == 4)
+            {
+                playAudio("level_4.mp3", true, true);
+            }
+            else if (newLevel == 5)
+            {
+                playAudio("level_5.mp3", true, true);
+            }
         }
 
         void restartLevel(World *world)
@@ -496,8 +656,7 @@ namespace our
             std::string levelName;
             if (currentLives == 0)
             {
-                app->setLives(3);
-                app->setScore(0);
+                app->resetGame();
                 levelName = "world_level_1";
             }
             else
@@ -534,6 +693,5 @@ namespace our
     };
 
     //  Definition of static data members
-    bool our::FreeCameraControllerSystem::isFrogMovementAudioRunning = false;
     Application *our::FreeCameraControllerSystem::app = nullptr;
 }

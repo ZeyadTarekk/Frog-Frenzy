@@ -44,7 +44,8 @@
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
         "monkey": "assets/textures/monkey.png",
-        "block": "assets/textures/barrier2Diffuse.png"
+        "block": "assets/textures/barrier2Diffuse.png",
+        "gold": "assets/textures/gold.jpeg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -59,7 +60,8 @@
         "tire": "assets/models/sphere.obj",
         "rock": "assets/models/rock.obj",
         "monkey": "assets/models/monkey.obj",
-        "block": "assets/models/rock.obj"
+        "block": "assets/models/rock.obj",
+        "cup": "assets/models/cup.obj"
       },
       "samplers": {
         "default": {},
@@ -300,6 +302,21 @@
           "texture": "monkey",
           "sampler": "default"
         },
+        "cup": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "gold",
+          "sampler": "default"
+        },
         "car": {
           "type": "textured",
           "shader": "textured",
@@ -525,6 +542,26 @@
             "type": "Movement",
             "name": "coin",
             "id": "2",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
           }
@@ -1575,6 +1612,26 @@
         ]
       },
       {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
         "position": [-10, 0, 0],
         "rotation": [0, -90, 0],
         "scale": [25, 6, 5],
@@ -2612,7 +2669,27 @@
           {
             "type": "Movement",
             "name": "coin",
-            "id": "2",
+            "id": "3",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
           }
@@ -3541,7 +3618,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [8, -0.999, 7],
@@ -3574,7 +3651,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [-8, -0.999, 4],
@@ -3607,7 +3684,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [8, -0.999, 1],
@@ -3640,7 +3717,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [-8, -0.999, -2],
@@ -3673,7 +3750,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [8, -0.999, -6],
@@ -3706,7 +3783,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [-8, -0.999, -9],
@@ -3739,7 +3816,7 @@
           }
         ]
       },
-      // 
+      //
       {
         "rotation": [0, 90, 0],
         "position": [0, -3, -16],
@@ -3831,6 +3908,26 @@
         ]
       },
       {
+        "rotation": [0, 90, 0],
+        "position": [-3, 0, 3],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "coin",
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "coin",
+            "material": "coinMaterial"
+          },
+          {
+            "type": "Movement",
+            "name": "coin",
+            "id": "3",
+            "angularVelocity": [0, -100, 0],
+            "linearVelocity": [0, 0, 0]
+          }
+        ]
+      },
+      {
         "position": [-10, 0, 0],
         "rotation": [0, -90, 0],
         "scale": [25, 6, 5],
@@ -3876,9 +3973,9 @@
             "diffuse": [0.15, 0.25, 0.35],
             "specular": [0.093, 0.094, 0.096],
             "attenuation": [0.0005, 0.0005, 0.0005],
-            "cone_angles": [-50,50],
+            "cone_angles": [-50, 50],
             "direction": [1, 0, 0]
-        }
+          }
         ]
       },
       {
@@ -3901,6 +3998,19 @@
                 "type": "Mesh Renderer",
                 "mesh": "monkey",
                 "material": "monkey"
+              }
+            ]
+          },
+          {
+            "rotation": [0, 90, 0],
+            "position": [0, -15, -6],
+            "scale": [0.02, 0.02, 0.02],
+            "name": "cup",
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "cup",
+                "material": "cup"
               }
             ]
           }
