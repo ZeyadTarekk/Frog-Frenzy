@@ -113,7 +113,10 @@ class Menustate : public our::State
         buttons[0].position = {65.0f, 117.0f};
         buttons[0].size = {346.0f, 120.0f};
         buttons[0].action = [this]()
-        { this->getApp()->changeState("play"); };
+        {
+            getApp()->resetGame(false);
+            this->getApp()->changeState("play");
+        };
 
         buttons[1].position = {65.0f, 270.0f};
         buttons[1].size = {346.0f, 120.0f};
@@ -139,6 +142,7 @@ class Menustate : public our::State
         if (keyboard.justPressed(GLFW_KEY_SPACE))
         {
             // If the space key is pressed in this frame, go to the play state
+            getApp()->resetGame(false);
             getApp()->changeState("play");
         }
         else if (keyboard.justPressed(GLFW_KEY_ESCAPE))
