@@ -38,6 +38,7 @@
         "frog_blue": "assets/textures/frog_blue.jpg",
         "fence": "assets/textures/fence.jpg",
         "fenceDark": "assets/textures/walls.jpg",
+        "fenceWhite": "assets/textures/Whitepicl.png",
         "road": "assets/textures/way.jpg",
         "car": "assets/textures/car2.jpg",
         "trunkWood": "assets/textures/trunk_wood_color.png",
@@ -233,7 +234,7 @@
           },
           "sampler": "default",
           "albedo": "fence",
-          "specular":"fenceDark",
+          "specular":"fenceWhite",
           "ambient_occlusion":"fenceDark",
           "roughness":"fenceDark"
         },
@@ -251,7 +252,9 @@
           "tint": [1, 1, 1, 1],
           "texture": "road",
           "sampler": "default",
-          "albedo": "road"
+          "albedo": "road",
+          "ambient_occlusion": "road",
+          "roughness": "road"
         },
         "frog": {
           "type": "lighting",
@@ -347,7 +350,9 @@
           "tint": [1, 1, 1, 1],
           "texture": "car",
           "sampler": "default",
-          "albedo": "car"
+          "albedo": "car",
+          "ambient_occlusion": "car",
+          "specular":"fenceWhite"
         },
         "moon": {
           "type": "lighting",
