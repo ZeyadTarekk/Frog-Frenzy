@@ -47,7 +47,7 @@ class Playstate : public our::State
         if (state != our::GameState::PAUSE)
         {
             movementSystem.update(&world, (float)deltaTime);
-            cameraController.update(&world, (float)deltaTime);
+            cameraController.update(&world, (float)deltaTime, &renderer);
             carGeneratorSystem.update(&world, (float)deltaTime);
         }
         // And finally we use the renderer system to draw the scene

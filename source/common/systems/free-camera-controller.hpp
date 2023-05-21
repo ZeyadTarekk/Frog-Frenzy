@@ -87,7 +87,7 @@ namespace our
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
-        void update(World *world, float deltaTime)
+        void update(World *world, float deltaTime, ForwardRenderer *renderer)
         {
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
@@ -439,6 +439,7 @@ namespace our
                     app->addCoins(dis(gen));     //? adding extra random time  (5~10)
                     world->markForRemoval(coin); //? removing coin after collision detection
                     playAudio("coins.mp3");      //? playing audio at collision detection
+                    renderer->applyPostPreprocessing = true;
                 }
             }
             if (

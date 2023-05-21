@@ -11,7 +11,7 @@
   "scene": {
     "renderer": {
       "sky": "assets/textures/sky.jpg",
-      "postprocess": "assets/shaders/postprocess/vignette.frag"
+      "postprocess": "assets/shaders/postprocess/radial-blur.frag"
     },
     "assets": {
       "shaders": {
@@ -178,7 +178,7 @@
           "tint": [1, 1, 1, 1],
           "texture": "coin",
           "sampler": "default",
-          "albedo":"coin"
+          "albedo": "coin"
         },
         "glass": {
           "type": "textured",
@@ -501,7 +501,7 @@
             "type": "Light",
             "lightType": "point",
             "diffuse": [0.09, 0.0, 0.0],
-            "specular": [0.09, 0.00, 0.00],
+            "specular": [0.09, 0.0, 0.0],
             "attenuation": [0.01, 0.01, 0.01]
             // "cone_angles": [-1, 1]
           }
@@ -1635,8 +1635,8 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
-          }
-          ,{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -1665,7 +1665,8 @@
             "id": "2",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -1694,7 +1695,8 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -2727,7 +2729,8 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -2756,7 +2759,8 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -2785,7 +2789,8 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -3986,7 +3991,8 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -4015,7 +4021,8 @@
             "id": "2",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
@@ -4044,7 +4051,8 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
-          },{
+          },
+          {
             "type": "Light",
             "lightType": "spot",
             "diffuse": [0.18, 0.16, 0.12],
