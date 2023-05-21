@@ -396,6 +396,7 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
+                    this->renderer->applyPostPreprocessing = true;
                     this->gameOver();
                 }
             }
@@ -441,7 +442,6 @@ namespace our
                     app->addCoins(dis(gen));     //? adding extra random time  (5~10)
                     world->markForRemoval(coin); //? removing coin after collision detection
                     playAudio("coins.mp3");      //? playing audio at collision detection
-                    renderer->applyPostPreprocessing = true;
                 }
             }
             if (
