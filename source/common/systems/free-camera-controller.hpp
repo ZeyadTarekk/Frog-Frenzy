@@ -547,8 +547,8 @@ namespace our
 
         void restartLevel(World *world)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
             this->renderer->applyPostPreprocessing = false;
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
             app->setGameState(GameState::PLAYING);
             int currentLives = app->getLives();
             auto &config = app->getConfig()["scene"];

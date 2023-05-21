@@ -12,6 +12,7 @@
     "renderer": {
       "sky": "assets/textures/sky.jpg",
       "postprocess": "assets/shaders/postprocess/fish-eye-distortion.frag"
+      // "postprocess2": "assets/shaders/postprocess/fish-eye-distortion.frag"
     },
     "assets": {
       "shaders": {
