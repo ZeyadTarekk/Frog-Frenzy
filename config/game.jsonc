@@ -11,7 +11,7 @@
   "scene": {
     "renderer": {
       "sky": "assets/textures/sky.jpg",
-      "postprocess": "assets/shaders/postprocess/radial-blur.frag"
+      "postprocess": "assets/shaders/postprocess/fish-eye-distortion.frag"
     },
     "assets": {
       "shaders": {

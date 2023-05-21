@@ -6,7 +6,7 @@
 #include "../components/movement.hpp"
 
 #include "../application.hpp"
-
+#include "forward-renderer.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>
@@ -44,6 +44,7 @@ namespace our
         int maxHeightAtWin = 10;
         float mazeMaxRight = 7.0f;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
+        ForwardRenderer *renderer = nullptr;
 
         // Entities in the game
         Entity *monkey = nullptr;
@@ -93,6 +94,7 @@ namespace our
             // As soon as we find one, we break
             world->deleteMarkedEntities();
             CameraComponent *camera = nullptr;
+            this->renderer = renderer;
             FreeCameraControllerComponent *controller = nullptr;
             for (auto entity : world->getEntities())
             {
@@ -370,7 +372,7 @@ namespace our
                     }
                     if (i == mazeTiles.size())
                     {
-                        this->gameOver(world);
+                        this->gameOver();
                     }
                 }
             }
@@ -394,7 +396,7 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    this->gameOver(world);
+                    this->gameOver();
                 }
             }
             frogAboveTrunk = false;
@@ -426,7 +428,7 @@ namespace our
                     if (
                         frog->localTransform.position.z - waterWidth / 2 < wat->localTransform.position.z &&
                         frog->localTransform.position.z + waterWidth / 2 > wat->localTransform.position.z)
-                        this->gameOver(world);
+                        this->gameOver();
                 }
 
             for (auto coin : coins)
@@ -453,17 +455,18 @@ namespace our
 
             if (app->getTimeDiff() <= 0)
             {
-                this->gameOver(world);
+                this->gameOver();
             }
         }
 
         //  When the frog hits the water, collides with a car, or runs out of time, the game is over.
-        void gameOver(World *world)
+        void gameOver()
         {
             if (monkey)
             {
                 monkey->localTransform.position.y = 0;
             }
+            this->renderer->applyPostPreprocessing = true;
             app->setGameState(GameState::GAME_OVER);
 
             playAudio("game_over.ogg");
@@ -545,6 +548,7 @@ namespace our
         void restartLevel(World *world)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            this->renderer->applyPostPreprocessing = false;
             app->setGameState(GameState::PLAYING);
             int currentLives = app->getLives();
             auto &config = app->getConfig()["scene"];
