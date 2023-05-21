@@ -43,6 +43,8 @@
         "coin": "assets/textures/coin.jpg",
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
+        "rockAmbient": "assets/textures/rockTextures/13-ambient_occlusion.png",
+        "rockSpecular": "assets/textures/rockTextures/13-albedo.png",
         "monkey": "assets/textures/monkey.png",
         "block": "assets/textures/barrier2Diffuse.png",
         "gold": "assets/textures/gold.jpeg"
@@ -71,8 +73,8 @@
       },
       "materials": {
         "tire": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -83,11 +85,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "car",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "car"
         },
         "rock": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -98,7 +101,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "rock",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "rock"
         },
         "blockMaterial": {
           "type": "textured",
@@ -129,8 +133,8 @@
           "tint": [0.45, 0.4, 0.5, 1]
         },
         "water": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -141,11 +145,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "water",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "water"
         },
         "trunkWoodMaterial": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -156,11 +161,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "trunkWood",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "trunkWood"
         },
         "coinMaterial": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -171,7 +177,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "coin",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo":"coin"
         },
         "glass": {
           "type": "textured",
@@ -212,8 +219,8 @@
           "albedo": "grass"
         },
         "fence": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -224,7 +231,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "fence",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "fence"
         },
         "road": {
           "type": "lighting",
@@ -243,8 +251,8 @@
           "albedo": "road"
         },
         "frog": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -255,11 +263,12 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "frog",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "frog"
         },
         "frog_blue": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -270,7 +279,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "frog_blue",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "frog_blue"
         },
         "woodenBoxMaterial": {
           "type": "textured",
@@ -318,8 +328,8 @@
           "sampler": "default"
         },
         "car": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lighting",
+          "shader": "lighting",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -330,7 +340,8 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "car",
-          "sampler": "default"
+          "sampler": "default",
+          "albedo": "car"
         },
         "moon": {
           "type": "lighting",
@@ -346,14 +357,14 @@
           "tint": [1, 1, 1, 1],
           "texture": "moon",
           "sampler": "default",
-          "albedo": "moon"
-          // "ambient_occlusion": "moon"
+          "albedo": "moon",
+          "ambient_occlusion": "moon"
         }
       }
     },
     "world_level_1": [
       {
-        "position": [0, 30, 0],
+        "position": [0, 50, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],
         "components": [
@@ -368,12 +379,10 @@
           },
           {
             "type": "Light",
-            "lightType": "point",
-            "diffuse": [0.15, 0.25, 0.35],
-            "specular": [0.093, 0.094, 0.096],
-            "attenuation": [0.0005, 0.0005, 0.0005],
-            "cone_angles": [-50, 50],
-            "direction": [1, 0, 0]
+            "lightType": "directional",
+            "diffuse": [0.1, 0.1, 0.1],
+            "specular": [0.01, 0.01, 0.01],
+            "direction": [2, -1, 2]
           }
         ]
       },
@@ -487,6 +496,14 @@
             "type": "Mesh Renderer",
             "mesh": "frog",
             "material": "frog"
+          },
+          {
+            "type": "Light",
+            "lightType": "point",
+            "diffuse": [0.09, 0.0, 0.0],
+            "specular": [0.09, 0.00, 0.00],
+            "attenuation": [0.01, 0.01, 0.01]
+            // "cone_angles": [-1, 1]
           }
         ]
       },
@@ -524,6 +541,16 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
+          },
+          {
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -544,6 +571,16 @@
             "id": "2",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },
+          {
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -564,6 +601,16 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },
+          {
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -1065,7 +1112,7 @@
                   {
                     "name": "tire",
                     "type": "Movement",
-                    "angularVelocity": [500, 0, 0]
+                    "angularVelocity": [0, 0, 0]
                   }
                 ]
               },
@@ -1589,6 +1636,16 @@
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
           }
+          ,{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
+          }
         ]
       },
       {
@@ -1608,6 +1665,15 @@
             "id": "2",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -1628,6 +1694,15 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -2652,6 +2727,15 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -2672,6 +2756,15 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -2692,6 +2785,15 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -3884,6 +3986,15 @@
             "id": "1",
             "angularVelocity": [0, 100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -3904,6 +4015,15 @@
             "id": "2",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
@@ -3924,6 +4044,15 @@
             "id": "3",
             "angularVelocity": [0, -100, 0],
             "linearVelocity": [0, 0, 0]
+          },{
+            "type": "Light",
+            "lightType": "spot",
+            "diffuse": [0.18, 0.16, 0.12],
+            "specular": [0.08, 0.06, 0.02],
+            "attenuation": [0.009, 0.009, 0.009],
+            "cone_angles": [-2, 2],
+            // bottom direction
+            "direction": [0, -1, 0]
           }
         ]
       },
