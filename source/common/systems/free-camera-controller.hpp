@@ -42,165 +42,15 @@ namespace our
         int enteredCoins = 1;                                         // number of coins randomed
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
+        float mazeMaxRight = 7.0f;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
 
         // Entities in the game
         Entity *monkey = nullptr;
         Entity *cup = nullptr;
 
-        // map of positons of grass
-        std::map<std::pair<int, int>, int> maze = {
-            {{2, 17}, 1}, {{1, 17}, 1}, {{0, 17}, 1},
-            {{2, 18}, 1},
-            {{1, 18}, 1},
-            {{0, 18}, 1},
-            {{-1, 18}, 1},
-            {{-1, 17}, 1},
-            {{-2, 18}, 1},
-            {{-2, 17}, 1},
-            {{-2, 16}, 1},
-            {{-2, 15}, 1},
-            {{-2, 14}, 1},
-            {{-2, 13}, 1},
-            {{-2, 12}, 1},
-            {{-2, 11}, 1},
-            {{-2, 10}, 1},
-            {{-3, 15}, 1},
-            {{-4, 15}, 1},
-            {{-5, 15}, 1},
-            {{-6, 15}, 1},
-            {{-3, 14}, 1},
-            {{-4, 14}, 1},
-            {{-5, 14}, 1},
-            {{-6, 14}, 1},
-            {{-3, 13}, 1},
-            {{-4, 13}, 1},
-            {{-5, 13}, 1},
-            {{-6, 13}, 1},
-            {{-4, 12}, 1},
-            {{-4, 11}, 1},
-            {{-4, 10}, 1},
-            {{-4, 9}, 1},
-            {{-4, 8}, 1},
-            {{-4, 7}, 1},
-            {{-4, 6}, 1},
-            {{-4, 5}, 1},
-            {{-4, 4}, 1},
-            {{-4, 3}, 1},
-            {{-4, 2}, 1},
-            {{-4, 1}, 1},
-            {{-4, 0}, 1},
-            {{-4, -1}, 1},
-            {{-4, -2}, 1},
-            {{-4, -3}, 1}, {{-5, -3}, 1},
-            {{-3, 7}, 1}, {{-2, 7}, 1}, {{-1, 7}, 1}, {{0, 7}, 1}, {{1, 7}, 1}, {{2, 7}, 1},
-            {{-3, 6}, 1}, {{-2, 6}, 1}, {{-1, 6}, 1}, {{0, 6}, 1}, {{1, 6}, 1}, {{2, 6}, 1},
-            {{-5, -1}, 1},
-            {{-6, -1}, 1},
-            {{-5, -2}, 1},
-            {{-6, -2}, 1},
-            {{-6, -3}, 1},
-            {{-6, -4}, 1},
-            {{-6, -5}, 1},
-            {{-6, -6}, 1},
-            {{-6, -7}, 1},
-            {{-6, -8}, 1},
-            {{-7, -8}, 1}, {{-8, -8}, 1},
-            {{-7, -9}, 1}, {{-8, -9}, 1},
-            {{-7, -10}, 1}, {{-8, -10}, 1},
-            {{-8, -15}, 1}, {{-8, -14}, 1}, {{-8, -13}, 1}, {{-8, -12}, 1}, {{-8, -11}, 1}, {{-8, -10}, 1}, {{-8, -9}, 1}, {{-8, -7}, 1}, {{-8, -6}, 1}, {{-8, -5}, 1}, {{-8, -4}, 1}, {{-8, -3}, 1}, {{-8, -2}, 1}, {{-8, -1}, 1}, {{-8, 0}, 1}, 
-            {{-7, -14}, 1}, {{-7, -15}, 1}, 
-            {{-6, -9}, 1},
-            {{-6, -10}, 1},
-            {{-6, -11}, 1},
-            {{-6, -12}, 1},
-            {{-6, -13}, 1},
-            {{-6, -14}, 1},
-            {{-6, -15}, 1},
-            {{-6, -16}, 1},
-            {{-6, -17}, 1},
-            {{-6, -18}, 1},
-            {{-6, -19}, 1},
-            {{-6, -18}, 1},
-            {{-5, -18}, 1},
-            {{-4, -18}, 1},
-            {{-6, -19}, 1},
-            {{-5, -19}, 1},
-            {{-4, -19}, 1},
-            {{-4, -20}, 1},
-            {{-4, -21}, 1},
-            {{-4, -22}, 1},
-            {{-4, -23}, 1},
-            {{-4, -24}, 1},
-            {{-4, -22}, 1},
-            {{-3, -22}, 1},
-            {{-2, -22}, 1},
-            {{-1, -22}, 1},
-            {{0, -22}, 1},
-            {{1, -22}, 1},
-            {{2, -22}, 1},
-            {{3, -22}, 1},
-            {{4, -22}, 1},
-            {{5, -22}, 1},
-            {{6, -22}, 1},
-            {{-4, -23}, 1},
-            {{-3, -23}, 1},
-            {{-2, -23}, 1},
-            {{-1, -23}, 1},
-            {{0, -23}, 1},
-            {{1, -23}, 1},
-            {{2, -23}, 1},
-            {{3, -23}, 1},
-            {{4, -23}, 1},
-            {{5, -23}, 1},
-            {{-4, -24}, 1},
-            {{-3, -24}, 1},
-            {{-2, -24}, 1},
-            {{-1, -24}, 1},
-            {{0, -24}, 1},
-            {{1, -24}, 1},
-            {{2, -24}, 1},
-            {{3, -24}, 1},
-            {{4, -24}, 1},
-            {{5, -24}, 1},
-            {{5, -21}, 1},
-            {{5, -20}, 1},
-            {{5, -19}, 1},
-            {{5, -18}, 1},
-            {{5, -17}, 1},
-            {{5, -16}, 1},
-            {{5, -15}, 1},
-            {{5, -14}, 1},
-            {{5, -13}, 1},
-            {{5, -12}, 1},
-            {{5, -11}, 1},
-            {{5, -10}, 1},
-            {{5, -9}, 1},
-            {{5, -8}, 1},
-            {{5, -7}, 1},
-            {{5, -6}, 1},
-            {{5, -5}, 1},
-            {{6, -21}, 1},
-            {{6, -20}, 1},
-            {{6, -19}, 1},
-            {{6, -18}, 1},
-            {{6, -17}, 1},
-            {{6, -16}, 1},
-            {{6, -15}, 1},
-            {{6, -14}, 1},
-            {{6, -13}, 1},
-            {{6, -12}, 1},
-            {{6, -11}, 1},
-            {{6, -10}, 1},
-            {{6, -9}, 1},
-            {{6, -8}, 1},
-            {{6, -7}, 1},
-            {{6, -6}, 1},
-            {{6, -5}, 1},
-            {{7, -5}, 1},
-            {{7, -6}, 1},
-            {{7, -7}, 1},
-        };
+        std::vector<std::pair<std::pair<float, float>, std::pair<float, float>>> mazeTiles;
+        int currentTile = 0;
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -215,6 +65,25 @@ namespace our
 
             // true to make it repeat infinitly
             playAudio("level_1.ogg", true, true);
+
+            // Establis the maze
+            mazeTiles.push_back(std::make_pair(std::make_pair(2.3, 18.3), std::make_pair(-2, 16.45)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-1.3, 18.1), std::make_pair(-2, 10.1)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-1.3, 15), std::make_pair(-6, 13.2)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-3.5, 15), std::make_pair(-4.3, -3.1)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(2.6, 7.3), std::make_pair(-4, 5.6)));
+
+            mazeTiles.push_back(std::make_pair(std::make_pair(-4, -1.5), std::make_pair(-6.15, -3)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-5.22, -2), std::make_pair(-6, -19.7)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-6, -8), std::make_pair(-8.8, -9.85)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-7.9, -0.3), std::make_pair(-8.8, -15.3)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-6.8, -13.65), std::make_pair(-8.8, -15.3)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(-3.44, -17.8), std::make_pair(-4.35, -24)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(8, -21.9), std::make_pair(-4.35, -24)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(5.95, -4.65), std::make_pair(4.95, -22)));
+
+            mazeTiles.push_back(std::make_pair(std::make_pair(-3.46, -18), std::make_pair(-6, -19.75)));
+            mazeTiles.push_back(std::make_pair(std::make_pair(8, -4.65), std::make_pair(5.95, -7.25)));
         }
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent
@@ -459,7 +328,7 @@ namespace our
                 // RIGHT
                 else if (app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
                 {
-                    if (frog->localTransform.position.x > levelWidth / 2)
+                    if (frog->localTransform.position.x > levelWidth / 2 || (app->getLevel() == 5 && position.x >= mazeMaxRight))
                         return;
                     position += right * (deltaTime * current_sensitivity.x);
                     frog->localTransform.position += right * (deltaTime * current_sensitivity.x);
@@ -476,12 +345,33 @@ namespace our
                 }
 
                 //  Maze
-                int x = round(frog->localTransform.position.x);
-                int z = round(frog->localTransform.position.z);
+                float x = frog->localTransform.position.x;
+                float z = frog->localTransform.position.z;
+                float x1 = mazeTiles[currentTile].first.first;
+                float x2 = mazeTiles[currentTile].second.first;
+                float z1 = mazeTiles[currentTile].first.second;
+                float z2 = mazeTiles[currentTile].second.second;
 
-                if (app->getLevel() == 5 && !maze[{x, z}])
+                if (app->getLevel() == 5 && !((x <= x1 && x >= x2) && (z <= z1 && z >= z2)))
                 {
-                    this->gameOver(world);
+                    int i;
+                    for (i = 0; i < mazeTiles.size(); i++)
+                    {
+                        x1 = mazeTiles[i].first.first;
+                        x2 = mazeTiles[i].second.first;
+                        z1 = mazeTiles[i].first.second;
+                        z2 = mazeTiles[i].second.second;
+                        if ((x <= x1 && x >= x2) && (z <= z1 && z >= z2))
+                        {
+                            std::cout << "Transition to " << i << std::endl;
+                            currentTile = i;
+                            break;
+                        }
+                    }
+                    if (i == mazeTiles.size())
+                    {
+                        this->gameOver(world);
+                    }
                 }
             }
             else

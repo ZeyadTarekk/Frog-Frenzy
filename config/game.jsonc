@@ -30,7 +30,7 @@
       },
       "textures": {
         "moon": "assets/textures/moon.jpg",
-        "grass": "assets/textures/grass_ground_d.jpg",
+        "grass": "assets/textures/grass_maze.jpg",
         "wood": "assets/textures/wood.jpg",
         "water": "assets/textures/water.png",
         "glass": "assets/textures/glass-panels.png",
