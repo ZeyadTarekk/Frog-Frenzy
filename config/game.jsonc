@@ -37,17 +37,19 @@
         "frog": "assets/textures/red_frog.jpg",
         "frog_blue": "assets/textures/frog_blue.jpg",
         "fence": "assets/textures/fence.jpg",
+        "fenceDark": "assets/textures/walls.jpg",
         "road": "assets/textures/way.jpg",
-        "car": "assets/textures/car.jpg",
+        "car": "assets/textures/car2.jpg",
         "trunkWood": "assets/textures/trunk_wood_color.png",
         "coin": "assets/textures/coin.jpg",
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
         "rockAmbient": "assets/textures/rockTextures/13-ambient_occlusion.png",
-        "rockSpecular": "assets/textures/rockTextures/13-albedo.png",
+        "rockSpecular": "assets/textures/rockTextures/10-albedo.png",
         "monkey": "assets/textures/monkey.png",
         "block": "assets/textures/barrier2Diffuse.png",
-        "gold": "assets/textures/gold.jpeg"
+        "gold": "assets/textures/gold.jpeg",
+        "tire": "assets/textures/tire.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -84,9 +86,9 @@
             }
           },
           "tint": [1, 1, 1, 1],
-          "texture": "car",
+          "texture": "tire",
           "sampler": "default",
-          "albedo": "car"
+          "albedo": "tire"
         },
         "rock": {
           "type": "lighting",
@@ -229,10 +231,11 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
-          "texture": "fence",
           "sampler": "default",
-          "albedo": "fence"
+          "albedo": "fence",
+          "specular":"fenceDark",
+          "ambient_occlusion":"fenceDark",
+          "roughness":"fenceDark"
         },
         "road": {
           "type": "lighting",
@@ -262,9 +265,12 @@
             }
           },
           "tint": [1, 1, 1, 1],
-          "texture": "frog",
           "sampler": "default",
-          "albedo": "frog"
+          "albedo": "frog",
+          "ambient_occlusion": "frog",
+          "roughness": "frog",
+          "specular":"frog"
+
         },
         "frog_blue": {
           "type": "lighting",
@@ -364,7 +370,7 @@
     },
     "world_level_1": [
       {
-        "position": [0, 50, 0],
+        "position": [0, 100, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],
         "components": [
@@ -378,11 +384,16 @@
             "angularVelocity": [0, 90, 0]
           },
           {
+            // "type": "Light",
+            // "lightType": "directional",
+            // "diffuse": [5, 5, 5],
+            // "specular": [0.93, 0.94, 0.96],
+            // "direction": [10, 0, 0]
             "type": "Light",
             "lightType": "directional",
-            "diffuse": [0.1, 0.1, 0.1],
-            "specular": [0.01, 0.01, 0.01],
-            "direction": [2, -1, 2]
+            "diffuse": [1.2, 1.2, 1.2],
+            "specular": [0.83, 0.84, 0.86],
+            "direction": [10, 0, 0]
           }
         ]
       },
@@ -1112,7 +1123,7 @@
                   {
                     "name": "tire",
                     "type": "Movement",
-                    "angularVelocity": [0, 0, 0]
+                    "angularVelocity": [500, 0, 0]
                   }
                 ]
               },
