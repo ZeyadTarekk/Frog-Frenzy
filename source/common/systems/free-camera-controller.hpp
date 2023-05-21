@@ -466,7 +466,6 @@ namespace our
             {
                 monkey->localTransform.position.y = 0;
             }
-            this->renderer->applyPostPreprocessing = true;
             app->setGameState(GameState::GAME_OVER);
 
             playAudio("game_over.ogg");
