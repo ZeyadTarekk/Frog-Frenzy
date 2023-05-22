@@ -54,9 +54,7 @@
 
 8. Timer: A timer adds a time pressure element to the gameplay, requiring players to complete levels within a specified time limit, adding excitement and a sense of urgency.
 
-📌 NOTE:
 
-> I am still working on the project, this is not the final verison of it, I just make it public to get feedback and imporve it
 
 ## 📂 Folder Structure <a name= "folder-structure"></a>
 
@@ -148,7 +146,7 @@
    2. GCC (GNU Compiler Collection)
 2. CMake
 3. Integrated Development Environments (IDEs)
-   1. Visual Studio Code (VS Code):
+   1. Visual Studio Code (VS Code)
    2. CLion
    3. Visual Studio (VS)  
 
