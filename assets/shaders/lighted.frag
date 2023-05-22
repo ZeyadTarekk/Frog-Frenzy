@@ -46,8 +46,11 @@ in Varyings {
 out vec4 frag_color;
 
 void main(){
+    //? Normalize the view direction and vertex normal
+
     vec3 view = normalize(fs_in.view);
     vec3 normal = normalize(fs_in.normal);
+    //? Normalize the view direction and vertex normal
 
     vec3 material_diffuse = texture(material.albedo, fs_in.tex_coord).rgb;
     vec3 material_specular = texture(material.specular, fs_in.tex_coord).rgb;
@@ -57,14 +60,21 @@ void main(){
     float material_shininess = 2.0 / pow(clamp(material_roughness, 0.001, 0.999), 4.0) - 2.0;
 
     vec3 material_emissive = texture(material.emissive, fs_in.tex_coord).rgb;
+    
+    //? Compute the sky light based on the vertex normal
 
     vec3 sky_light = (normal.y > 0) ?
         mix(sky.middle, sky.top, normal.y * normal.y) :
         mix(sky.middle, sky.bottom, normal.y * normal.y);
+    //? Initialize the fragment color with emissive and ambient components
 
     frag_color = vec4(material_emissive + material_ambient  , 1.0);
+    //? Clamp the number of lights to the maximum defined
 
     int clamped_light_count = min(MAX_LIGHTS, light_count);
+    
+    //? Clamp the number of lights to the maximum defined
+
     for(int i = 0; i < clamped_light_count; i++){
         Light light = lights[i];
 
@@ -72,13 +82,15 @@ void main(){
         if(light.type != DIRECTIONAL){
             direction_to_light = normalize(light.position - fs_in.world);
         }
-        
+        //? Compute the diffuse component
+
         vec3 diffuse = light.diffuse * material_diffuse * max(0, dot(normal, direction_to_light));
-        
+        //? Compute the reflected direction and the specular component
+
         vec3 reflected = reflect(-direction_to_light, normal);
         
         vec3 specular = light.specular * material_specular * pow(max(0, dot(view, reflected)), material_shininess);
-
+        //? Compute the attenuation based on the light type
         float attenuation = 1;
         if(light.type != DIRECTIONAL){
             float d = distance(light.position, fs_in.world);
@@ -88,7 +100,8 @@ void main(){
                 attenuation *= smoothstep(light.cone_angles.y, light.cone_angles.x, angle);
             }
         }
-
+        
+        //? Add the diffuse and specular components to the fragment color with attenuation
         frag_color.rgb += (diffuse + specular) * attenuation;
     }
 }
