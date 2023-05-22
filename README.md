@@ -25,6 +25,7 @@
   - [Running ](#running-)
 - [💻 Built Using ](#-built-using-)
 - [📸 Demo Screens ](#-demo-screens-)
+- [🎥 Demo Videos ](#-demo-videos-)
 - [🕴 Contributors ](#-contributors-)
 - [📃 License ](#-license-)
 
@@ -205,6 +206,14 @@ $ cd Frog-Frenzy
 
 
 
+</div>
+
+## 🎥 Demo Videos <a name = "videos"></a>
+
+<div align="center">
+
+
+<video src="vidoes/demo.mp4"> 
 </div>
 
 ## 🕴 Contributors <a name = "Contributors"></a>
