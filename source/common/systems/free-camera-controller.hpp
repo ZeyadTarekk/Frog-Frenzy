@@ -365,7 +365,7 @@ namespace our
                         z2 = mazeTiles[i].second.second;
                         if ((x <= x1 && x >= x2) && (z <= z1 && z >= z2))
                         {
-                            std::cout << "Transition to " << i << std::endl;
+                            // std::cout << "Transition to " << i << std::endl;
                             currentTile = i;
                             break;
                         }
