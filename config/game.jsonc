@@ -47,7 +47,6 @@
         "woodenBox": "assets/textures/wooden.png",
         "rock": "assets/textures/rockTextures/13-ambient_occlusion.png",
         "rockAmbient": "assets/textures/rockTextures/13-ambient_occlusion.png",
-        "rockSpecular": "assets/textures/rockTextures/10-albedo.png",
         "monkey": "assets/textures/monkey.png",
         "block": "assets/textures/barrier2Diffuse.png",
         "gold": "assets/textures/gold.jpeg",
@@ -235,9 +234,9 @@
           },
           "sampler": "default",
           "albedo": "fence",
-          "specular":"fenceWhite",
-          "ambient_occlusion":"fenceDark",
-          "roughness":"fenceDark"
+          "specular": "fenceWhite",
+          "ambient_occlusion": "fenceDark",
+          "roughness": "fenceDark"
         },
         "road": {
           "type": "lighting",
@@ -273,8 +272,7 @@
           "albedo": "frog",
           "ambient_occlusion": "frog",
           "roughness": "frog",
-          "specular":"frog"
-
+          "specular": "frog"
         },
         "frog_blue": {
           "type": "lighting",
@@ -353,7 +351,7 @@
           "sampler": "default",
           "albedo": "car",
           "ambient_occlusion": "car",
-          "specular":"fenceWhite"
+          "specular": "fenceWhite"
         },
         "moon": {
           "type": "lighting",
