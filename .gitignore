@@ -2,6 +2,8 @@
 *.d
 instructions.*
 
+screenshots/*-test
+
 # Compiled Object files
 *.slo
 *.lo
