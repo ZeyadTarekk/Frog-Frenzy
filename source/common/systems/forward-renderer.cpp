@@ -213,7 +213,7 @@ namespace our
         glDepthMask(true);
 
         // If there is a postprocess material, bind the framebuffer
-        if (postprocessMaterial && applyPostPreprocessing)
+        if (postprocessMaterial)
         {
             // DONE: (Req 11) bind the framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
@@ -416,10 +416,28 @@ namespace our
         }
 
         // If there is a postprocess material, apply postprocessing
-        if (postprocessMaterial && applyPostPreprocessing)
+        if (postprocessMaterial)
         {
             // DONE: (Req 11) Return to the default framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+            ShaderProgram *postprocessShader = new ShaderProgram();
+            // attach the vertex shader
+            postprocessShader->attach("assets/shaders/fullscreen.vert", GL_VERTEX_SHADER);
+
+            // attach the fragment shader based on the effect type (fish eye or blur or power up or radial blur or vignette)
+            if (effectOne)
+                postprocessShader->attach("assets/shaders/postprocess/chromatic-aberration.frag", GL_FRAGMENT_SHADER);
+            else if (effectTwo)
+                postprocessShader->attach("assets/shaders/postprocess/radial-blur.frag", GL_FRAGMENT_SHADER);
+            else
+                postprocessShader->attach("assets/shaders/postprocess/vignette.frag", GL_FRAGMENT_SHADER);
+
+            // link the shader program
+            postprocessShader->link();
+
+            // create a postprocess material for the postprocess shader
+            postprocessMaterial->shader = postprocessShader;
 
             // DONE: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             glBindVertexArray(postProcessVertexArray);

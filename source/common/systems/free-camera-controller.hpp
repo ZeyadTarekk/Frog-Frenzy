@@ -15,7 +15,6 @@
 #include <thread>
 #include <filesystem>
 #include <utility>
-// #include <unistd.h>
 #include <chrono>
 #include <irrKlang.h>
 using namespace irrklang;
@@ -43,6 +42,7 @@ namespace our
         bool frogAboveTrunk = false;
         int maxHeightAtWin = 10;
         float mazeMaxRight = 7.0f;
+        float lastTimeTakenPostPreprocessed = 0.0f;
         vector<glm::vec3> positionsOfCoins; // positions of the current coins
         ForwardRenderer *renderer = nullptr;
 
@@ -396,10 +396,10 @@ namespace our
                     frog->localTransform.position.z < carPosition.z + 1.1f &&
                     frog->localTransform.position.z > carPosition.z - 1.1f)
                 {
-                    this->renderer->applyPostPreprocessing = true;
                     this->gameOver();
                 }
             }
+
             frogAboveTrunk = false;
             for (auto trunk : trunks)
             {
@@ -442,7 +442,15 @@ namespace our
                     app->addCoins(dis(gen));     //? adding extra random time  (5~10)
                     world->markForRemoval(coin); //? removing coin after collision detection
                     playAudio("coins.mp3");      //? playing audio at collision detection
+                    renderer->effectTwo = true;
+                    lastTimeTakenPostPreprocessed = (float)glfwGetTime();
                 }
+            }
+            if (glfwGetTime() - lastTimeTakenPostPreprocessed >= 0.5f && (renderer->effectOne || renderer->effectTwo))
+            {
+                renderer->effectOne = false;
+                renderer->effectTwo = false;
+                lastTimeTakenPostPreprocessed = 0.0f;
             }
             if (
                 frog->localTransform.position.z - woodenBox->localTransform.position.z < 1.0f &&
@@ -466,6 +474,8 @@ namespace our
             {
                 monkey->localTransform.position.y = 0;
             }
+            this->renderer->effectOne = true;
+            lastTimeTakenPostPreprocessed = (float)glfwGetTime();
             app->setGameState(GameState::GAME_OVER);
 
             playAudio("game_over.ogg");
@@ -546,7 +556,7 @@ namespace our
 
         void restartLevel(World *world)
         {
-            this->renderer->applyPostPreprocessing = false;
+            this->renderer->effectOne = false;
             std::this_thread::sleep_for(std::chrono::milliseconds(3000));
             app->setGameState(GameState::PLAYING);
             int currentLives = app->getLives();
