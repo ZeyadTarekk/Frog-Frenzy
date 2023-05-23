@@ -11,6 +11,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/ZeyadTarekk/Frog-Frenzy)](https://github.com/ZeyadTarekk/Frog-Frenzy/stargazers)
 [![GitHub Language](https://img.shields.io/github/languages/top/ZeyadTarekk/Frog-Frenzy)](https://img.shields.io/github/languages/count/ZeyadTarekk/Frog-Frenzy)
 
+  <h3 >Froggie Frenzy🐸</h3>
 </div>
 
 ## 📝 Table of Contents
